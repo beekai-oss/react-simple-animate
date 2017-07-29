@@ -1,0 +1,17 @@
+{
+  "name": "react-simple-animation",
+  "version": "1.0.0",
+  "description": "react simple animation",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "babel src/ -d lib/",
+    "prepublish": "yarn run build"
+  },
+  "repository": "https://github.com/bluebill1049/react-simple-animation.git",
+  "author": "beier luo",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.51.1"
+  }
+}

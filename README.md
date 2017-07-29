@@ -14,7 +14,7 @@ Features:
     or
     $ npm install react-simple-animation
 
-##Quick start
+## Quick start
 
     import react from 'react';
     import animate from 'react-simple-animate'
@@ -36,7 +36,7 @@ Features:
         </Animate>;
     }
 
-##Props
+## API
 
     startAnimation: boolean
 Default value as false, set true when animation starts.

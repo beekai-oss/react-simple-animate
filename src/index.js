@@ -1,5 +1,5 @@
 // @flow
-import { Component } from 'react';
+import React from 'react';
 
 const defaultState = {
   animationWillEnd: false,
@@ -26,8 +26,8 @@ type State = {
   delayWillEnd: boolean,
 };
 
-export default class Animate extends Component {
-  props: Props;
+export default class Animate extends React.Component {
+  // props: Props;
 
   static defaultProps = {
     delaySeconds: 0,

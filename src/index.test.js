@@ -1,4 +1,5 @@
-import Animate from './animate';
+import React from 'react';
+import Animate from './index';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 

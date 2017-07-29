@@ -25,11 +25,11 @@
     "enzyme": "^2.9.1",
     "flow-bin": "^0.51.1",
     "jest": "^20.0.4",
-    "react-test-renderer": "^15.6.1"
+    "react-test-renderer": "^15.6.1",
+    "rimraf": "^2.6.1"
   },
   "dependencies": {
     "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "rimraf": "^2.6.1"
+    "react-dom": "^15.6.1"
   }
 }

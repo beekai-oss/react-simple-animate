@@ -4,7 +4,7 @@
 
 Features:
 
- - Simple animation from style A to style B
+ - Simple animation from inline style A to style B
  - Make animation toggle easy
  - In build delay animation mechanic
 
@@ -41,30 +41,30 @@ Features:
     startAnimation: boolean
 Default value as false, set true when animation starts.
    
-    children: mixed
-Component to be animated
+    children: node
+Child component to be animated
 
-    startStyle: { [string]: string | number }
-Component initial style
+    startStyle: string
+Component initial inline style
 
-    endStyle: { [string]: string | number }
-Component style when animation ends
+    endStyle: string
+Component transition to inline style
 
-    onCompleteStyle?: { [string]: string | number }
-Optional props: style applies after animation ends
+    onCompleteStyle: string (optional)
+Style applies after animation completed
 
     durationSeconds: number
-How long the animation should takes
+How long the animation takes in seconds
 
-    delaySeconds: number
+    delaySeconds: number (optional)
 How much delay should apply before animation starts
 
-    reverseAnimation: boolean
-Play animation from end to start style.
+    reverseAnimation: boolean (optional)
+Play animation from end to start style
 
-    easeType: string
-Easing type refer to the http://easings.net/
+    easeType: string (optional)
+Easing type refer to http://easings.net/
     
-    forceUpdate?: boolean,
-Force the animation to re-render
+    forceUpdate?: boolean
+Force component to re-render
     

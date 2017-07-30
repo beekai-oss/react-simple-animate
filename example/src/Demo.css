@@ -1,0 +1,15 @@
+.demo-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 0 20px;
+  clear: both;
+}
+
+.demo-section-input {
+  margin-bottom: 20px;
+}
+
+.demo-logo {
+  width: 90%;
+}

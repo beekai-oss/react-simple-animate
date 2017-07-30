@@ -10,9 +10,9 @@ Features:
 
 ## Install
 
-    $ yarn add react-simple-animation
+    $ yarn add react-simple-animate
     or
-    $ npm install react-simple-animation
+    $ npm install react-simple-animate
 
 ## Example
 

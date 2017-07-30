@@ -21,7 +21,7 @@ Features:
     
     export default function SexyComponent() {
 	    return <Animate durationSeconds={0.2}
-             startAnimation={startAnimation}
+             startAnimation
              delaySeconds={1.2}
              startStyle={{
                opacity: 0,
@@ -39,32 +39,32 @@ Features:
 ## API
 
     startAnimation: boolean
-Default value as false, set true when animation starts.
+Defaults to false. Set to true to start the animation.
    
     children: node
-Child component to be animated
+Child component to be animated.
 
     startStyle: string
-Component initial inline style
+Component initial inline style.
 
     endStyle: string
-Component transition to inline style
+Component transition to inline style.
 
     onCompleteStyle: string (optional)
-Style applies after animation completed
+Style to be applied after the animation is completed.
 
     durationSeconds: number
-How long the animation takes in seconds
+How long the animation takes in seconds.
 
     delaySeconds: number (optional)
-How much delay should apply before animation starts
+How much delay should apply before animation starts.
 
     reverseAnimation: boolean (optional)
-Play animation from end to start style
+Play animation from end to start style.
 
     easeType: string (optional)
 Easing type refer to http://easings.net/
     
     forceUpdate?: boolean
-Force component to re-render
+Force component to re-render.
     

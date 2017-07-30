@@ -1,6 +1,9 @@
 example/
 .circleci/
 src/
-.babelrc/
+test/
+.babelrc
 .flowconfig
 .npmignore
+yarn-error.log
+yarn.lock

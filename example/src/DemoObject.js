@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import Animate from './animate';
+import Animate from 'react-simple-animate';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {

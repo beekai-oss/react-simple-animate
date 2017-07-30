@@ -1,4 +1,4 @@
-import Animate from './animate';
+import Animate from 'react-simple-animate';
 import Highlight from 'react-highlight';
 import React from 'react';
 import './DemoCode.css';

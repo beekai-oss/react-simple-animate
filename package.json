@@ -2,7 +2,7 @@
   "name": "react-simple-animate",
   "version": "1.0.1",
   "description": "react simple animate",
-  "main": "src/index.js",
+  "main": "lib/animate.js",
   "scripts": {
     "clean": "rimraf lib/",
     "release": "npm version",

@@ -17,7 +17,7 @@ Features:
 ## Quick start
 
     import react from 'react';
-    import animate from 'react-simple-animate'
+    import Animate from 'react-simple-animate'
     
     export default function SexyComponent() {
 	    return <Animate durationSeconds={0.2}

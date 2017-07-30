@@ -1,2 +1,70 @@
-# react-simple-animation
-React simple animation
+# React Simple Animate
+
+> **Make web animation simple** :clap:
+
+Features:
+
+ - Simple animation from inline style A to style B
+ - Make animation toggle easy
+ - In build delay animation mechanic
+
+## Install
+
+    $ yarn add react-simple-animation
+    or
+    $ npm install react-simple-animation
+
+## Quick start
+
+    import react from 'react';
+    import animate from 'react-simple-animate'
+    
+    export default function SexyComponent() {
+	    return <Animate durationSeconds={0.2}
+             startAnimation
+             delaySeconds={1.2}
+             startStyle={{
+               opacity: 0,
+               transform: 'translateY(100px)',
+             }}
+             endStyle={{
+               opacity: 1,
+               transform: 'translateY(0)',
+             }}
+           >
+           <YourComponent> // your component here
+        </Animate>;
+    }
+
+## API
+
+    startAnimation: boolean
+Defaults to false. Set to true to start the animation.
+   
+    children: node
+Child component to be animated.
+
+    startStyle: string
+Component initial inline style.
+
+    endStyle: string
+Component transition to inline style.
+
+    onCompleteStyle: string (optional)
+Style to be applied after the animation is completed.
+
+    durationSeconds: number
+How long the animation takes in seconds.
+
+    delaySeconds: number (optional)
+How much delay should apply before animation starts.
+
+    reverseAnimation: boolean (optional)
+Play animation from end to start style.
+
+    easeType: string (optional)
+Easing type refer to http://easings.net/
+    
+    forceUpdate?: boolean
+Force component to re-render.
+    

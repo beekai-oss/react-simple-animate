@@ -14,10 +14,10 @@ type Props = {
   startStyle: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
-  durationSeconds: number,
+  durationSeconds?: number,
   delaySeconds: number,
-  reverseAnimation: boolean,
-  easeType: 'linear' | 'ease-out' | 'ease-in',
+  startReverseAnimate: boolean,
+  easeType: string,
   forceUpdate?: boolean,
 };
 
@@ -30,6 +30,7 @@ export default class Animate extends React.Component {
   // props: Props;
 
   static defaultProps = {
+    durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
   };
@@ -49,7 +50,7 @@ export default class Animate extends React.Component {
       nextProps.startAnimation !== this.props.startAnimation ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||
       nextState.delayWillEnd !== this.state.delayWillEnd ||
-      nextProps.reverseAnimation !== this.props.reverseAnimation ||
+      nextProps.startReverseAnimate !== this.props.startReverseAnimate ||
       !!nextProps.forceUpdate
     );
   }
@@ -115,7 +116,7 @@ export default class Animate extends React.Component {
       durationSeconds,
       delaySeconds,
       easeType,
-      reverseAnimation,
+      startReverseAnimate,
     } = this.props;
     let style = startStyle;
 
@@ -125,7 +126,7 @@ export default class Animate extends React.Component {
       (startAnimation && !delaySeconds) ||
       (delaySeconds && delayWillEnd)
     ) {
-      style = reverseAnimation ? startStyle : endStyle;
+      style = startReverseAnimate ? startStyle : endStyle;
     }
 
     return (

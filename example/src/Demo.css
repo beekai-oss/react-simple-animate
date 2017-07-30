@@ -13,3 +13,15 @@
 .demo-logo {
   width: 90%;
 }
+
+.demo-button {
+  margin-right: 10px;
+}
+
+.Demo-mode-selector {
+  text-align: right;
+}
+
+.demo-simple {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,11 @@
+.DemoCode-container {
+  overflow: hidden;
+  margin-top: 10px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.DemoCode-container pre {
+  width: 100%;
+  overflow: auto;
+}

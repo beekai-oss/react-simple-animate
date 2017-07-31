@@ -14,7 +14,7 @@ type Props = {
   startStyle: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
-  durationSeconds?: number,
+  durationSeconds: number,
   delaySeconds: number,
   startReverseAnimate: boolean,
   easeType: string,
@@ -27,13 +27,13 @@ type State = {
 };
 
 export default class Animate extends React.Component {
-  // props: Props;
-
   static defaultProps = {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
   };
+
+  props: Props;
 
   state: State = defaultState;
 
@@ -58,7 +58,7 @@ export default class Animate extends React.Component {
   setAnimationDelay = (
     condition: boolean,
     stateName: string,
-    duration: number,
+    durationSeconds: number,
   ): void => {
     if (!condition) return;
     clearTimeout(this.animationTimeout);
@@ -66,7 +66,7 @@ export default class Animate extends React.Component {
       this.setState({
         [stateName]: true,
       });
-    }, duration * 1000);
+    }, durationSeconds * 1000);
   };
 
   componentWillReceiveProps(nextProps: Props) {

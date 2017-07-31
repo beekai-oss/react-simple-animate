@@ -9,7 +9,7 @@
     "postrelease": "yarn publish && git push --follow-tags",
     "test": "jest",
     "build": "babel src/ -d lib/",
-    "prepublish": "yarn test && yarn run clean && yarn build",
+    "prepublish": "yarn test && yarn flow && yarn run clean && yarn build",
     "flow": "flow"
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",

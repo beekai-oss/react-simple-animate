@@ -18,9 +18,9 @@ Features:
 
 Navigate into `example` folder and install
 
-    $ yarn
+    $ yarn && yarn start
     or
-    $ npm install
+    $ npm install && npm start
     
 <img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Sceen" width="400"/>
 

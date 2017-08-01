@@ -16,9 +16,9 @@ type Props = {
   onCompleteStyle?: Style,
   durationSeconds: number,
   delaySeconds: number,
-  startReverseAnimate: boolean,
   easeType: string,
   forceUpdate?: boolean,
+  onComplete: () => mixed,
 };
 
 type State = {
@@ -39,9 +39,13 @@ export default class Animate extends React.Component {
 
   animationTimeout = null;
 
+  animationCompleteTimeout = null;
+
   componentWillUnmount() {
     clearTimeout(this.animationTimeout);
+    clearTimeout(this.animationCompleteTimeout);
     this.animationTimeout = null;
+    this.animationCompleteTimeout = null;
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -50,7 +54,6 @@ export default class Animate extends React.Component {
       nextProps.startAnimation !== this.props.startAnimation ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||
       nextState.delayWillEnd !== this.state.delayWillEnd ||
-      nextProps.startReverseAnimate !== this.props.startReverseAnimate ||
       !!nextProps.forceUpdate
     );
   }
@@ -66,7 +69,7 @@ export default class Animate extends React.Component {
       this.setState({
         [stateName]: true,
       });
-    }, durationSeconds * 1000);
+    }, parseFloat(durationSeconds) * 1000);
   };
 
   componentWillReceiveProps(nextProps: Props) {
@@ -98,11 +101,20 @@ export default class Animate extends React.Component {
 
   componentDidMount() {
     const { delaySeconds, startAnimation } = this.props;
-    this.setAnimationDelay(
+
+    this.animationCompleteTimeout = this.setAnimationDelay(
       !!delaySeconds && startAnimation,
       'delayWillEnd',
       delaySeconds,
     );
+  }
+
+  onComplete() {
+    const { delaySeconds, durationSeconds } = this.props;
+
+    this.animationCompleteTimeout = setTimeout(() => {
+      this.props.onComplete();
+    }, (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000);
   }
 
   render() {
@@ -116,17 +128,19 @@ export default class Animate extends React.Component {
       durationSeconds,
       delaySeconds,
       easeType,
-      startReverseAnimate,
+      onComplete,
     } = this.props;
     let style = startStyle;
 
     if (animationWillEnd) {
-      style = onCompleteStyle;
+      style = onCompleteStyle ? onCompleteStyle : endStyle;
+      if (onComplete) this.onComplete();
     } else if (
       (startAnimation && !delaySeconds) ||
       (delaySeconds && delayWillEnd)
     ) {
-      style = startReverseAnimate ? startStyle : endStyle;
+      style = endStyle;
+      if (onComplete) this.onComplete();
     }
 
     return (

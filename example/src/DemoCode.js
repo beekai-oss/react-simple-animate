@@ -9,7 +9,6 @@ export default function DemoCode({
   endStyle,
   easeType,
   startAnimation,
-  startReverseAnimate,
   delaySeconds,
   onCompleteStyle,
   durationSeconds,
@@ -33,7 +32,6 @@ export default function DemoCode({
       easeType="${easeType}"
       durationSeconds="${durationSeconds}"
       startAnimation=${startAnimation}
-      startReverseAnimate=${startReverseAnimate}
       ${delaySeconds ? `delaySeconds=${delaySeconds}` : ''}
       ${onCompleteStyle ? `onCompleteStyle={${onCompleteStyle}}` : ''}
       startStyle={${startStyle}}

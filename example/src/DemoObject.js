@@ -31,6 +31,7 @@ export default function DemoObject({
           startReverseAnimate,
           durationSeconds,
         }}
+        onComplete={() => console.log('Animation completed 🤘')}
         onCompleteStyle={parseJsonWithCatch(onCompleteStyle)}
         startStyle={parseJsonWithCatch(startStyle)}
         endStyle={parseJsonWithCatch(endStyle)}

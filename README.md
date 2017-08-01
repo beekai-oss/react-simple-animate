@@ -69,8 +69,8 @@ How long the animation takes in seconds.
     delaySeconds: number (optional)
 How much delay should apply before animation starts.
 
-    reverseAnimation: boolean (optional)
-Play animation from end to start style.
+    onComplete: boolean (optional)
+Call back function after animation complete.
 
     easeType: string (optional)
 Easing type refer to http://easings.net/

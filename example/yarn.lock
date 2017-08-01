@@ -5135,7 +5135,7 @@ react-jss@^7.0.2:
     prop-types "^15.5.8"
     theming "^1.1.0"
 
-react-scripts@1.0.10:
+react-scripts@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-1.0.10.tgz#876035594742220f40ffb865a4c7e8dc0fa7ae23"
   dependencies:
@@ -5186,9 +5186,9 @@ react-scrollbar-size@^2.0.0:
     prop-types "^15.5.10"
     react-event-listener "^0.4.5"
 
-react-simple-animate@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.0.2.tgz#6a5f8ccdcbf8060d7423a5af05b7a08589379a61"
+react-simple-animate@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.0.7.tgz#dd6cad7c05e8853cb105f1ee799490b63f99739e"
   dependencies:
     react "^15.6.1"
     react-dom "^15.6.1"

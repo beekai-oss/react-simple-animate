@@ -20,7 +20,6 @@ export default class Demo extends React.Component {
     delaySeconds: 0,
     startAnimation: false,
     onCompleteStyle: '',
-    startReverseAnimate: false,
     easeType: 'linear',
     durationSeconds: '0.3',
     showCode: false,
@@ -36,6 +35,7 @@ export default class Demo extends React.Component {
   handleSwitchChange = name => (event, checked) => {
     this.setState({
       [name]: checked,
+      startAnimation: false,
     });
   };
 
@@ -47,7 +47,6 @@ export default class Demo extends React.Component {
         startStyle: JSON.stringify(result.startStyle),
         endStyle: JSON.stringify(result.endStyle),
         startAnimation: false,
-        startReverseAnimate: false,
       });
     }
   };
@@ -92,7 +91,6 @@ export default class Demo extends React.Component {
                     <TextField
                       className="demo-section-input"
                       rowsMax="4"
-                      onBlur={() => console.log('blur')}
                       onChange={e =>
                         this.handleChange(field.value, e.target.value)}
                       value={this.state[field.value]}
@@ -116,7 +114,6 @@ export default class Demo extends React.Component {
                 this.setState(prevState => {
                   return {
                     startAnimation: !prevState.startAnimation,
-                    startReverseAnimate: prevState.startAnimation,
                   };
                 });
               }}

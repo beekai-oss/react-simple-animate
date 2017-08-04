@@ -273,7 +273,7 @@ describe('Animate', () => {
     });
   });
 
-  describe.only('when transition have been passed down', () => {
+  describe('when transition have been passed down', () => {
     it('should overwrite the transition style', () => {
       const transition = '1s opacity';
       const tree = shallow(

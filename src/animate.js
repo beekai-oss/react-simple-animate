@@ -11,7 +11,7 @@ type Style = { [string]: string | number };
 type Props = {
   startAnimation: boolean,
   children: mixed,
-  startStyle: Style,
+  startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
   durationSeconds: number,
@@ -19,8 +19,8 @@ type Props = {
   easeType: string,
   forceUpdate?: boolean,
   onComplete: () => mixed,
-  className: string,
-  transition: string,
+  className?: string,
+  transition?: string,
 };
 
 type State = {

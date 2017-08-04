@@ -54,7 +54,7 @@ Defaults to false. Set to true to start the animation.
     children: node
 Child component to be animated.
 
-    startStyle: string
+    startStyle: string (optional)
 Component initial inline style.
 
     endStyle: string
@@ -74,6 +74,9 @@ Call back function after animation complete.
 
     easeType: string (optional)
 Easing type refer to http://easings.net/
+
+    className: string (optional)
+To specify a CSS class
     
     forceUpdate?: boolean
 Force component to re-render.

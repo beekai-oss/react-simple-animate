@@ -18,6 +18,7 @@ type Props = {
   delaySeconds: number,
   easeType: string,
   forceUpdate?: boolean,
+  className: string,
   onComplete: () => mixed,
 };
 
@@ -129,6 +130,7 @@ export default class Animate extends React.Component {
       delaySeconds,
       easeType,
       onComplete,
+      className,
     } = this.props;
     let style = startStyle;
 
@@ -145,6 +147,7 @@ export default class Animate extends React.Component {
 
     return (
       <div
+        className={className}
         style={{
           ...{
             ...style,

@@ -10,6 +10,7 @@ const props = {
   startStyle: {},
   endStyle: {},
   durationSeconds: 1,
+  className: 'test',
 };
 
 describe('Animate', () => {

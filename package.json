@@ -1,6 +1,6 @@
 {
   "name": "react-simple-animate",
-  "version": "1.0.7",
+  "version": "1.2.0@beta",
   "description": "react simple animate",
   "main": "lib/animate.js",
   "scripts": {

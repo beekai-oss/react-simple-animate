@@ -10,6 +10,7 @@ const props = {
   startStyle: {},
   endStyle: {},
   durationSeconds: 1,
+  className: 'test',
 };
 
 describe('Animate', () => {
@@ -269,6 +270,22 @@ describe('Animate', () => {
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),
       ).toEqual(true);
+    });
+  });
+
+  describe('when transition have been passed down', () => {
+    it('should overwrite the transition style', () => {
+      const transition = '1s opacity';
+      const tree = shallow(
+        <Animate
+          {...{
+            ...props,
+            transition,
+          }}
+        />,
+      );
+
+      expect(tree.find('div').props().style).toEqual({ transition });
     });
   });
 });

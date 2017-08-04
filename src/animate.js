@@ -19,6 +19,8 @@ type Props = {
   easeType: string,
   forceUpdate?: boolean,
   onComplete: () => mixed,
+  className: string,
+  transition: string,
 };
 
 type State = {
@@ -129,6 +131,8 @@ export default class Animate extends React.Component {
       delaySeconds,
       easeType,
       onComplete,
+      className,
+      transition,
     } = this.props;
     let style = startStyle;
 
@@ -145,10 +149,11 @@ export default class Animate extends React.Component {
 
     return (
       <div
+        className={className}
         style={{
           ...{
             ...style,
-            transition: `${durationSeconds}s all ${easeType}`,
+            transition: transition || `${durationSeconds}s all ${easeType}`,
           },
         }}
       >

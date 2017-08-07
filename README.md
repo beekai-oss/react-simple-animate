@@ -48,8 +48,6 @@ Navgiate into `example` folder and install
 
 ## API
 
-    ## Props
-
 | Prop | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
 | `startAnimation` | boolean | ✓ | Defaults to false. Set to true to start the animation. |

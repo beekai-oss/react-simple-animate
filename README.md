@@ -10,19 +10,19 @@ Features:
 
 ## Install
 
-    $ yarn add react-simple-animate
+    $ yarn add react-simple-animation
     or
-    $ npm install react-simple-animate
+    $ npm install react-simple-animation
 
 ## Example
 
-Navigate into `example` folder and install
+Navgiate into `example` folder and install
 
-    $ yarn && yarn start
+    $ yarn
     or
-    $ npm install && npm start
+    $ npm install
     
-<img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Sceen" width="400"/>
+<img src="https://github.com/bluebill1049/react-simple-animate/blob/feature/example-readme-update/example/screenShot.png" alt="Sceen" width="400"/>
 
 ## Quick start
 
@@ -48,36 +48,16 @@ Navigate into `example` folder and install
 
 ## API
 
-    startAnimation: boolean
-Defaults to false. Set to true to start the animation.
-   
-    children: node
-Child component to be animated.
-
-    startStyle: string (optional)
-Component initial inline style.
-
-    endStyle: string
-Component transition to inline style.
-
-    onCompleteStyle: string (optional)
-Style to be applied after the animation is completed.
-
-    durationSeconds: number
-How long the animation takes in seconds.
-
-    delaySeconds: number (optional)
-How much delay should apply before animation starts.
-
-    onComplete: boolean (optional)
-Call back function after animation complete.
-
-    easeType: string (optional)
-Easing type refer to http://easings.net/
-
-    className: string (optional)
-To specify a CSS class
-    
-    forceUpdate?: boolean
-Force component to re-render.
-    
+| Prop | Type | Required | Description |
+| :--- | :--- | :---: | :--- |
+| `startAnimation` | boolean | ✓ | Defaults to false. Set to true to start the animation. |
+| `children` | node | ✓ | Child component to be animated. |
+| `startStyle` | string |  | Component initial inline style. |
+| `endStyle` | string | ✓ | Component transition to inline style. |
+| `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
+| `durationSeconds` | number |  | How long the animation takes in seconds. |
+| `delaySeconds` | number |  | How much delay should apply before animation starts. |
+| `onComplete` | function |  | Call back function after animation complete. |
+| `easeType` | string |  | Easing type refer to http://easings.net/ |
+| `className` | string |  | To specify a CSS class. |
+| `forceUpdate` | boolean |  | Force component to re-render. |

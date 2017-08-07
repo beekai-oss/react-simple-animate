@@ -22,7 +22,7 @@ Navgiate into `example` folder and install
     or
     $ npm install
     
-<img src="https://github.com/bluebill1049/react-simple-animate/blob/feature/example-readme-update/example/screenShot.png" alt="Sceen" width="400"/>
+<img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Sceen" width="400"/>
 
 ## Quick start
 

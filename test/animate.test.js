@@ -91,6 +91,7 @@ describe('Animate', () => {
 
     const nextProps = {
       startAnimation: false,
+      children: 'test',
     };
 
     expect(

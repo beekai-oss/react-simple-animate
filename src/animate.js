@@ -54,6 +54,7 @@ export default class Animate extends React.Component {
     // only situation that should trigger a re-render
     return (
       nextProps.startAnimation !== this.props.startAnimation ||
+      nextProps.children !== this.props.children ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||
       nextState.delayWillEnd !== this.state.delayWillEnd ||
       !!nextProps.forceUpdate

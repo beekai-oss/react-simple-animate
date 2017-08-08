@@ -274,7 +274,7 @@ describe('Animate', () => {
   });
 
   describe('when children component updated', () => {
-    it('should re-render the component', () => {
+    it('should trigger re-render', () => {
       const tree = shallow(
         <Animate
           {...{

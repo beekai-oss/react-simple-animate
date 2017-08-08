@@ -10,17 +10,17 @@ Features:
 
 ## Install
 
-    $ yarn add react-simple-animation
+    $ yarn add react-simple-animate
     or
-    $ npm install react-simple-animation
+    $ npm install react-simple-animate
 
 ## Example
 
 Navgiate into `example` folder and install
 
-    $ yarn
+    $ yarn && yarn start
     or
-    $ npm install
+    $ npm install && npm install -S
     
 <img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Sceen" width="400"/>
 

@@ -273,6 +273,35 @@ describe('Animate', () => {
     });
   });
 
+  describe('when children component updated', () => {
+    it('should trigger re-render', () => {
+      const tree = shallow(
+        <Animate
+          {...{
+            ...props,
+          }}
+        >
+          <div>test</div>
+        </Animate>,
+      );
+
+      const nextProps = {
+        ...props,
+        children: (
+          <div>
+            <span>test</span>
+          </div>
+        ),
+      };
+
+      const nextState = { animationWillEnd: false, delayWillEnd: false };
+
+      expect(
+        tree.instance().shouldComponentUpdate(nextProps, nextState),
+      ).toEqual(true);
+    });
+  });
+
   describe('when transition have been passed down', () => {
     it('should overwrite the transition style', () => {
       const transition = '1s opacity';

@@ -16,7 +16,7 @@ Features:
 
 ## Example
 
-Navgiate into `example` folder and install
+Navigate into `example` folder and install
 
     $ yarn && yarn start
     or

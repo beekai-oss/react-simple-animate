@@ -27,7 +27,7 @@ Navgiate into `example` folder and install
 ## Quick start
 
     import react from 'react';
-    import Animate from 'react-simple-animate'
+    import Animate from 'react-simple-animate';
     
     export default function SexyComponent() {
 	    return <Animate durationSeconds={0.2}
@@ -35,11 +35,9 @@ Navgiate into `example` folder and install
              delaySeconds={1.2}
              startStyle={{
                opacity: 0,
-               transform: 'translateY(100px)',
              }}
              endStyle={{
                opacity: 1,
-               transform: 'translateY(0)',
              }}
            >
            <YourComponent> // your component here

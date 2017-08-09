@@ -6,7 +6,7 @@ Features:
 
  - Simple animation from inline style A to style B
  - Make animation toggle easy
- - In build delay animation mechanic
+ - In-built delay animation mechanism
 
 ## Install
 

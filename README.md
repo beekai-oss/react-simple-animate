@@ -7,6 +7,7 @@ Features:
  - Simple animation from inline style A to style B
  - Make animation toggle easy
  - In-built delay animation mechanism
+ - Tiny size 3,878 bytes (before Gzip)
 
 ## Install
 

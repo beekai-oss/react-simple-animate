@@ -13,6 +13,8 @@ const props = {
   className: 'test',
 };
 
+const endStyle = { display: 'block' };
+
 describe('Animate', () => {
   it('should render correctly', () => {
     const tree = renderer.create(<Animate {...props}>test</Animate>);
@@ -37,7 +39,7 @@ describe('Animate', () => {
           {...{
             ...props,
             startAnimation: false,
-            onCompleteStyle: { display: 'block' },
+            onCompleteStyle: endStyle,
           }}
         >
           test
@@ -53,9 +55,7 @@ describe('Animate', () => {
 
   it('should update component when animation is ready', () => {
     const tree = shallow(
-      <Animate
-        {...{ ...props, startAnimation: false, endStyle: { display: 'block' } }}
-      >
+      <Animate {...{ ...props, startAnimation: false, endStyle: endStyle }}>
         test
       </Animate>,
     );
@@ -77,9 +77,7 @@ describe('Animate', () => {
 
   it('should not update component when animation already played', () => {
     const tree = shallow(
-      <Animate
-        {...{ ...props, startAnimation: false, endStyle: { display: 'block' } }}
-      >
+      <Animate {...{ ...props, startAnimation: false, endStyle: endStyle }}>
         test
       </Animate>,
     );
@@ -92,6 +90,8 @@ describe('Animate', () => {
     const nextProps = {
       startAnimation: false,
       children: 'test',
+      startStyle: {},
+      endStyle,
     };
 
     expect(

@@ -53,6 +53,10 @@ export default class Animate extends React.Component {
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     // only situation that should trigger a re-render
     return (
+      JSON.stringify(nextProps.startStyle) !==
+        JSON.stringify(this.props.startStyle) ||
+      JSON.stringify(nextProps.endStyle) !==
+        JSON.stringify(this.props.endStyle) ||
       nextProps.startAnimation !== this.props.startAnimation ||
       nextProps.children !== this.props.children ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||

@@ -163,7 +163,7 @@ describe('Animate', () => {
 
       expect(tree.find('div').props().style).toEqual({
         ...onCompleteStyle,
-        transition: '1s all linear',
+        transition: null,
       });
     });
   });

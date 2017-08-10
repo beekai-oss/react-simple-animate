@@ -137,12 +137,20 @@ export default class Animate extends React.Component {
       easeType,
       onComplete,
       className,
-      transition,
+      transition: transitionValue,
     } = this.props;
     let style = startStyle;
+    let transition = transitionValue
+      ? transitionValue
+      : `${durationSeconds}s all ${easeType}`;
 
     if (animationWillEnd) {
-      style = onCompleteStyle ? onCompleteStyle : endStyle;
+      if (onCompleteStyle) {
+        style = onCompleteStyle;
+        transition = null;
+      } else {
+        style = endStyle;
+      }
       if (onComplete) this.onComplete();
     } else if (
       (startAnimation && !delaySeconds) ||
@@ -158,7 +166,7 @@ export default class Animate extends React.Component {
         style={{
           ...{
             ...style,
-            transition: transition || `${durationSeconds}s all ${easeType}`,
+            transition,
           },
         }}
       >

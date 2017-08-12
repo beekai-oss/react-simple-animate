@@ -24,6 +24,7 @@ Navigate into `example` folder and install
     $ npm install && npm install -S
 
 Screenshot of the example app below
+
 <img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Screenshots" width="400"/>
 
 ## Quick start

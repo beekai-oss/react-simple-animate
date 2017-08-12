@@ -1,9 +1,7 @@
 # React Simple Animate Example
 
-## Install
+## Install and start
 
-    $ yarn
+    $ yarn && yarn start
     or
-    $ npm install
-
-<img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Sceen" width="400"/>
+    $ npm install && npm start 

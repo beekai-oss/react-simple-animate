@@ -22,9 +22,9 @@ Navigate into `example` folder and install
     $ yarn && yarn start
     or
     $ npm install && npm install -S
-    
+
+Screenshot of the example app below
 <img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Screenshots" width="400"/>
-Screenshot of the example app above
 
 ## Quick start
 

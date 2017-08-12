@@ -3,6 +3,7 @@
   "version": "1.4.4",
   "description": "react simple animate",
   "main": "lib/animate.js",
+  "keywords": ["react", "animate"],
   "scripts": {
     "clean": "rimraf lib/",
     "release": "npm version",
@@ -14,7 +15,10 @@
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",
   "author": "beier luo",
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bluebill1049/react-simple-animate/issues"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",

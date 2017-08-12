@@ -25,7 +25,7 @@ Navigate into `example` folder and install
 
 Screenshot of the example app below
 
-<img src="https://github.com/bluebill1049/react-simple-animate/blob/master/example/screenShot.png" alt="Screenshots" width="400"/>
+<img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/screenShot.png" alt="Screenshots" width="400"/>
 
 ## Quick start
 

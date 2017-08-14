@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { createElement } from 'react';
 
 const defaultState = {
   animationWillEnd: false,
@@ -18,6 +18,7 @@ type Props = {
   delaySeconds: number,
   easeType: string,
   forceUpdate?: boolean,
+  tag?: string,
   onComplete: () => mixed,
   className?: string,
   transition?: string,
@@ -138,6 +139,7 @@ export default class Animate extends React.Component {
       onComplete,
       className,
       transition: transitionValue,
+      tag,
     } = this.props;
     let style = startStyle;
     let transition = transitionValue
@@ -160,16 +162,22 @@ export default class Animate extends React.Component {
       if (onComplete) this.onComplete();
     }
 
+    const propsToChild = {
+      className,
+      style: {
+        ...{
+          ...style,
+          transition,
+        },
+      },
+    };
+
+    if (tag && tag !== 'div') {
+      return createElement(tag, propsToChild, children);
+    }
+
     return (
-      <div
-        className={className}
-        style={{
-          ...{
-            ...style,
-            transition,
-          },
-        }}
-      >
+      <div {...propsToChild}>
         {children}
       </div>
     );

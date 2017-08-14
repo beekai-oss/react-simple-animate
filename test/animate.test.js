@@ -22,11 +22,18 @@ describe('Animate', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('should render custome tag correctly', () => {
+    const tree = renderer.create(<Animate {...{ ...props, tag: 'l' }} />);
+
+    expect(tree).toMatchSnapshot();
+  });
+
   describe('when animation is ready and delay have been set', () => {
     it('should trigger animation delay ended', () => {
       const tree = mount(
         <Animate {...{ ...props, delaySeconds: 1 }}>test</Animate>,
       );
+
       jest.runAllTimers();
       expect(tree.state().delayWillEnd).toEqual(true);
     });
@@ -45,9 +52,11 @@ describe('Animate', () => {
           test
         </Animate>,
       );
+
       tree.setProps({
         startAnimation: true,
       });
+
       jest.runAllTimers();
       expect(tree.state().animationWillEnd).toEqual(true);
     });

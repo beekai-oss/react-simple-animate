@@ -57,6 +57,7 @@ Screenshot of the example app below
 | `children` | node | ✓ | Child component to be animated. |
 | `startStyle` | string |  | Component initial inline style. |
 | `endStyle` | string | ✓ | Component transition to inline style. |
+| `tag` | string |  |  Default tag is div, this allow custom tag to be wrap around. |
 | `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
 | `durationSeconds` | number |  | How long the animation takes in seconds. |
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |

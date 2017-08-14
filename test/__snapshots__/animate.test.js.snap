@@ -12,3 +12,14 @@ exports[`Animate should render correctly 1`] = `
   test
 </div>
 `;
+
+exports[`Animate should render custome tag correctly 1`] = `
+<l
+  className="test"
+  style={
+    Object {
+      "transition": "1s all linear",
+    }
+  }
+/>
+`;

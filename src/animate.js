@@ -18,10 +18,17 @@ type Props = {
   delaySeconds: number,
   easeType: string,
   forceUpdate?: boolean,
-  tag?: string,
+  tag?: ?string,
   onComplete: () => mixed,
   className?: string,
   transition?: string,
+};
+
+type DefaultProps = {
+  durationSeconds: number,
+  delaySeconds: number,
+  easeType: string,
+  tag: string,
 };
 
 type State = {
@@ -29,16 +36,19 @@ type State = {
   delayWillEnd: boolean,
 };
 
-export default class Animate extends React.Component {
+export default class Animate extends React.Component<
+  DefaultProps,
+  Props,
+  State,
+> {
   static defaultProps = {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
+    tag: 'div',
   };
 
-  props: Props;
-
-  state: State = defaultState;
+  state = defaultState;
 
   animationTimeout = null;
 
@@ -172,14 +182,6 @@ export default class Animate extends React.Component {
       },
     };
 
-    if (tag && tag !== 'div') {
-      return createElement(tag, propsToChild, children);
-    }
-
-    return (
-      <div {...propsToChild}>
-        {children}
-      </div>
-    );
+    return createElement(tag || 'div', propsToChild, children);
   }
 }

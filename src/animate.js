@@ -78,7 +78,6 @@ export default class Animate extends React.Component<
     stateName: string,
     durationSeconds: number,
   ): void => {
-    console.log('condition', condition);
     if (!condition) return;
     clearTimeout(this.animationTimeout);
     this.animationTimeout = setTimeout(() => {

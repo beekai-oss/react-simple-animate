@@ -3,7 +3,6 @@ import React, { createElement } from 'react';
 
 const defaultState = {
   animationWillEnd: false,
-  delayWillEnd: false,
 };
 
 type Style = { [string]: string | number };
@@ -19,7 +18,7 @@ type Props = {
   easeType: string,
   forceUpdate?: boolean,
   tag?: ?string,
-  onComplete: () => mixed,
+  onComplete?: () => mixed,
   className?: string,
   transition?: string,
 };
@@ -33,7 +32,6 @@ type DefaultProps = {
 
 type State = {
   animationWillEnd: boolean,
-  delayWillEnd: boolean,
 };
 
 export default class Animate extends React.Component<
@@ -71,7 +69,6 @@ export default class Animate extends React.Component<
       nextProps.startAnimation !== this.props.startAnimation ||
       nextProps.children !== this.props.children ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||
-      nextState.delayWillEnd !== this.state.delayWillEnd ||
       !!nextProps.forceUpdate
     );
   }
@@ -81,6 +78,7 @@ export default class Animate extends React.Component<
     stateName: string,
     durationSeconds: number,
   ): void => {
+    console.log('condition', condition);
     if (!condition) return;
     clearTimeout(this.animationTimeout);
     this.animationTimeout = setTimeout(() => {
@@ -90,27 +88,41 @@ export default class Animate extends React.Component<
     }, parseFloat(durationSeconds) * 1000);
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  setAnimationDelayAndOnComplete(props: Props) {
     const {
-      durationSeconds,
+      delaySeconds,
       startAnimation,
       onCompleteStyle,
-      delaySeconds,
-    } = nextProps;
+      durationSeconds,
+      onComplete,
+    } = props;
 
-    if (delaySeconds) {
-      this.setAnimationDelay(
-        !!delaySeconds && startAnimation,
-        'animationWillEnd',
-        delaySeconds,
-      );
-    } else if (onCompleteStyle) {
-      this.setAnimationDelay(
-        !!onCompleteStyle && startAnimation,
-        'animationWillEnd',
-        durationSeconds,
-      );
-    }
+    const delayTotalSeconds =
+      (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000;
+
+    this.setAnimationDelay(
+      !!delaySeconds && startAnimation,
+      'animationWillEnd',
+      delaySeconds,
+    );
+
+    this.setAnimationDelay(
+      !!onCompleteStyle && startAnimation,
+      'animationWillEnd',
+      delayTotalSeconds,
+    );
+
+    if (!onComplete) return;
+
+    this.animationCompleteTimeout = setTimeout(() => {
+      onComplete();
+    }, delayTotalSeconds);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { startAnimation } = nextProps;
+
+    this.setAnimationDelayAndOnComplete(nextProps);
 
     if (startAnimation !== this.props.startAnimation) {
       this.setState(defaultState);
@@ -118,25 +130,11 @@ export default class Animate extends React.Component<
   }
 
   componentDidMount() {
-    const { delaySeconds, startAnimation } = this.props;
-
-    this.animationCompleteTimeout = this.setAnimationDelay(
-      !!delaySeconds && startAnimation,
-      'delayWillEnd',
-      delaySeconds,
-    );
-  }
-
-  onComplete() {
-    const { delaySeconds, durationSeconds } = this.props;
-
-    this.animationCompleteTimeout = setTimeout(() => {
-      this.props.onComplete();
-    }, (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000);
+    this.setAnimationDelayAndOnComplete(this.props);
   }
 
   render() {
-    const { animationWillEnd, delayWillEnd } = this.state;
+    const { animationWillEnd } = this.state;
     const {
       children,
       startAnimation,
@@ -146,7 +144,6 @@ export default class Animate extends React.Component<
       durationSeconds,
       delaySeconds,
       easeType,
-      onComplete,
       className,
       transition: transitionValue,
       tag,
@@ -156,20 +153,13 @@ export default class Animate extends React.Component<
       ? transitionValue
       : `${durationSeconds}s all ${easeType}`;
 
-    if (animationWillEnd) {
+    if (animationWillEnd || (startAnimation && !delaySeconds)) {
       if (onCompleteStyle) {
         style = onCompleteStyle;
         transition = null;
       } else {
         style = endStyle;
       }
-      if (onComplete) this.onComplete();
-    } else if (
-      (startAnimation && !delaySeconds) ||
-      (delaySeconds && delayWillEnd)
-    ) {
-      style = endStyle;
-      if (onComplete) this.onComplete();
     }
 
     const propsToChild = {

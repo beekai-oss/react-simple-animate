@@ -73,16 +73,12 @@ export default class Animate extends React.Component<
     );
   }
 
-  setAnimationDelay = (
-    condition: boolean,
-    stateName: string,
-    durationSeconds: number,
-  ): void => {
+  setAnimationDelay = (condition: boolean, durationSeconds: number): void => {
     if (!condition) return;
     clearTimeout(this.animationTimeout);
     this.animationTimeout = setTimeout(() => {
       this.setState({
-        [stateName]: true,
+        animationWillEnd: true,
       });
     }, parseFloat(durationSeconds) * 1000);
   };
@@ -99,15 +95,10 @@ export default class Animate extends React.Component<
     const delayTotalSeconds =
       (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000;
 
-    this.setAnimationDelay(
-      !!delaySeconds && startAnimation,
-      'animationWillEnd',
-      delaySeconds,
-    );
+    this.setAnimationDelay(!!delaySeconds && startAnimation, delaySeconds);
 
     this.setAnimationDelay(
       !!onCompleteStyle && startAnimation,
-      'animationWillEnd',
       delayTotalSeconds,
     );
 

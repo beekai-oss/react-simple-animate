@@ -40,7 +40,7 @@ describe('Animate', () => {
   });
 
   describe('when animate end style is defined and ready to animate', () => {
-    it.only('should trigger animation about to end state', () => {
+    it('should trigger animation about to end state', () => {
       const tree = mount(
         <Animate
           {...{

@@ -35,7 +35,7 @@ describe('Animate', () => {
       );
 
       jest.runAllTimers();
-      expect(tree.state().delayWillEnd).toEqual(true);
+      expect(tree.state().animationWillEnd).toEqual(true);
     });
   });
 
@@ -71,7 +71,6 @@ describe('Animate', () => {
 
     const state = {
       animationWillEnd: false,
-      delayWillEnd: false,
     };
 
     expect(
@@ -93,7 +92,6 @@ describe('Animate', () => {
 
     const state = {
       animationWillEnd: false,
-      delayWillEnd: false,
     };
 
     const nextProps = {
@@ -128,7 +126,6 @@ describe('Animate', () => {
 
     let state = {
       animationWillEnd: true,
-      delayWillEnd: false,
     };
 
     const nextProps = {
@@ -141,7 +138,6 @@ describe('Animate', () => {
 
     state = {
       animationWillEnd: false,
-      delayWillEnd: true,
     };
 
     expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(
@@ -220,7 +216,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        delayWillEnd: true,
+        animationWillEnd: true,
       });
 
       expect(tree.find('div').props().style).toEqual({
@@ -244,7 +240,6 @@ describe('Animate', () => {
 
       tree.setState({
         animationWillEnd: true,
-        delayWillEnd: true,
       });
 
       tree.setProps({
@@ -253,7 +248,6 @@ describe('Animate', () => {
 
       expect(tree.state()).toEqual({
         animationWillEnd: false,
-        delayWillEnd: false,
       });
     });
   });
@@ -275,7 +269,7 @@ describe('Animate', () => {
         forceUpdate: true,
       };
 
-      const nextState = { animationWillEnd: false, delayWillEnd: false };
+      const nextState = { animationWillEnd: false };
 
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),
@@ -304,7 +298,7 @@ describe('Animate', () => {
         ),
       };
 
-      const nextState = { animationWillEnd: false, delayWillEnd: false };
+      const nextState = { animationWillEnd: false };
 
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),

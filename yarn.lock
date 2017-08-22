@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-Base64@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/Base64/-/Base64-1.0.0.tgz#b6b73ee342ce64bf66d6003a4536683bf8a349b5"
-
 abab@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.3.tgz#b81de5f7274ec4e756d797cd834f303642724e5d"
@@ -837,7 +833,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0:
   version "6.25.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.25.0.tgz#33b98eaa5d482bb01a8d1aa6b437ad2b01aec41c"
   dependencies:
@@ -1273,7 +1269,7 @@ es-to-primitive@^1.1.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.1"
 
-escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2:
+escape-string-regexp@^1.0.2:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
@@ -1398,9 +1394,9 @@ find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-flow-bin@^0.51.1:
-  version "0.51.1"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.51.1.tgz#7929c6f0a94e765429fcb2ee6e468278faa9c732"
+flow-bin@^0.53.0:
+  version "0.53.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.53.1.tgz#9b22b63a23c99763ae533ebbab07f88c88c97d84"
 
 for-in@^1.0.1:
   version "1.0.2"
@@ -1653,10 +1649,6 @@ invariant@^2.2.0:
 invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
-
-ip@^1.1.3:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
 
 is-arrayish@^0.2.1:
   version "0.2.1"
@@ -2151,10 +2143,6 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
-keymirror@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
-
 kind-of@^3.0.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -2176,26 +2164,6 @@ lcid@^1.0.0:
   resolved "https://registry.yarnpkg.com/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
   dependencies:
     invert-kv "^1.0.0"
-
-ld-redux@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/ld-redux/-/ld-redux-1.3.0.tgz#43853c8e45d8371535c20aa02069ec17f7739c47"
-  dependencies:
-    babel-runtime "^6.11.6"
-    ip "^1.1.3"
-    keymirror "^0.1.1"
-    ldclient-js "^1.1.2"
-    lodash "^4.16.3"
-    prop-types "^15.5.10"
-    ua-parser-js "^0.7.10"
-    uuid "^3.0.1"
-
-ldclient-js@^1.1.2:
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/ldclient-js/-/ldclient-js-1.1.12.tgz#06ea0dc2326bd84116f0c6674ccd8ff7a83e7d8d"
-  dependencies:
-    Base64 "1.0.0"
-    escape-string-regexp "1.0.5"
 
 leven@^2.1.0:
   version "2.1.0"
@@ -2273,7 +2241,7 @@ lodash.some@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.some/-/lodash.some-4.6.0.tgz#1bb9f314ef6b8baded13b549169b2a945eb68e4d"
 
-lodash@^4.14.0, lodash@^4.16.3, lodash@^4.17.4, lodash@^4.2.0:
+lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3096,7 +3064,7 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-ua-parser-js@^0.7.10, ua-parser-js@^0.7.9:
+ua-parser-js@^0.7.9:
   version "0.7.14"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.14.tgz#110d53fa4c3f326c121292bbeac904d2e03387ca"
 

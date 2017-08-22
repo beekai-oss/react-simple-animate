@@ -1,12 +1,9 @@
 {
   "name": "react-simple-animate",
-  "version": "1.5.1",
+  "version": "1.5.2-beta.3",
   "description": "react simple animate",
   "main": "lib/animate.js",
-  "keywords": [
-    "react",
-    "animate"
-  ],
+  "keywords": ["react", "animate"],
   "scripts": {
     "clean": "rimraf lib/",
     "release": "npm version",
@@ -30,7 +27,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "enzyme": "^2.9.1",
-    "flow-bin": "^0.51.1",
+    "flow-bin": "^0.53.0",
     "jest": "^20.0.4",
     "react-test-renderer": "^15.6.1",
     "rimraf": "^2.6.1"

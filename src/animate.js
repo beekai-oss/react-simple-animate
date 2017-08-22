@@ -9,12 +9,12 @@ type Style = { [string]: string | number };
 
 type Props = {
   startAnimation: boolean,
-  children: mixed,
+  children: any,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
   durationSeconds: number,
-  delaySeconds: number,
+  delaySeconds?: number,
   easeType: string,
   forceUpdate?: boolean,
   tag?: ?string,
@@ -23,22 +23,11 @@ type Props = {
   transition?: string,
 };
 
-type DefaultProps = {
-  durationSeconds: number,
-  delaySeconds: number,
-  easeType: string,
-  tag: string,
-};
-
 type State = {
   animationWillEnd: boolean,
 };
 
-export default class Animate extends React.Component<
-  DefaultProps,
-  Props,
-  State,
-> {
+export default class Animate extends React.Component<Props, State> {
   static defaultProps = {
     durationSeconds: 0.3,
     delaySeconds: 0,
@@ -95,7 +84,9 @@ export default class Animate extends React.Component<
     const delayTotalSeconds =
       (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000;
 
-    this.setAnimationDelay(!!delaySeconds && startAnimation, delaySeconds);
+    if (!!delaySeconds) {
+      this.setAnimationDelay(!!delaySeconds && startAnimation, delaySeconds);
+    }
 
     this.setAnimationDelay(
       !!onCompleteStyle && startAnimation,

@@ -19,6 +19,8 @@ Features:
 
 ## Example
 
+[Check out the interactive demo.](https://react-simple-animate.herokuapp.com/) 😍
+
 Navigate into `example` folder and install
 
     $ yarn && yarn start

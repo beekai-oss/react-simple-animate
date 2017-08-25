@@ -1,8 +1,9 @@
 // @flow
 import React, { createElement } from 'react';
 
-const defaultState = {
+export const defaultState = {
   animationWillEnd: false,
+  animationWillStart: false,
 };
 
 type Style = { [string]: string | number };
@@ -15,6 +16,7 @@ type Props = {
   onCompleteStyle?: Style,
   durationSeconds: number,
   delaySeconds?: number,
+  reverseDelaySeconds?: number,
   easeType: string,
   forceUpdate?: boolean,
   tag?: ?string,
@@ -25,6 +27,7 @@ type Props = {
 
 type State = {
   animationWillEnd: boolean,
+  animationWillStart: boolean,
 };
 
 export default class Animate extends React.Component<Props, State> {
@@ -32,6 +35,7 @@ export default class Animate extends React.Component<Props, State> {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
+    reverseDelaySeconds: 0,
     tag: 'div',
   };
 
@@ -58,34 +62,45 @@ export default class Animate extends React.Component<Props, State> {
       nextProps.startAnimation !== this.props.startAnimation ||
       nextProps.children !== this.props.children ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||
+      nextState.animationWillStart !== this.state.animationWillStart ||
       !!nextProps.forceUpdate
     );
   }
 
-  setAnimationDelay = (condition: boolean, durationSeconds: number): void => {
+  setAnimationDelay = (
+    condition: boolean,
+    durationSeconds: number,
+    isReverse: boolean = false,
+  ): void => {
     if (!condition) return;
     clearTimeout(this.animationTimeout);
     this.animationTimeout = setTimeout(() => {
       this.setState({
-        animationWillEnd: true,
+        ...(isReverse ? { animationWillStart: true } : null),
+        ...(!isReverse ? { animationWillEnd: true } : null),
       });
     }, parseFloat(durationSeconds) * 1000);
   };
 
-  setAnimationDelayAndOnComplete(props: Props) {
+  setAnimationDelayAndOnComplete(props: Props, isReverse: boolean = false) {
     const {
       delaySeconds,
       startAnimation,
       onCompleteStyle,
       durationSeconds,
       onComplete,
+      reverseDelaySeconds,
     } = props;
 
     const delayTotalSeconds =
       (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000;
 
-    if (!!delaySeconds) {
-      this.setAnimationDelay(!!delaySeconds && startAnimation, delaySeconds);
+    if (delaySeconds) {
+      this.setAnimationDelay(startAnimation, delaySeconds);
+    }
+
+    if (reverseDelaySeconds && isReverse) {
+      this.setAnimationDelay(!startAnimation, reverseDelaySeconds, true);
     }
 
     this.setAnimationDelay(
@@ -102,12 +117,17 @@ export default class Animate extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     const { startAnimation } = nextProps;
+    const isAnimationStatusChanged =
+      startAnimation !== this.props.startAnimation;
 
-    this.setAnimationDelayAndOnComplete(nextProps);
-
-    if (startAnimation !== this.props.startAnimation) {
+    if (isAnimationStatusChanged) {
       this.setState(defaultState);
     }
+
+    this.setAnimationDelayAndOnComplete(
+      nextProps,
+      isAnimationStatusChanged && !startAnimation,
+    );
   }
 
   componentDidMount() {
@@ -115,7 +135,7 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    const { animationWillEnd } = this.state;
+    const { animationWillEnd, animationWillStart } = this.state;
     const {
       children,
       startAnimation,
@@ -124,17 +144,22 @@ export default class Animate extends React.Component<Props, State> {
       onCompleteStyle,
       durationSeconds,
       delaySeconds,
+      reverseDelaySeconds,
       easeType,
       className,
       transition: transitionValue,
       tag,
     } = this.props;
     let style = startStyle;
-    let transition = transitionValue
-      ? transitionValue
-      : `${durationSeconds}s all ${easeType}`;
+    let transition = transitionValue || `${durationSeconds}s all ${easeType}`;
 
-    if (animationWillEnd || (startAnimation && !delaySeconds)) {
+    if (reverseDelaySeconds && !startAnimation) {
+      if (animationWillStart) {
+        style = startStyle;
+      } else {
+        style = endStyle;
+      }
+    } else if (animationWillEnd || (startAnimation && !delaySeconds)) {
       if (onCompleteStyle) {
         style = onCompleteStyle;
         transition = null;

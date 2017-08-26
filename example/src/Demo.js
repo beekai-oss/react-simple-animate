@@ -1,12 +1,12 @@
+import Switch from 'material-ui/Switch';
+import { FormControlLabel } from 'material-ui/Form';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import DemoCode from './DemoCode';
-import Switch from 'material-ui/Switch';
 import DemoObject from './DemoObject';
 import Animate from 'react-simple-animate';
-import { FormControlLabel } from 'material-ui/Form';
 import { fields, selectOptions } from './DemoData';
 import './Demo.css';
 
@@ -32,6 +32,7 @@ export default class Demo extends React.Component {
     startAnimation: false,
     onCompleteStyle: '',
     easeType: 'linear',
+    reverseDelaySeconds: 0,
     durationSeconds: '0.3',
     showCode: false,
     easyMode: false,
@@ -84,8 +85,11 @@ export default class Demo extends React.Component {
             {easyMode &&
               <Animate startAnimation {...{ startStyle, endStyle }}>
                 <div className="demo-simple">
-                  <label>Animation style: </label>
-                  <select onChange={this.changeAnimateStyle}>
+                  <label htmlFor="animationStyle">Animation style: </label>
+                  <select
+                    id="animationStyle"
+                    onChange={this.changeAnimateStyle}
+                  >
                     {selectOptions.map(({ name }) => {
                       return (
                         <option value={name} key={name}>
@@ -103,6 +107,13 @@ export default class Demo extends React.Component {
                 {...{ startStyle, endStyle, delaySeconds }}
               >
                 {fields.map((field, i) => {
+                  let helperText = '';
+
+                  if (i < 3) {
+                    helperText = `Note: value is json format, eg: {"key": "value"}`;
+                  } else if (field.label === 'Ease Type') {
+                    helperText = `Note: css transition ease, eg: ease ease-in cubic-bezier() ect`;
+                  }
                   return (
                     <Grid item xs={12} key={field.value}>
                       <TextField
@@ -114,10 +125,7 @@ export default class Demo extends React.Component {
                         value={this.state[field.value]}
                         label={field.label}
                         multiline={i < 2}
-                        helperText={
-                          i < 2 &&
-                          `Note: value is json format, eg: {"key": "value"}`
-                        }
+                        helperText={helperText}
                       />
                     </Grid>
                   );
@@ -156,7 +164,7 @@ export default class Demo extends React.Component {
                 });
               }}
             >
-              {`< >`}
+              {'< >'}
             </Button>
           </Grid>
         </Grid>

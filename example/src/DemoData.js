@@ -20,6 +20,10 @@ export const fields = [
     value: 'delaySeconds',
   },
   {
+    label: 'Reverse Delay Seconds',
+    value: 'reverseDelaySeconds',
+  },
+  {
     label: 'Ease Type',
     value: 'easeType',
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import Animate from '../src/animate';
+import Animate, { defaultState } from '../src/animate';
 import { mount, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
@@ -13,7 +13,9 @@ const props = {
   className: 'test',
 };
 
+const startStyle = { display: 'inline-block' };
 const endStyle = { display: 'block' };
+const transition = '1s all linear';
 
 describe('Animate', () => {
   it('should render correctly', () => {
@@ -29,7 +31,7 @@ describe('Animate', () => {
   });
 
   describe('when animation is ready and delay have been set', () => {
-    it('should trigger animation delay ended', () => {
+    it('should play animation with delay', () => {
       const tree = mount(
         <Animate {...{ ...props, delaySeconds: 1 }}>test</Animate>,
       );
@@ -40,7 +42,7 @@ describe('Animate', () => {
   });
 
   describe('when animate end style is defined and ready to animate', () => {
-    it('should trigger animation about to end state', () => {
+    it('should update animation will end state to true', () => {
       const tree = mount(
         <Animate
           {...{
@@ -58,13 +60,13 @@ describe('Animate', () => {
       });
 
       jest.runAllTimers();
-      expect(tree.state().animationWillEnd).toEqual(true);
+      expect(tree.state().animationWillComplete).toEqual(true);
     });
   });
 
   it('should update component when animation is ready', () => {
     const tree = shallow(
-      <Animate {...{ ...props, startAnimation: false, endStyle: endStyle }}>
+      <Animate {...{ ...props, startAnimation: false, endStyle }}>
         test
       </Animate>,
     );
@@ -85,14 +87,12 @@ describe('Animate', () => {
 
   it('should not update component when animation already played', () => {
     const tree = shallow(
-      <Animate {...{ ...props, startAnimation: false, endStyle: endStyle }}>
+      <Animate {...{ ...props, startAnimation: false, endStyle }}>
         test
       </Animate>,
     );
 
-    const state = {
-      animationWillEnd: false,
-    };
+    const state = defaultState;
 
     const nextProps = {
       startAnimation: false,
@@ -145,7 +145,7 @@ describe('Animate', () => {
     );
   });
 
-  describe('When animation is about to end', () => {
+  describe('When animation complete style has been set', () => {
     it('should update the style', () => {
       const onCompleteStyle = {
         display: 'block',
@@ -163,7 +163,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        animationWillEnd: true,
+        animationWillComplete: true,
       });
 
       expect(tree.find('div').props().style).toEqual({
@@ -175,9 +175,6 @@ describe('Animate', () => {
 
   describe('when animation about to end', () => {
     it('should update the style', () => {
-      const endStyle = {
-        display: 'block',
-      };
       const tree = shallow(
         <Animate
           {...{
@@ -200,9 +197,6 @@ describe('Animate', () => {
 
   describe('when delay animation about to end', () => {
     it('should update the style', () => {
-      const endStyle = {
-        display: 'block',
-      };
       const tree = shallow(
         <Animate
           {...{
@@ -246,9 +240,7 @@ describe('Animate', () => {
         startAnimation: false,
       });
 
-      expect(tree.state()).toEqual({
-        animationWillEnd: false,
-      });
+      expect(tree.state()).toEqual(defaultState);
     });
   });
 
@@ -319,6 +311,64 @@ describe('Animate', () => {
       );
 
       expect(tree.find('div').props().style).toEqual({ transition });
+    });
+  });
+
+  describe('when reverse animation with delay has been set', () => {
+    it('should delay animation on reversing', () => {
+      const tree = mount(
+        <Animate
+          {...{
+            ...props,
+            startAnimation: true,
+            reverseDelaySeconds: 0.5,
+            startStyle,
+            endStyle,
+          }}
+        >
+          test
+        </Animate>,
+      );
+
+      expect(tree.find('div').props().style).toEqual({
+        ...endStyle,
+        transition,
+      });
+
+      tree.setProps({
+        startAnimation: false,
+      });
+
+      jest.runAllTimers();
+
+      expect(tree.find('div').props().style).toEqual({
+        ...startStyle,
+        transition,
+      });
+    });
+  });
+
+  describe('When animation finished and onComplete function is supplied', () => {
+    it('should run the onComplete function', () => {
+      const onCompleteFunction = jest.fn();
+      const tree = mount(
+        <Animate
+          {...{
+            ...props,
+            startAnimation: true,
+            reverseDelaySeconds: 0.5,
+            startStyle,
+            endStyle,
+            onComplete: onCompleteFunction,
+          }}
+        >
+          test
+        </Animate>,
+      );
+
+      jest.runAllTimers();
+
+      expect(onCompleteFunction).toBeCalledWith();
     });
   });
 });

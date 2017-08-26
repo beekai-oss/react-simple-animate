@@ -4,6 +4,7 @@ import React, { createElement } from 'react';
 export const defaultState = {
   animationWillEnd: false,
   animationWillStart: false,
+  animationWillComplete: false,
   played: false,
 };
 
@@ -29,6 +30,7 @@ type Props = {
 type State = {
   animationWillEnd: boolean,
   animationWillStart: boolean,
+  animationWillComplete: boolean,
   played: boolean,
 };
 
@@ -65,6 +67,7 @@ export default class Animate extends React.Component<Props, State> {
       nextProps.children !== this.props.children ||
       nextState.animationWillEnd !== this.state.animationWillEnd ||
       nextState.animationWillStart !== this.state.animationWillStart ||
+      nextState.animationWillComplete !== this.state.animationWillComplete ||
       !!nextProps.forceUpdate
     );
   }
@@ -72,14 +75,16 @@ export default class Animate extends React.Component<Props, State> {
   setAnimationDelay = (
     condition: boolean,
     durationSeconds: number,
-    isReverse: boolean = false,
+    phase: 'play' | 'reverse' | 'onComplete',
   ): void => {
     if (!condition) return;
     clearTimeout(this.animationTimeout);
     this.animationTimeout = setTimeout(() => {
       this.setState({
-        ...(isReverse ? { animationWillStart: true } : null),
-        ...(!isReverse ? { animationWillEnd: true } : null),
+        ...(phase === 'play' || phase === 'onComplete'
+          ? { animationWillEnd: true }
+          : null),
+        ...(phase === 'reverse' ? { animationWillStart: true } : null),
       });
     }, parseFloat(durationSeconds) * 1000);
   };
@@ -98,25 +103,28 @@ export default class Animate extends React.Component<Props, State> {
       parseFloat(delaySeconds) + parseFloat(durationSeconds);
 
     // delay animation
-    this.setAnimationDelay(!!delaySeconds && startAnimation, delaySeconds || 0);
+    this.setAnimationDelay(
+      !!delaySeconds && startAnimation,
+      delaySeconds || 0,
+      'play',
+    );
     // reverse animation
     this.setAnimationDelay(
       !!reverseDelaySeconds && isReverse && !startAnimation,
       reverseDelaySeconds || 0,
-      true,
-    );
-    // onComplete style
-    this.setAnimationDelay(
-      !!onCompleteStyle && startAnimation,
-      delayTotalSeconds,
-      false,
+      'reverse',
     );
 
-    if (!onComplete) return;
+    if ((!onComplete && !onCompleteStyle) || !startAnimation) return;
 
     this.animationCompleteTimeout = setTimeout(() => {
-      onComplete();
-    }, delayTotalSeconds);
+      if (onComplete) onComplete();
+      if (onCompleteStyle) {
+        this.setState({
+          animationWillComplete: true,
+        });
+      }
+    }, delayTotalSeconds * 1000);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -128,6 +136,7 @@ export default class Animate extends React.Component<Props, State> {
       this.setState({
         animationWillEnd: false,
         animationWillStart: false,
+        animationWillComplete: false,
         played: isAnimationStatusChanged && startAnimation,
       });
     }
@@ -143,7 +152,12 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    const { animationWillEnd, animationWillStart, played } = this.state;
+    const {
+      animationWillEnd,
+      animationWillStart,
+      animationWillComplete,
+      played,
+    } = this.state;
     const {
       children,
       startAnimation,
@@ -163,8 +177,12 @@ export default class Animate extends React.Component<Props, State> {
 
     if (!played && reverseDelaySeconds && !startAnimation) {
       style = animationWillStart ? startStyle : endStyle;
-    } else if (animationWillEnd || (startAnimation && !delaySeconds)) {
-      if (onCompleteStyle && animationWillEnd) {
+    } else if (
+      animationWillComplete ||
+      animationWillEnd ||
+      (startAnimation && !delaySeconds)
+    ) {
+      if (onCompleteStyle && animationWillComplete) {
         style = onCompleteStyle;
         transition = null;
       } else {

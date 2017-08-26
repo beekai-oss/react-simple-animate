@@ -60,7 +60,7 @@ describe('Animate', () => {
       });
 
       jest.runAllTimers();
-      expect(tree.state().animationWillEnd).toEqual(true);
+      expect(tree.state().animationWillComplete).toEqual(true);
     });
   });
 
@@ -163,7 +163,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        animationWillEnd: true,
+        animationWillComplete: true,
       });
 
       expect(tree.find('div').props().style).toEqual({

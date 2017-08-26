@@ -12,7 +12,7 @@ type Style = { [string]: string | number };
 
 type Props = {
   startAnimation: boolean,
-  children: any,
+  children?: any,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
@@ -75,15 +75,13 @@ export default class Animate extends React.Component<Props, State> {
   setAnimationDelay = (
     condition: boolean,
     durationSeconds: number,
-    phase: 'play' | 'reverse' | 'onComplete',
+    phase: 'play' | 'reverse',
   ): void => {
     if (!condition) return;
     clearTimeout(this.animationTimeout);
     this.animationTimeout = setTimeout(() => {
       this.setState({
-        ...(phase === 'play' || phase === 'onComplete'
-          ? { animationWillEnd: true }
-          : null),
+        ...(phase === 'play' ? { animationWillEnd: true } : null),
         ...(phase === 'reverse' ? { animationWillStart: true } : null),
       });
     }, parseFloat(durationSeconds) * 1000);

@@ -107,6 +107,13 @@ export default class Demo extends React.Component {
                 {...{ startStyle, endStyle, delaySeconds }}
               >
                 {fields.map((field, i) => {
+                  let helperText = '';
+
+                  if (i < 3) {
+                    helperText = `Note: value is json format, eg: {"key": "value"}`;
+                  } else if (field.label === 'Ease Type') {
+                    helperText = `Note: css transition ease, eg: ease ease-in cubic-bezier() ect`;
+                  }
                   return (
                     <Grid item xs={12} key={field.value}>
                       <TextField
@@ -118,10 +125,7 @@ export default class Demo extends React.Component {
                         value={this.state[field.value]}
                         label={field.label}
                         multiline={i < 2}
-                        helperText={
-                          i < 2 &&
-                          `Note: value is json format, eg: {"key": "value"}`
-                        }
+                        helperText={helperText}
                       />
                     </Grid>
                   );

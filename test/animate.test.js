@@ -347,4 +347,28 @@ describe('Animate', () => {
       });
     });
   });
+
+  describe('When animation finished and onComplete function is supplied', () => {
+    it('should run the onComplete function', () => {
+      const onCompleteFunction = jest.fn();
+      const tree = mount(
+        <Animate
+          {...{
+            ...props,
+            startAnimation: true,
+            reverseDelaySeconds: 0.5,
+            startStyle,
+            endStyle,
+            onComplete: onCompleteFunction,
+          }}
+        >
+          test
+        </Animate>,
+      );
+
+      jest.runAllTimers();
+
+      expect(onCompleteFunction).toBeCalledWith();
+    });
+  });
 });

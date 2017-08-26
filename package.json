@@ -1,9 +1,12 @@
 {
   "name": "react-simple-animate",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "react simple animate",
   "main": "lib/animate.js",
-  "keywords": ["react", "animate"],
+  "keywords": [
+    "react",
+    "animate"
+  ],
   "scripts": {
     "clean": "rimraf lib/",
     "release": "npm version",

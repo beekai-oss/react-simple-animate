@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import Animate from 'react-simple-animate';
+import Animate from './animate';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {
@@ -13,6 +13,7 @@ function parseJsonWithCatch(value) {
 
 export default function DemoObject({
   delaySeconds,
+  reverseDelaySeconds,
   startAnimation,
   easeType,
   startReverseAnimate,
@@ -30,6 +31,7 @@ export default function DemoObject({
           easeType,
           startReverseAnimate,
           durationSeconds,
+          reverseDelaySeconds,
         }}
         onComplete={() => console.log('Animation completed 🤘')}
         onCompleteStyle={parseJsonWithCatch(onCompleteStyle)}

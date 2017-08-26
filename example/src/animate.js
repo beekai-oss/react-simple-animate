@@ -29,7 +29,6 @@ type Props = {
 type State = {
   animationWillEnd: boolean,
   animationWillStart: boolean,
-  played: boolean,
 };
 
 export default class Animate extends React.Component<Props, State> {
@@ -98,11 +97,11 @@ export default class Animate extends React.Component<Props, State> {
       parseFloat(delaySeconds) + parseFloat(durationSeconds);
 
     // delay animation
-    this.setAnimationDelay(!!delaySeconds && startAnimation, delaySeconds || 0);
+    this.setAnimationDelay(delaySeconds && startAnimation, delaySeconds);
     // reverse animation
     this.setAnimationDelay(
-      !!reverseDelaySeconds && isReverse && !startAnimation,
-      reverseDelaySeconds || 0,
+      reverseDelaySeconds && isReverse && !startAnimation,
+      reverseDelaySeconds,
       true,
     );
     // onComplete style

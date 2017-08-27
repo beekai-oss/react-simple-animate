@@ -1,4 +1,11 @@
 .DemoObject-container {
   overflow: hidden;
   text-align: right;
+  position: fixed;
+}
+
+@media (min-width: 640px) {
+  .DemoObject-container {
+    position: relative;
+  }
 }

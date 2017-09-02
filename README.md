@@ -63,6 +63,7 @@ Screenshot of the example app below
 | `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
 | `durationSeconds` | number |  | How long the animation takes in seconds. |
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |
+| `reverseDelaySeconds` | number |  | How much delay should apply when reversse/toggle animation. |
 | `onComplete` | function |  | Call back function after animation complete. |
 | `easeType` | string |  | Easing type refer to http://easings.net/ |
 | `className` | string |  | To specify a CSS class. |

@@ -107,7 +107,7 @@ export default class Animate extends React.Component<Props, State> {
     const isAnimationStatusChanged =
       startAnimation !== this.props.startAnimation;
 
-    if (isAnimationStatusChanged) {
+    if (isAnimationStatusChanged || !startAnimation) {
       this.setState({
         animationWillEnd: false,
         animationWillStart: false,

@@ -6,6 +6,7 @@ export const defaultState = {
   animationWillStart: false,
   animationWillComplete: false,
   played: false,
+  childrenInState: null,
 };
 
 type Style = { [string]: string | number };
@@ -32,6 +33,7 @@ type State = {
   animationWillStart: boolean,
   animationWillComplete: boolean,
   played: boolean,
+  childrenInState?: any,
 };
 
 let style;
@@ -52,6 +54,15 @@ export default class Animate extends React.Component<Props, State> {
   animationTimeout = null;
 
   animationCompleteTimeout = null;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      ...defaultState,
+      childrenInState: props.children,
+    };
+  }
 
   setAnimationDelay = (
     durationSeconds: number,
@@ -103,6 +114,25 @@ export default class Animate extends React.Component<Props, State> {
     }, delayTotalSeconds);
   }
 
+  compareChildren(nextProps: Props) {
+    console.log(nextProps.children);
+    console.log(this.state.childrenInState);
+    const { childrenInState } = this.state;
+
+    if (childrenInState && Object.keys(childrenInState).length > 1) {
+      if (Array.isArray(childrenInState)) {
+        const result = childrenInState.map((childState) => {
+          if (nextProps.children) {
+            return nextProps.children.find(child => child.key === childState.key) ? childState : { ...childState, startAnimation: false, unMount: true };
+          }
+          return { ...childState, startAnimation: false, unMount: true };
+        });
+
+        console.log('result', result);
+      }
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     const { startAnimation, reverseDelaySeconds } = nextProps;
     const isAnimationStatusChanged =
@@ -119,6 +149,8 @@ export default class Animate extends React.Component<Props, State> {
       nextProps,
       isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
     );
+
+    this.compareChildren(nextProps);
   }
 
   componentDidMount() {
@@ -155,9 +187,9 @@ export default class Animate extends React.Component<Props, State> {
       animationWillStart,
       animationWillComplete,
       played,
+      childrenInState,
     } = this.state;
     const {
-      children,
       startAnimation,
       startStyle,
       endStyle,
@@ -188,18 +220,24 @@ export default class Animate extends React.Component<Props, State> {
       }
     }
 
-    return createElement(
-      tag || 'div',
-      {
-        className,
-        style: {
-          ...{
-            ...style,
-            transition,
-          },
+    const componentProps = {
+      className,
+      style: {
+        ...{
+          ...style,
+          transition,
         },
       },
-      children,
-    );
+    };
+
+    if (childrenInState && Object.keys(childrenInState).length > 1) {
+      const output = Object.keys(childrenInState).map(child => {
+        return createElement(tag || 'div', { ...componentProps, key: childrenInState[child].key }, child);
+      });
+
+      return React.createElement(tag || 'div', {}, output);
+    }
+
+    return React.createElement(tag || 'div', componentProps, childrenInState);
   }
 }

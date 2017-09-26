@@ -103,12 +103,21 @@ export default class Animate extends React.Component<Props, State> {
     }, delayTotalSeconds);
   }
 
+  clearAllTimers() {
+    clearTimeout(this.animationTimeout);
+    clearTimeout(this.animationCompleteTimeout);
+    this.animationTimeout = null;
+    this.animationCompleteTimeout = null;
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     const { startAnimation, reverseDelaySeconds } = nextProps;
     const isAnimationStatusChanged =
       startAnimation !== this.props.startAnimation;
 
     if (isAnimationStatusChanged) {
+      this.clearAllTimers();
+
       this.setState({
         ...defaultState,
         played: isAnimationStatusChanged && startAnimation,
@@ -119,10 +128,6 @@ export default class Animate extends React.Component<Props, State> {
       nextProps,
       isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
     );
-  }
-
-  componentDidMount() {
-    this.setDelayAndOnComplete(this.props);
   }
 
   shouldComponentUpdate(
@@ -142,11 +147,12 @@ export default class Animate extends React.Component<Props, State> {
     );
   }
 
+  componentDidMount() {
+    this.setDelayAndOnComplete(this.props);
+  }
+
   componentWillUnmount() {
-    clearTimeout(this.animationTimeout);
-    clearTimeout(this.animationCompleteTimeout);
-    this.animationTimeout = null;
-    this.animationCompleteTimeout = null;
+    this.clearAllTimers();
   }
 
   render() {

@@ -110,10 +110,6 @@ export default class Animate extends React.Component<Props, State> {
     this.animationCompleteTimeout = null;
   }
 
-  componentDidMount() {
-    this.setDelayAndOnComplete(this.props);
-  }
- 
   componentWillReceiveProps(nextProps: Props) {
     const { startAnimation, reverseDelaySeconds } = nextProps;
     const isAnimationStatusChanged =
@@ -149,6 +145,10 @@ export default class Animate extends React.Component<Props, State> {
       animationWillComplete !== this.state.animationWillComplete ||
       !!forceUpdate
     );
+  }
+
+  componentDidMount() {
+    this.setDelayAndOnComplete(this.props);
   }
 
   componentWillUnmount() {

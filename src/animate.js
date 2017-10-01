@@ -1,21 +1,24 @@
 // @flow
-import React, { createElement } from 'react';
+import React from 'react';
+import mapChildren from './mapChildren';
 
 export const defaultState = {
   animationWillEnd: false,
   animationWillStart: false,
+  animationWillLeave: false,
   animationWillComplete: false,
   played: false,
-  childrenInState: null,
+  childrenStoreInState: null,
 };
 
 type Style = { [string]: string | number };
 
 type Props = {
   startAnimation: boolean,
-  children?: any,
+  children?: Array<React$Element<any>> | React$Element<any>,
   startStyle?: Style,
   endStyle: Style,
+  leavelStyle: Style,
   onCompleteStyle?: Style,
   durationSeconds?: number,
   delaySeconds?: number,
@@ -32,8 +35,9 @@ type State = {
   animationWillEnd: boolean,
   animationWillStart: boolean,
   animationWillComplete: boolean,
+  animationWillLeave: boolean,
   played: boolean,
-  childrenInState?: any,
+  childrenStoreInState?: Array<React$Element<any>> | React$Element<any> | null,
 };
 
 let style;
@@ -49,32 +53,31 @@ export default class Animate extends React.Component<Props, State> {
     tag: 'div',
   };
 
-  state = defaultState;
+  state = {
+    ...defaultState,
+    childrenStoreInState: this.props.children,
+  };
 
   animationTimeout = null;
 
   animationCompleteTimeout = null;
 
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      ...defaultState,
-      childrenInState: props.children,
-    };
-  }
+  animationLeaveTimeout = null;
 
   setAnimationDelay = (
-    durationSeconds: number,
-    phase: 'play' | 'reverse',
+    timer: number | null,
+    durationSeconds: number = 0,
+    stateName: string,
+    callback?: () => mixed,
   ): void => {
-    clearTimeout(this.animationTimeout);
+    clearTimeout(timer);
 
     this.animationTimeout = setTimeout(() => {
       this.setState({
-        ...(phase === 'play' ? { animationWillEnd: true } : null),
-        ...(phase === 'reverse' ? { animationWillStart: true } : null),
+        [stateName]: true,
       });
+
+      if (callback) callback();
     }, parseFloat(durationSeconds) * 1000);
   };
 
@@ -94,42 +97,48 @@ export default class Animate extends React.Component<Props, State> {
 
     // delay animation
     if (!!delaySeconds && startAnimation) {
-      this.setAnimationDelay(delaySeconds || 0, 'play');
+      this.setAnimationDelay(
+        this.animationTimeout,
+        delaySeconds,
+        'animationWillEnd',
+      );
     }
 
     // reverse animation
     if (isReverse) {
-      this.setAnimationDelay(reverseDelaySeconds || 0, 'reverse');
+      this.setAnimationDelay(
+        this.animationTimeout,
+        reverseDelaySeconds,
+        'animationWillStart',
+      );
     }
 
     if ((!onComplete && !onCompleteStyle) || !startAnimation) return;
 
-    this.animationCompleteTimeout = setTimeout(() => {
-      if (onComplete) onComplete();
-      if (onCompleteStyle) {
-        this.setState({
-          animationWillComplete: true,
-        });
-      }
-    }, delayTotalSeconds);
+    this.setAnimationDelay(
+      this.animationCompleteTimeout,
+      delayTotalSeconds,
+      'animationWillComplete',
+      onComplete,
+    );
   }
 
   compareChildren(nextProps: Props) {
-    console.log(nextProps.children);
-    console.log(this.state.childrenInState);
-    const { childrenInState } = this.state;
+    const { childrenStoreInState } = this.state;
+    const { children } = nextProps;
 
-    if (childrenInState && Object.keys(childrenInState).length > 1) {
-      if (Array.isArray(childrenInState)) {
-        const result = childrenInState.map((childState) => {
-          if (nextProps.children) {
-            return nextProps.children.find(child => child.key === childState.key) ? childState : { ...childState, startAnimation: false, unMount: true };
-          }
-          return { ...childState, startAnimation: false, unMount: true };
-        });
+    if (childrenStoreInState && children) {
+      mapChildren(childrenStoreInState, children);
 
-        console.log('result', result);
-      }
+      // this.setState({
+      //   childrenStoreInState: output,
+      // });
+
+      this.setAnimationDelay(
+        this.animationLeaveTimeout,
+        nextProps.durationSeconds,
+        'animationWillLeave',
+      );
     }
   }
 
@@ -177,8 +186,10 @@ export default class Animate extends React.Component<Props, State> {
   componentWillUnmount() {
     clearTimeout(this.animationTimeout);
     clearTimeout(this.animationCompleteTimeout);
+    clearTimeout(this.animationLeaveTimeout);
     this.animationTimeout = null;
     this.animationCompleteTimeout = null;
+    this.animationLeaveTimeout = null;
   }
 
   render() {
@@ -187,7 +198,8 @@ export default class Animate extends React.Component<Props, State> {
       animationWillStart,
       animationWillComplete,
       played,
-      childrenInState,
+      childrenStoreInState,
+      animationWillLeave,
     } = this.state;
     const {
       startAnimation,
@@ -230,14 +242,37 @@ export default class Animate extends React.Component<Props, State> {
       },
     };
 
-    if (childrenInState && Object.keys(childrenInState).length > 1) {
-      const output = Object.keys(childrenInState).map(child => {
-        return createElement(tag || 'div', { ...componentProps, key: childrenInState[child].key }, child);
-      });
+    // if (Array.isArray(childrenStoreInState)) {
+    //   let output;
 
-      return React.createElement(tag || 'div', {}, output);
-    }
+    //   if (animationWillLeave) {
+    //     // only render those still exsiting;
+    //     output = childrenStoreInState.filter((child: string) => {
+    //       if (!child.unMount) {
+    //         return createElement(
+    //           tag || 'div',
+    //           { ...componentProps, key: childrenStoreInState[child].key },
+    //           child,
+    //         );
+    //       }
+    //     });
+    //   } else {
+    //     output = childrenStoreInState.map((child: string) => {
+    //       return createElement(
+    //         tag || 'div',
+    //         { ...componentProps, key: childrenStoreInState[child].key },
+    //         child,
+    //       );
+    //     });
+    //   }
 
-    return React.createElement(tag || 'div', componentProps, childrenInState);
+    //   return React.createElement(tag || 'div', {}, output);
+    // }
+
+    return React.createElement(
+      tag || 'div',
+      componentProps,
+      childrenStoreInState,
+    );
   }
 }

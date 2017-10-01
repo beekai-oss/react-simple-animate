@@ -372,30 +372,25 @@ describe('Animate', () => {
     });
   });
 
-  describe.only(
-    'When children remmoved the component should remain the same',
-    () => {
-      it('sh ', () => {
-        const tree = shallow(
-          <Animate
-            {...{
-              ...props,
-              startAnimation: true,
-              reverseDelaySeconds: 0.5,
-              startStyle,
-              endStyle,
-            }}
-          >
-            <div key={0}>test</div>
-            <div key={1}>test1</div>
-            <div key={2}>test2</div>
-          </Animate>,
-        );
+  describe('When children remmoved the component should remain the same', () => {
+    it('sh ', () => {
+      const tree = shallow(
+        <Animate
+          {...{
+            ...props,
+            startAnimation: true,
+            reverseDelaySeconds: 0.5,
+            startStyle,
+            endStyle,
+          }}
+        >
+          <div key={0}>test</div>
+        </Animate>,
+      );
 
-        tree.setProps({
-          children: [0, 1].map(i => <div key={i}>test</div>),
-        });
+      tree.setProps({
+        children: [0, 1].map(i => <div key={i}>test</div>),
       });
-    },
-  );
+    });
+  });
 });

@@ -1,6 +1,6 @@
 .DemoObject-container {
   overflow: hidden;
-  text-align: right;
+  text-align: left;
   position: fixed;
 }
 
@@ -8,4 +8,12 @@
   .DemoObject-container {
     position: relative;
   }
+}
+
+.demo-logo {
+  width: 90%;
+}
+
+.demo-small-logo {
+  width: 20%;
 }

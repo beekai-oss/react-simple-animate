@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import Animate from 'react-simple-animate';
+import Animate from '../src/src/animate';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {
@@ -21,6 +21,7 @@ export default function DemoObject({
   startStyle,
   endStyle,
   durationSeconds,
+  count,
 }) {
   return (
     <div className="DemoObject-container">
@@ -37,8 +38,18 @@ export default function DemoObject({
         onCompleteStyle={parseJsonWithCatch(onCompleteStyle)}
         startStyle={parseJsonWithCatch(startStyle)}
         endStyle={parseJsonWithCatch(endStyle)}
+        tag="span"
       >
-        <img src={logo} alt="logo" className="demo-logo" />
+        {Array(count)
+          .fill()
+          .map((item, key) => (
+            <img
+              src={logo}
+              alt="logo"
+              className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
+              key={key}
+            />
+          ))}
       </Animate>
     </div>
   );

@@ -36,6 +36,7 @@ export default class Demo extends React.Component {
     durationSeconds: '0.3',
     showCode: false,
     easyMode: false,
+    count: 1,
   };
 
   handleChange = (name, value) => {
@@ -79,10 +80,44 @@ export default class Demo extends React.Component {
                 />
               }
             />
+
+            {startAnimation && (
+              <Button
+                className="new-button"
+                raised
+                onClick={() => {
+                  this.setState(previousState => {
+                    return {
+                      count: ++previousState.count,
+                    };
+                  });
+                }}
+              >
+                + New Item
+              </Button>
+            )}
+
+            {startAnimation && (
+              <Button
+                className="new-button"
+                raised
+                onClick={() => {
+                  this.setState(previousState => {
+                    if (previousState.count > 0) {
+                      return {
+                        count: --previousState.count,
+                      };
+                    }
+                  });
+                }}
+              >
+                - Remove Item
+              </Button>
+            )}
           </Grid>
 
           <Grid item xs={6} md={4}>
-            {easyMode &&
+            {easyMode && (
               <Animate startAnimation {...{ startStyle, endStyle }}>
                 <div className="demo-simple">
                   <label htmlFor="animationStyle">Animation style: </label>
@@ -99,9 +134,10 @@ export default class Demo extends React.Component {
                     })}
                   </select>
                 </div>
-              </Animate>}
+              </Animate>
+            )}
 
-            {!easyMode &&
+            {!easyMode && (
               <Animate
                 startAnimation
                 {...{ startStyle, endStyle, delaySeconds }}
@@ -114,6 +150,7 @@ export default class Demo extends React.Component {
                   } else if (field.label === 'Ease Type') {
                     helperText = `Note: css transition ease, eg: ease ease-in cubic-bezier() ect`;
                   }
+
                   return (
                     <Grid item xs={12} key={field.value}>
                       <TextField
@@ -130,7 +167,8 @@ export default class Demo extends React.Component {
                     </Grid>
                   );
                 })}
-              </Animate>}
+              </Animate>
+            )}
           </Grid>
 
           <Grid item xs={6} md={8}>

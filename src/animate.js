@@ -5,8 +5,9 @@ import mapChildren from './mapChildren';
 export const defaultState = {
   animationWillEnd: false,
   animationWillStart: false,
-  animationWillLeave: false,
+  animationWillEnter: false,
   animationWillComplete: false,
+  animationWillLeave: false,
   played: false,
   childrenStoreInState: null,
 };
@@ -35,6 +36,7 @@ type State = {
   animationWillEnd: boolean,
   animationWillStart: boolean,
   animationWillComplete: boolean,
+  animationWillEnter: boolean,
   animationWillLeave: boolean,
   played: boolean,
   childrenStoreInState?: Array<React$Element<any>> | React$Element<any> | null,
@@ -128,18 +130,78 @@ export default class Animate extends React.Component<Props, State> {
     const { children } = nextProps;
 
     if (childrenStoreInState && children) {
-      mapChildren(childrenStoreInState, children);
-
-      // this.setState({
-      //   childrenStoreInState: output,
-      // });
-
-      this.setAnimationDelay(
-        this.animationLeaveTimeout,
-        nextProps.durationSeconds,
-        'animationWillLeave',
+      const { mappedChildren, willUnMount, willMount } = mapChildren(
+        childrenStoreInState,
+        children,
       );
+
+      if (mappedChildren.length) {
+        this.setState({
+          childrenStoreInState: mappedChildren,
+          animationWillEnter: willMount,
+        });
+
+        if (willUnMount) {
+          this.setAnimationDelay(
+            this.animationLeaveTimeout,
+            nextProps.durationSeconds,
+            'animationWillLeave',
+          );
+        }
+      }
     }
+  }
+
+  generateProps(props: any, state: State) {
+    const {
+      animationWillEnd,
+      animationWillStart,
+      animationWillComplete,
+      played,
+    } = state;
+    const {
+      startAnimation,
+      startStyle,
+      endStyle,
+      onCompleteStyle,
+      durationSeconds = 0.3,
+      reverseDelaySeconds,
+      delaySeconds,
+      easeType,
+      className,
+      transition: transitionValue,
+      willUnmount,
+    } = props;
+
+    style = startStyle;
+    transition = transitionValue || `${durationSeconds}s all ${easeType}`;
+
+    if (willUnmount) {
+      style = endStyle;
+    } else if (!played && reverseDelaySeconds && !startAnimation) {
+      style = animationWillStart ? startStyle : endStyle;
+    } else if (
+      animationWillComplete ||
+      animationWillEnd ||
+      (startAnimation && !delaySeconds)
+    ) {
+      if (onCompleteStyle && animationWillComplete) {
+        style = onCompleteStyle;
+        transition = null;
+      } else {
+        style = endStyle;
+      }
+    }
+
+    return {
+      className,
+      style: {
+        ...{
+          ...style,
+          transition,
+        },
+      },
+    };
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -193,81 +255,50 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      animationWillEnd,
-      animationWillStart,
-      animationWillComplete,
-      played,
-      childrenStoreInState,
-      animationWillLeave,
-    } = this.state;
-    const {
-      startAnimation,
-      startStyle,
-      endStyle,
-      onCompleteStyle,
-      durationSeconds = 0.3,
-      reverseDelaySeconds,
-      delaySeconds,
-      easeType,
-      className,
-      transition: transitionValue,
-      tag,
-    } = this.props;
-    style = startStyle;
-    transition = transitionValue || `${durationSeconds}s all ${easeType}`;
+    const { childrenStoreInState, animationWillLeave } = this.state;
+    const { tag } = this.props;
 
-    if (!played && reverseDelaySeconds && !startAnimation) {
-      style = animationWillStart ? startStyle : endStyle;
-    } else if (
-      animationWillComplete ||
-      animationWillEnd ||
-      (startAnimation && !delaySeconds)
-    ) {
-      if (onCompleteStyle && animationWillComplete) {
-        style = onCompleteStyle;
-        transition = null;
+    let componentProps: Object = {};
+
+    if (Array.isArray(childrenStoreInState)) {
+      let output = null;
+
+      if (animationWillLeave) {
+        output = childrenStoreInState
+          .filter((child: any) => !child.willUnmount)
+          .map((child: any) => {
+            const { key } = child;
+
+            return React.createElement(
+              tag || 'div',
+              { ...componentProps, key },
+              child,
+            );
+          });
       } else {
-        style = endStyle;
+        output = childrenStoreInState.map((child: any) => {
+          const { willMount, willUnmount, key } = child;
+          componentProps = this.generateProps(
+            {
+              ...this.props,
+              willUnmount,
+              willMount,
+            },
+            this.state,
+          );
+
+          return React.createElement(
+            tag || 'div',
+            { ...componentProps, key },
+            child,
+          );
+        });
       }
+
+      return React.createElement(tag || 'div', {}, output);
     }
 
-    const componentProps = {
-      className,
-      style: {
-        ...{
-          ...style,
-          transition,
-        },
-      },
-    };
-
-    // if (Array.isArray(childrenStoreInState)) {
-    //   let output;
-
-    //   if (animationWillLeave) {
-    //     // only render those still exsiting;
-    //     output = childrenStoreInState.filter((child: string) => {
-    //       if (!child.unMount) {
-    //         return createElement(
-    //           tag || 'div',
-    //           { ...componentProps, key: childrenStoreInState[child].key },
-    //           child,
-    //         );
-    //       }
-    //     });
-    //   } else {
-    //     output = childrenStoreInState.map((child: string) => {
-    //       return createElement(
-    //         tag || 'div',
-    //         { ...componentProps, key: childrenStoreInState[child].key },
-    //         child,
-    //       );
-    //     });
-    //   }
-
-    //   return React.createElement(tag || 'div', {}, output);
-    // }
+    componentProps = this.generateProps(this.props, this.state);
 
     return React.createElement(
       tag || 'div',

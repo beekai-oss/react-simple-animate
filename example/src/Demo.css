@@ -10,19 +10,19 @@
   margin-bottom: 20px;
 }
 
-.demo-logo {
-  width: 90%;
-}
-
 .demo-button {
   margin-right: 10px;
 }
 
-.Demo-mode-selector {
-  text-align: right;
+.new-button {
+  float: right;
 }
 
 .demo-simple {
   margin-bottom: 20px;
   min-height: 130px;
+}
+
+.new-button {
+  margin-right: 20px;
 }

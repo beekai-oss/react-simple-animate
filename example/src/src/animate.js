@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import propsGenerator from './propsGenerator';
-import mapChildren from './mapChildren';
+import propsGenerator from './utils/propsGenerator';
+import mapChildren from './utils/mapChildren';
 
 export const defaultState = {
   animationWillEnd: false,
@@ -13,11 +13,11 @@ export const defaultState = {
   childrenStoreInState: null,
 };
 
-type Style = { [string]: string | number };
+export type Style = { [string]: string | number };
 
-type Props = {
+export type Props = {
   startAnimation: boolean,
-  children?: Array<React$Element<any>> | React$Element<any>,
+  children?: Array<React$Element<any>> | React$Element<any> | null,
   startStyle?: Style,
   endStyle: Style,
   leavelStyle: Style,
@@ -33,7 +33,7 @@ type Props = {
   transition?: string,
 };
 
-type State = {
+export type State = {
   animationWillEnd: boolean,
   animationWillStart: boolean,
   animationWillComplete: boolean,
@@ -52,12 +52,19 @@ export default class Animate extends React.Component<Props, State> {
     tag: 'div',
   };
 
-  state = {
-    ...defaultState,
-    childrenStoreInState: Array.isArray(this.props.children)
-      ? this.props.children
-      : [this.props.children],
-  };
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    if (props.children) {
+      this.state = {
+        ...defaultState,
+        childrenStoreInState: Array.isArray(props.children)
+          ? props.children
+          : [props.children],
+      };
+    }
+  }
 
   animationTimeout = null;
 
@@ -68,7 +75,7 @@ export default class Animate extends React.Component<Props, State> {
   animationEnterTimeout = null;
 
   setAnimationDelay = (
-    timer: number,
+    timer: number | null,
     durationSeconds: number = 0,
     stateName: string,
     callback?: () => mixed,
@@ -131,7 +138,10 @@ export default class Animate extends React.Component<Props, State> {
     const { children } = nextProps;
     const childrenCount = Array.isArray(children) ? children.length : 1;
 
-    if (childrenStoreInState.length !== childrenCount) {
+    if (
+      Array.isArray(childrenStoreInState) &&
+      childrenStoreInState.length !== childrenCount
+    ) {
       this.setState({
         animationWillEnter: false,
         animationWillLeave: false,
@@ -241,7 +251,6 @@ export default class Animate extends React.Component<Props, State> {
 
     if (Array.isArray(childrenStoreInState)) {
       let output = null;
-      console.log('hit', animationWillLeave);
 
       if (animationWillLeave) {
         output = childrenStoreInState
@@ -267,10 +276,12 @@ export default class Animate extends React.Component<Props, State> {
           componentProps = propsGenerator(
             {
               ...this.props,
+            },
+            this.state,
+            {
               willUnmount,
               willMount,
             },
-            this.state,
           );
 
           return React.createElement(

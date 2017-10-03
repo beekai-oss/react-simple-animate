@@ -1,9 +1,20 @@
 // @flow
+import type { State, Props } from '../animate';
+
+type MountProps = { willUnmount: boolean, willMount: boolean };
+
 let style;
 
 let transition;
 
-export default function propsGenerator(props: any, state: any) {
+export default function propsGenerator(
+  props: Props,
+  state: State,
+  mountProps: MountProps = {
+    willUnmount: false,
+    willMount: false,
+  },
+) {
   const {
     animationWillEnd,
     animationWillStart,
@@ -23,9 +34,8 @@ export default function propsGenerator(props: any, state: any) {
     easeType,
     className,
     transition: transitionValue,
-    willUnmount,
-    willMount,
   } = props;
+  const { willUnmount, willMount } = mountProps;
 
   style = startStyle;
   transition = transitionValue || `${durationSeconds}s all ${easeType}`;

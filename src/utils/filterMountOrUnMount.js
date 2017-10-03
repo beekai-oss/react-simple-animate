@@ -5,11 +5,10 @@ type Result = {
   willMount: boolean,
 };
 
-export default function mapChildren(
+export default function filterMountOrUnMount(
   childrenStoreInState: Object | Array<React$Element<any>>,
   children: Object | Array<React$Element<any>>,
 ): Result {
-  let previousIndex: number = 0;
   const result: Result = {
     mappedChildren: [],
     willUnMount: false,
@@ -22,20 +21,27 @@ export default function mapChildren(
 
   // any children got removed
   childrenStoreInStateShallowCopy.forEach((element: React$Element<any>) => {
-    if (!element.hasOwnProperty('key')) return;
+    if (!Object.prototype.hasOwnProperty.call(element, 'key')) return;
 
     if (childrenShallowCopy.find(child => child.key === element.key)) {
-      result.mappedChildren.push(element);
+      result.mappedChildren.push({
+        ...element,
+        willUnmount: false,
+        willMount: false,
+      });
     } else {
       result.willUnMount = true;
-      result.mappedChildren.push({ ...element, willUnmount: true });
+      result.mappedChildren.push({
+        ...element,
+        willUnmount: true,
+      });
     }
   });
 
   // append missing child
   childrenShallowCopy.forEach((child, index) => {
     if (
-      child.hasOwnProperty('key') &&
+      Object.prototype.hasOwnProperty.call(child, 'key') &&
       !result.mappedChildren.find(r => r.key === child.key)
     ) {
       result.willMount = true;
@@ -44,8 +50,6 @@ export default function mapChildren(
         willMount: true,
       });
     }
-
-    previousIndex = index;
   });
 
   return result;

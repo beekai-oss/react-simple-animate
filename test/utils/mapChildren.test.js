@@ -13,7 +13,7 @@ describe('mapChildren', () => {
   });
 
   describe('when animationWillLeave set to true', () => {
-    it('shoud filter out components which will unmont', () => {
+    it('should filter out components which will unmont', () => {
       expect(
         mapChildren(
           {},
@@ -31,7 +31,7 @@ describe('mapChildren', () => {
   });
 
   describe('when animationWillLeave set to false', () => {
-    it('shoud not filter components', () => {
+    it('should not filter components', () => {
       expect(
         mapChildren(
           {},

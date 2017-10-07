@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mapChildren when animationWillLeave set to false shoud not filter components 1`] = `
+exports[`mapChildren when animationWillLeave set to false should not filter components 1`] = `
 Array [
   <div
     className={undefined}
@@ -17,4 +17,4 @@ Array [
 ]
 `;
 
-exports[`mapChildren when animationWillLeave set to true shoud filter out components which will unmont 1`] = `Array []`;
+exports[`mapChildren when animationWillLeave set to true should filter out components which will unmont 1`] = `Array []`;

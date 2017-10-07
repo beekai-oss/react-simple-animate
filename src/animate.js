@@ -40,7 +40,6 @@ export type State = {
   animationWillComplete: boolean,
   animationWillEnter: boolean,
   animationWillLeave: boolean,
-  played: boolean,
   childrenStoreInState?: Array<React$Element<any>> | React$Element<any> | null,
 };
 

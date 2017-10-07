@@ -7,9 +7,10 @@
 Features:
 
  - Simple animation from inline style A to style B
+ - Support will mount and unmount (New)
  - Make animation toggle easy
  - In-built delay animation mechanism
- - Tiny size 3,878 bytes (before Gzip)
+ - Tiny size without other dependency
 
 ## Install
 
@@ -33,13 +34,15 @@ Screenshot of the example app below
 
 ## Quick start
 
+The following example demonstrate animate **individual** or **array of components**. React simple animate will take cares component **will mount** and **unmount**. 
+
     import react from 'react';
     import Animate from 'react-simple-animate';
+    import YourComponent from './YourComponent';
     
-    export default function SexyComponent() {
+    export default function SexyComponent(props) {
 	    return <Animate durationSeconds={0.2}
              startAnimation
-             delaySeconds={1.2}
              startStyle={{
                opacity: 0,
              }}
@@ -47,7 +50,9 @@ Screenshot of the example app below
                opacity: 1,
              }}
            >
-           <YourComponent> // your component here
+           {Array.isArray(props.componentsArray) ? 
+             props.componentsArray.map((key) => <YourComponent key={key}>)
+             : <YourComponent>}
         </Animate>;
     }
 
@@ -65,6 +70,7 @@ Screenshot of the example app below
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |
 | `reverseDelaySeconds` | number |  | How much delay should apply when reverse/toggle animation. |
 | `onComplete` | function |  | Call back function after animation complete. |
+| `onError` | function |  | Call back function after component error (**React 16 only**). |
 | `easeType` | string |  | Easing type refer to http://easings.net/ |
 | `className` | string |  | To specify a CSS class. |
 | `forceUpdate` | boolean |  | Force component to re-render. |

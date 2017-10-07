@@ -14,16 +14,13 @@
   margin-right: 10px;
 }
 
-.new-button {
-  float: right;
-}
-
 .demo-simple {
   margin-bottom: 20px;
   min-height: 130px;
 }
 
 .new-button {
+  float: right;
   width: 40px !important;
   height: 40px !important;
   margin-right: 20px;

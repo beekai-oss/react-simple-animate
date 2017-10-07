@@ -30,7 +30,7 @@ export type Props = {
   forceUpdate?: boolean,
   tag?: ?string,
   onComplete?: () => mixed,
-  onError?: () => mixed,
+  onError?: (Object, Object) => mixed,
   className?: string,
   transition?: string,
 };
@@ -238,8 +238,9 @@ export default class Animate extends React.Component<Props, State> {
     this.animationEnterTimeout = null;
   }
 
-  componentDidCatch(error, info) {
-    this.props.onError(error, info);
+  componentDidCatch(error: Object, info: Object) {
+    const { onError = false } = this.props;
+    if (onError) onError(error, info);
   }
 
   render() {

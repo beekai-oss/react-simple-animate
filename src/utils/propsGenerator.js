@@ -19,7 +19,6 @@ export default function propsGenerator(
     animationWillComplete,
     animationWillEnter,
     animationWillLeave,
-    played,
   } = state;
   const {
     startAnimation,
@@ -29,7 +28,7 @@ export default function propsGenerator(
     durationSeconds = 0.3,
     reverseDelaySeconds,
     delaySeconds,
-    easeType,
+    easeType = 'linear',
     className,
     transition: transitionValue,
   } = props;
@@ -42,19 +41,13 @@ export default function propsGenerator(
     style = animationWillEnter ? endStyle : startStyle;
   } else if (willUnmount && startAnimation) {
     style = animationWillLeave ? endStyle : startStyle;
-  } else if (!played && reverseDelaySeconds && !startAnimation) {
+  } else if (reverseDelaySeconds && !startAnimation) {
     style = animationWillStart ? startStyle : endStyle;
-  } else if (
-    animationWillComplete ||
-    animationWillEnd ||
-    (startAnimation && !delaySeconds)
-  ) {
-    if (onCompleteStyle && animationWillComplete) {
-      style = onCompleteStyle;
-      transition = null;
-    } else {
-      style = endStyle;
-    }
+  } else if (animationWillEnd || (startAnimation && !delaySeconds)) {
+    style = endStyle;
+  } else if (animationWillComplete && onCompleteStyle) {
+    style = onCompleteStyle;
+    transition = null;
   }
 
   return {

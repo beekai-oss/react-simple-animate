@@ -24,6 +24,16 @@ describe('Animate', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('should render correctly for children', () => {
+    const tree = renderer.create(
+      <Animate {...props}>
+        {[1, 2].map(item => <div key={item}>test{item}</div>)}
+      </Animate>,
+    );
+
+    expect(tree).toMatchSnapshot();
+  });
+
   it('should render custome tag correctly', () => {
     const tree = renderer.create(<Animate {...{ ...props, tag: 'l' }} />);
 

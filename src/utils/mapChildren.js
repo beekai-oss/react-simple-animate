@@ -6,7 +6,7 @@ import type { Props, State } from '../animate';
 let componentProps = null;
 let temp: Array<React$Element<any>> = [];
 
-function filterUnMountChildren(children) {
+function filterUnMountChildren(children: Array<React$Element<any>>) {
   return children.filter((child: Object) => !child.willUnmount);
 }
 

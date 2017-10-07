@@ -1,6 +1,6 @@
 import filterMountOrUnMount from '../../src/utils/filterMountOrUnMount';
 
-describe.only('filterMountOrUnMount', () => {
+describe('filterMountOrUnMount', () => {
   it('should mark child is about to be unMount', () => {
     const elements = [
       {

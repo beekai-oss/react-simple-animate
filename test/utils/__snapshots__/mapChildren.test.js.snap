@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapChildren when animationWillLeave set to false shoud not filter components 1`] = `
+Array [
+  <div
+    className={undefined}
+    style={
+        Object {
+            "transition": "0.3s all linear",
+          }
+    }
+>
+    Object {
+        "willUnmount": true,
+      }
+</div>,
+]
+`;
+
+exports[`mapChildren when animationWillLeave set to true shoud filter out components which will unmont 1`] = `Array []`;

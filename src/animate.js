@@ -10,8 +10,7 @@ export const defaultState = {
   animationWillComplete: false,
   animationWillEnter: false,
   animationWillLeave: false,
-  played: false,
-  childrenStoreInState: null,
+  childrenStoreInState: [],
 };
 
 export type Style = { [string]: string | number };
@@ -65,7 +64,13 @@ export default class Animate extends React.Component<Props, State> {
           ? props.children
           : [props.children],
       };
+
+      return;
     }
+
+    this.state = {
+      ...defaultState,
+    };
   }
 
   animationTimeout = null;
@@ -95,7 +100,7 @@ export default class Animate extends React.Component<Props, State> {
       onComplete,
       reverseDelaySeconds,
     }: Props,
-    isReverse: boolean = false,
+    isReverseWithDelay: boolean = false,
   ): void {
     const delayTotalSeconds =
       (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000;
@@ -110,7 +115,7 @@ export default class Animate extends React.Component<Props, State> {
     }
 
     // reverse animation
-    if (isReverse) {
+    if (isReverseWithDelay) {
       clearTimeout(this.animationTimeout);
       this.animationTimeout = this.setAnimationDelay(
         reverseDelaySeconds,
@@ -186,7 +191,6 @@ export default class Animate extends React.Component<Props, State> {
     if (isAnimationStatusChanged) {
       this.setState({
         ...defaultState,
-        played: isAnimationStatusChanged && startAnimation,
       });
     }
 
@@ -245,11 +249,11 @@ export default class Animate extends React.Component<Props, State> {
 
   render() {
     const { childrenStoreInState } = this.state;
-    const { tag } = this.props;
+    const { tag, children } = this.props;
 
     let componentProps: Object = {};
 
-    if (Array.isArray(childrenStoreInState)) {
+    if (Array.isArray(children)) {
       return React.createElement(
         tag || 'div',
         {},

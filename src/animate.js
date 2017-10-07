@@ -30,6 +30,7 @@ export type Props = {
   forceUpdate?: boolean,
   tag?: ?string,
   onComplete?: () => mixed,
+  onError?: () => mixed,
   className?: string,
   transition?: string,
 };
@@ -237,19 +238,25 @@ export default class Animate extends React.Component<Props, State> {
     this.animationEnterTimeout = null;
   }
 
+  componentDidCatch(error, info) {
+    this.props.onError(error, info);
+  }
+
   render() {
-    const { childrenStoreInState, animationWillLeave } = this.state;
+    const { childrenStoreInState } = this.state;
     const { tag } = this.props;
+
+    let componentProps: Object = {};
 
     if (Array.isArray(childrenStoreInState)) {
       return React.createElement(
         tag || 'div',
         {},
-        mapChildren(childrenStoreInState, tag, animationWillLeave),
+        mapChildren(this.props, this.state),
       );
     }
 
-    const componentProps = propsGenerator(this.props, this.state);
+    componentProps = propsGenerator(this.props, this.state);
 
     return React.createElement(
       tag || 'div',

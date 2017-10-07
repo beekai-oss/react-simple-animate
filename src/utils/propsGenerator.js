@@ -1,8 +1,6 @@
 // @flow
 import type { State, Props } from '../animate';
 
-type MountProps = { willUnmount: boolean, willMount: boolean };
-
 let style;
 
 let transition;
@@ -10,7 +8,7 @@ let transition;
 export default function propsGenerator(
   props: Props,
   state: State,
-  mountProps: MountProps = {
+  mountProps: { willUnmount: boolean, willMount: boolean } = {
     willUnmount: false,
     willMount: false,
   },

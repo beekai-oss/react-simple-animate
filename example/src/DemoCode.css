@@ -9,3 +9,16 @@
   width: 100%;
   overflow: auto;
 }
+
+.demoObject-title {
+  text-align: left;
+  font-size: 12px !important;
+  margin-bottom: 20px !important;
+}
+
+@media (min-width: 640px) {
+  .demoObject-title {
+    text-align: center;
+    font-size: 24px !important;
+  }
+}

@@ -24,5 +24,7 @@
 }
 
 .new-button {
+  width: 40px !important;
+  height: 40px !important;
   margin-right: 20px;
 }

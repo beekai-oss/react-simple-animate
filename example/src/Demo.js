@@ -6,6 +6,8 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
+import AddIcon from 'material-ui-icons/Add';
+import RemoveIcon from 'material-ui-icons/Remove';
 import Animate from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import './Demo.css';
@@ -37,6 +39,7 @@ export default class Demo extends React.Component {
     showCode: false,
     easyMode: false,
     count: 1,
+    keys: [],
   };
 
   handleChange = (name, value) => {
@@ -64,6 +67,37 @@ export default class Demo extends React.Component {
     }
   };
 
+  setKeys() {
+    this.setState(previousState => {
+      const { keys, count } = previousState;
+      const keysCopy = [...keys];
+
+      if (count > keys.length) {
+        keysCopy.push(new Date().getTime());
+      } else if (count < keys.length) {
+        keysCopy.pop();
+      }
+
+      return {
+        keys: keysCopy,
+      };
+    });
+  }
+
+  componentDidMount() {
+    this.setKeys();
+  }
+
+  clickHandler(item) {
+    this.setState(previousState => {
+      const { keys } = previousState;
+
+      return {
+        keys: keys.filter(key => key !== item),
+      };
+    });
+  }
+
   render() {
     const { startAnimation, easyMode } = this.state;
 
@@ -83,35 +117,39 @@ export default class Demo extends React.Component {
 
             {startAnimation && (
               <Button
+                fab
+                onClick={() => {
+                  this.setState(previousState => {
+                    return {
+                      count: --previousState.count,
+                    };
+                  });
+                  this.setKeys();
+                }}
+                color="accent"
+                aria-label="add"
                 className="new-button"
-                raised
+              >
+                <RemoveIcon />
+              </Button>
+            )}
+
+            {startAnimation && (
+              <Button
+                fab
                 onClick={() => {
                   this.setState(previousState => {
                     return {
                       count: ++previousState.count,
                     };
                   });
+                  this.setKeys();
                 }}
-              >
-                + New Item
-              </Button>
-            )}
-
-            {startAnimation && (
-              <Button
+                color="primary"
+                aria-label="add"
                 className="new-button"
-                raised
-                onClick={() => {
-                  this.setState(previousState => {
-                    if (previousState.count > 0) {
-                      return {
-                        count: --previousState.count,
-                      };
-                    }
-                  });
-                }}
               >
-                - Remove Item
+                <AddIcon />
               </Button>
             )}
           </Grid>
@@ -172,7 +210,10 @@ export default class Demo extends React.Component {
           </Grid>
 
           <Grid item xs={6} md={8}>
-            <DemoObject {...this.state} />
+            <DemoObject
+              {...this.state}
+              clickHandler={item => this.clickHandler(item)}
+            />
           </Grid>
 
           <Grid item xs={12}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
-import Animate from '../src/src/animate';
+import Animate from 'react-simple-animate';
+import Typography from 'material-ui/Typography';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {
@@ -22,9 +23,21 @@ export default function DemoObject({
   endStyle,
   durationSeconds,
   count,
+  keys,
+  clickHandler,
 }) {
   return (
     <div className="DemoObject-container">
+      <Animate
+        startAnimation={count > 1}
+        startStyle={{ ...parseJsonWithCatch(startStyle), maxHeight: 0 }}
+        endStyle={{ ...parseJsonWithCatch(endStyle), maxHeight: '100px' }}
+      >
+        <Typography type="headline" component="h2" className="demoObject-title">
+          Tap or click to remove the logo
+        </Typography>
+      </Animate>
+
       <Animate
         {...{
           delaySeconds,
@@ -40,16 +53,15 @@ export default function DemoObject({
         endStyle={parseJsonWithCatch(endStyle)}
         tag="span"
       >
-        {Array(count)
-          .fill()
-          .map((item, key) => (
-            <img
-              src={logo}
-              alt="logo"
-              className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
-              key={key}
-            />
-          ))}
+        {keys.map(item => (
+          <img
+            src={logo}
+            alt={`"logo id:${item}"`}
+            onClick={() => clickHandler(item)}
+            className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
+            key={item}
+          />
+        ))}
       </Animate>
     </div>
   );

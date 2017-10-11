@@ -231,8 +231,9 @@ describe('Animate', () => {
   });
 
   describe('when is animate prop value get changed', () => {
-    it('should trigger state reset', () => {
-      const tree = shallow(
+    it('should trigger state reset and clear all timers', () => {
+      const clearAllTimers = jest.fn();
+      const tree = mount(
         <Animate
           {...{
             ...props,
@@ -241,6 +242,8 @@ describe('Animate', () => {
           test
         </Animate>,
       );
+
+      tree.instance().clearAllTimers = clearAllTimers;
 
       tree.setState({
         animationWillEnd: true,
@@ -251,6 +254,7 @@ describe('Animate', () => {
       });
 
       expect(tree.state()).toEqual(defaultState);
+      expect(clearAllTimers).toBeCalled();
     });
   });
 

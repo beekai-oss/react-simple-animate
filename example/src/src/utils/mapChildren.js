@@ -12,33 +12,36 @@ function filterUnMountChildren(children: Array<React$Element<any>>) {
 export default function mapChildren(props: Props, state: State) {
   const { childrenStoreInState, animationWillLeave } = state;
 
-  console.log(state);
+  const tempChildren = childrenStoreInState.length
+    ? childrenStoreInState
+    : props.children;
 
   const children = animationWillLeave
     ? filterUnMountChildren(childrenStoreInState)
-    : childrenStoreInState;
+    : tempChildren;
 
-  return children.map((child: Object) => {
-    if (!child) return null;
+  return (
+    children &&
+    children.map((child: Object) => {
+      if (!child) return null;
 
-    const { willMount = false, willUnmount = false } = child;
+      const { willMount = false, willUnmount = false } = child;
 
-    componentProps = propsGenerator(
-      {
-        ...props,
-      },
-      state,
-      {
-        willUnmount,
-        willMount,
-      },
-    );
+      componentProps = propsGenerator(
+        {
+          ...props,
+        },
+        state,
+        {
+          willUnmount,
+          willMount,
+        },
+      );
 
-    console.log('componentProps', componentProps);
-
-    return React.cloneElement(child, {
-      ...{ ...child.props },
-      style: componentProps.style,
-    });
-  });
+      return React.cloneElement(child, {
+        ...{ ...child.props },
+        style: componentProps.style,
+      });
+    })
+  );
 }

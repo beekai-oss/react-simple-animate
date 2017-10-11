@@ -37,8 +37,6 @@ export default function propsGenerator(
   style = startStyle;
   transition = transitionValue || `${durationSeconds}s all ${easeType}`;
 
-  console.log(state);
-
   if (willMount) {
     style = animationWillEnter ? endStyle : startStyle;
   } else if (willUnmount) {

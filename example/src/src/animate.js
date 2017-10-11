@@ -101,7 +101,7 @@ export default class Animate extends React.Component<Props, State> {
     isReverseWithDelay: boolean = false,
   ): void {
     const delayTotalSeconds =
-      (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000;
+      parseFloat(delaySeconds) + parseFloat(durationSeconds);
 
     // delay animation
     if (!!delaySeconds && startAnimation) {
@@ -133,8 +133,15 @@ export default class Animate extends React.Component<Props, State> {
 
   compareChildren(nextProps: Props) {
     const { childrenStoreInState } = this.state;
-    const { children, startAnimation } = nextProps;
+    const {
+      children,
+      startAnimation,
+      delaySeconds,
+      durationSeconds,
+    } = nextProps;
     const childrenCount = Array.isArray(children) ? children.length : 1;
+    const delayTotalSeconds =
+      parseFloat(delaySeconds) + parseFloat(durationSeconds);
 
     if (
       Array.isArray(childrenStoreInState) &&
@@ -159,7 +166,7 @@ export default class Animate extends React.Component<Props, State> {
           clearTimeout(this.animationLeaveTimeout);
 
           this.animationLeaveTimeout = this.setAnimationDelay(
-            nextProps.durationSeconds,
+            delayTotalSeconds,
             'animationWillLeave',
             () => {
               this.setState({
@@ -173,7 +180,7 @@ export default class Animate extends React.Component<Props, State> {
           clearTimeout(this.animationEnterTimeout);
 
           this.animationEnterTimeout = this.setAnimationDelay(
-            0,
+            delayTotalSeconds,
             'animationWillEnter',
           );
         }
@@ -195,7 +202,7 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { startAnimation, reverseDelaySeconds } = nextProps;
+    const { startAnimation, reverseDelaySeconds, children } = nextProps;
     const isAnimationStatusChanged =
       startAnimation !== this.props.startAnimation;
 

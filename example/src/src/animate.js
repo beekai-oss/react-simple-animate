@@ -174,7 +174,7 @@ export default class Animate extends React.Component<Props, State> {
 
           this.animationEnterTimeout = this.setAnimationDelay(
             0,
-            'animationWillEnd',
+            'animationWillEnter',
           );
         }
       }

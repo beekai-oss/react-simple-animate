@@ -73,4 +73,3 @@ The following example demonstrate animate **individual** or **array of component
 | `onError` | function |  | Call back function after component error (**React 16 only**). |
 | `easeType` | string |  | Easing type refer to http://easings.net/ |
 | `className` | string |  | To specify a CSS class. |
-| `forceUpdate` | boolean |  | Force component to re-render. |

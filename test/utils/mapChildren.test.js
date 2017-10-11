@@ -4,7 +4,9 @@ describe('mapChildren', () => {
   it('should return null when childrenStoreInState is null', () => {
     expect(
       mapChildren(
-        {},
+        {
+          children: null,
+        },
         {
           childrenStoreInState: null,
         },

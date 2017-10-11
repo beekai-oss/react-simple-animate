@@ -10,6 +10,7 @@ export const defaultState = {
   animationWillComplete: false,
   animationWillEnter: false,
   animationWillLeave: false,
+  childWillMountOrUnmount: false,
   childrenStoreInState: [],
 };
 
@@ -40,6 +41,7 @@ export type State = {
   animationWillComplete: boolean,
   animationWillEnter: boolean,
   animationWillLeave: boolean,
+  childWillMountOrUnmount: boolean,
   childrenStoreInState?: Array<React$Element<any>> | React$Element<any> | null,
 };
 
@@ -54,6 +56,11 @@ export default class Animate extends React.Component<Props, State> {
 
   state: State;
 
+  animationTimeout = null;
+  animationCompleteTimeout = null;
+  animationLeaveTimeout = null;
+  animationEnterTimeout = null;
+
   constructor(props: Props) {
     super(props);
     if (props.children) {
@@ -61,7 +68,6 @@ export default class Animate extends React.Component<Props, State> {
         ...defaultState,
         childrenStoreInState: props.children,
       };
-
       return;
     }
 
@@ -69,11 +75,6 @@ export default class Animate extends React.Component<Props, State> {
       ...defaultState,
     };
   }
-
-  animationTimeout = null;
-  animationCompleteTimeout = null;
-  animationLeaveTimeout = null;
-  animationEnterTimeout = null;
 
   setAnimationDelay = (
     durationSeconds: number = 0,
@@ -132,32 +133,31 @@ export default class Animate extends React.Component<Props, State> {
 
   compareChildren(nextProps: Props) {
     const { childrenStoreInState } = this.state;
-    const { children } = nextProps;
+    const { children, startAnimation } = nextProps;
     const childrenCount = Array.isArray(children) ? children.length : 1;
 
     if (
       Array.isArray(childrenStoreInState) &&
       childrenStoreInState.length !== childrenCount
     ) {
-      this.setState({
-        animationWillEnter: false,
-        animationWillLeave: false,
-      });
-    }
-
-    if (childrenStoreInState && children) {
       const { mappedChildren, willUnMount, willMount } = filterMountOrUnMount(
         childrenStoreInState,
         children,
       );
+
+      this.setState({
+        animationWillEnter: false,
+        animationWillLeave: false,
+      });
 
       if (Array.isArray(mappedChildren)) {
         this.setState({
           childrenStoreInState: mappedChildren,
         });
 
-        if (willUnMount) {
+        if (willUnMount && startAnimation) {
           clearTimeout(this.animationLeaveTimeout);
+
           this.animationLeaveTimeout = this.setAnimationDelay(
             nextProps.durationSeconds,
             'animationWillLeave',
@@ -169,14 +169,28 @@ export default class Animate extends React.Component<Props, State> {
           );
         }
 
-        if (willMount) {
+        if (willMount && startAnimation) {
           clearTimeout(this.animationEnterTimeout);
+
           this.animationEnterTimeout = this.setAnimationDelay(
             0,
-            'animationWillEnter',
+            'animationWillEnd',
           );
         }
       }
+    } else if (
+      !this.props.startAnimation &&
+      childrenStoreInState.length === 1
+    ) {
+      this.setState({
+        childrenStoreInState,
+      });
+
+      clearTimeout(this.animationEnterTimeout);
+      this.animationEnterTimeout = this.setAnimationDelay(
+        0,
+        'animationWillEnter',
+      );
     }
   }
 
@@ -184,6 +198,10 @@ export default class Animate extends React.Component<Props, State> {
     const { startAnimation, reverseDelaySeconds } = nextProps;
     const isAnimationStatusChanged =
       startAnimation !== this.props.startAnimation;
+
+    this.setState({
+      childrenStoreInState: nextProps.children,
+    });
 
     if (isAnimationStatusChanged) {
       this.setState({
@@ -250,14 +268,14 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    const { tag, children } = this.props;
-
     let componentProps: Object = {};
+    const { tag, children } = this.props;
 
     if (Array.isArray(children)) {
       return React.createElement(
         tag || 'div',
         {},
+        // children,
         mapChildren(this.props, this.state),
       );
     }

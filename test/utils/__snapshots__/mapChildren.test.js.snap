@@ -2,18 +2,13 @@
 
 exports[`mapChildren when animationWillLeave set to false should not filter components 1`] = `
 Array [
-  <div
-    className={undefined}
+  <Unknown
     style={
         Object {
             "transition": "0.3s all linear",
           }
     }
->
-    Object {
-        "willUnmount": true,
-      }
-</div>,
+/>,
 ]
 `;
 

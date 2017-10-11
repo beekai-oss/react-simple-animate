@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import Animate from 'react-simple-animate';
+import Animate from './src/animate';
 import Typography from 'material-ui/Typography';
 import './DemoObject.css';
 

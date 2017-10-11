@@ -4,24 +4,23 @@ import propsGenerator from './propsGenerator';
 import type { Props, State } from '../animate';
 
 let componentProps = null;
-let temp: Array<React$Element<any>> = [];
 
 function filterUnMountChildren(children: Array<React$Element<any>>) {
   return children.filter((child: Object) => !child.willUnmount);
 }
 
 export default function mapChildren(props: Props, state: State) {
-  const { children } = props;
   const { childrenStoreInState, animationWillLeave } = state;
 
-  if (!Array.isArray(childrenStoreInState)) {
-    return children;
-  }
-  temp = childrenStoreInState;
+  console.log(state);
 
-  if (animationWillLeave) temp = filterUnMountChildren(childrenStoreInState);
+  const children = animationWillLeave
+    ? filterUnMountChildren(childrenStoreInState)
+    : childrenStoreInState;
 
-  return temp.map((child: Object) => {
+  return children.map((child: Object) => {
+    if (!child) return null;
+
     const { willMount = false, willUnmount = false } = child;
 
     componentProps = propsGenerator(
@@ -34,6 +33,8 @@ export default function mapChildren(props: Props, state: State) {
         willMount,
       },
     );
+
+    console.log('componentProps', componentProps);
 
     return React.cloneElement(child, {
       ...{ ...child.props },

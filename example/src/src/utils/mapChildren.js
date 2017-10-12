@@ -12,16 +12,18 @@ function filterUnMountChildren(children: Array<React$Element<any>>) {
 export default function mapChildren(props: Props, state: State) {
   const { childrenStoreInState, animationWillLeave } = state;
 
-  const tempChildren = childrenStoreInState.length
-    ? childrenStoreInState
-    : props.children;
+  const tempChildren =
+    Array.isArray(childrenStoreInState) && childrenStoreInState.length
+      ? childrenStoreInState
+      : props.children;
 
-  const children = animationWillLeave
-    ? filterUnMountChildren(childrenStoreInState)
-    : tempChildren;
+  const children =
+    animationWillLeave && Array.isArray(childrenStoreInState)
+      ? filterUnMountChildren(childrenStoreInState)
+      : tempChildren;
 
   return (
-    children &&
+    Array.isArray(children) &&
     children.map((child: Object) => {
       if (!child) return null;
 

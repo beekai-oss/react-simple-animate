@@ -31,13 +31,15 @@ export default function filterMountOrUnMount(
         willUnmount: false,
         willMount: false,
       });
-    } else {
-      result.willUnMount = true;
-      result.mappedChildren.push({
-        ...element,
-        willUnmount: true,
-      });
+      return null;
     }
+
+    result.willUnMount = true;
+    result.mappedChildren.push({
+      ...element,
+      willUnmount: true,
+    });
+    return null;
   });
 
   // append missing child

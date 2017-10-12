@@ -4,40 +4,45 @@ import propsGenerator from './propsGenerator';
 import type { Props, State } from '../animate';
 
 let componentProps = null;
-let temp: Array<React$Element<any>> = [];
 
 function filterUnMountChildren(children: Array<React$Element<any>>) {
   return children.filter((child: Object) => !child.willUnmount);
 }
 
 export default function mapChildren(props: Props, state: State) {
-  const { children } = props;
   const { childrenStoreInState, animationWillLeave } = state;
 
-  if (!Array.isArray(childrenStoreInState)) {
-    return children;
-  }
-  temp = childrenStoreInState;
+  const tempChildren = Array.isArray(childrenStoreInState)
+    ? childrenStoreInState
+    : props.children;
 
-  if (animationWillLeave) temp = filterUnMountChildren(childrenStoreInState);
+  const children =
+    animationWillLeave && Array.isArray(childrenStoreInState)
+      ? filterUnMountChildren(childrenStoreInState)
+      : tempChildren;
 
-  return temp.map((child: Object) => {
-    const { willMount = false, willUnmount = false } = child;
+  return (
+    Array.isArray(children) &&
+    children.map((child: Object) => {
+      if (!child) return null;
 
-    componentProps = propsGenerator(
-      {
-        ...props,
-      },
-      state,
-      {
-        willUnmount,
-        willMount,
-      },
-    );
+      const { willMount = false, willUnmount = false } = child;
 
-    return React.cloneElement(child, {
-      ...{ ...child.props },
-      style: componentProps.style,
-    });
-  });
+      componentProps = propsGenerator(
+        {
+          ...props,
+        },
+        state,
+        {
+          willUnmount,
+          willMount,
+        },
+      );
+
+      return React.cloneElement(child, {
+        ...{ ...child.props },
+        style: componentProps.style,
+      });
+    })
+  );
 }

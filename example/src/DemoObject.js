@@ -28,7 +28,7 @@ export default function DemoObject({
 }) {
   return (
     <div className="DemoObject-container">
-      {/* <Animate
+      <Animate
         startAnimation={count > 1}
         startStyle={{ ...parseJsonWithCatch(startStyle), maxHeight: 0 }}
         endStyle={{ ...parseJsonWithCatch(endStyle), maxHeight: '100px' }}
@@ -36,7 +36,7 @@ export default function DemoObject({
         <Typography type="headline" component="h2" className="demoObject-title">
           Tap or click to remove the logo
         </Typography>
-      </Animate> */}
+      </Animate>
 
       <Animate
         {...{

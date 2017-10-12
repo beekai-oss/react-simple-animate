@@ -78,6 +78,7 @@ Object {
       "key": 1,
       "willMount": true,
     },
+    null,
   ],
   "willMount": true,
   "willUnMount": false,
@@ -99,7 +100,9 @@ Object {
 
 exports[`filterMountOrUnMount should work fine with both empty 1`] = `
 Object {
-  "mappedChildren": Array [],
+  "mappedChildren": Array [
+    null,
+  ],
   "willMount": false,
   "willUnMount": false,
 }

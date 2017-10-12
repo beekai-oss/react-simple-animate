@@ -10,7 +10,6 @@ export const defaultState = {
   animationWillComplete: false,
   animationWillEnter: false,
   animationWillLeave: false,
-  childWillMountOrUnmount: false,
   childrenStoreInState: [],
 };
 
@@ -41,7 +40,6 @@ export type State = {
   animationWillComplete: boolean,
   animationWillEnter: boolean,
   animationWillLeave: boolean,
-  childWillMountOrUnmount: boolean,
   childrenStoreInState?: Array<React$Element<any>> | React$Element<any> | null,
 };
 
@@ -63,16 +61,9 @@ export default class Animate extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    if (props.children) {
-      this.state = {
-        ...defaultState,
-        childrenStoreInState: props.children,
-      };
-      return;
-    }
-
     this.state = {
       ...defaultState,
+      ...(props.children ? { childrenStoreInState: props.children } : null),
     };
   }
 
@@ -100,9 +91,6 @@ export default class Animate extends React.Component<Props, State> {
     }: Props,
     isReverseWithDelay: boolean = false,
   ): void {
-    const delayTotalSeconds =
-      parseFloat(delaySeconds) + parseFloat(durationSeconds);
-
     // delay animation
     if (!!delaySeconds && startAnimation) {
       clearTimeout(this.animationTimeout);
@@ -125,7 +113,7 @@ export default class Animate extends React.Component<Props, State> {
 
     clearTimeout(this.animationCompleteTimeout);
     this.animationCompleteTimeout = this.setAnimationDelay(
-      delayTotalSeconds,
+      parseFloat(delaySeconds) + parseFloat(durationSeconds),
       'animationWillComplete',
       onComplete,
     );
@@ -139,13 +127,12 @@ export default class Animate extends React.Component<Props, State> {
       delaySeconds,
       durationSeconds,
     } = nextProps;
-    const childrenCount = Array.isArray(children) ? children.length : 1;
-    const delayTotalSeconds =
-      parseFloat(delaySeconds) + parseFloat(durationSeconds);
+
+    if (!Array.isArray(childrenStoreInState)) return;
 
     if (
-      Array.isArray(childrenStoreInState) &&
-      childrenStoreInState.length !== childrenCount
+      Array.isArray(children) &&
+      childrenStoreInState.length !== children.length
     ) {
       const { mappedChildren, willUnMount, willMount } = filterMountOrUnMount(
         childrenStoreInState,
@@ -155,40 +142,32 @@ export default class Animate extends React.Component<Props, State> {
       this.setState({
         animationWillEnter: false,
         animationWillLeave: false,
+        childrenStoreInState: mappedChildren,
       });
 
-      if (Array.isArray(mappedChildren)) {
-        this.setState({
-          childrenStoreInState: mappedChildren,
-        });
+      if (willUnMount && startAnimation) {
+        clearTimeout(this.animationLeaveTimeout);
 
-        if (willUnMount && startAnimation) {
-          clearTimeout(this.animationLeaveTimeout);
-
-          this.animationLeaveTimeout = this.setAnimationDelay(
-            delayTotalSeconds,
-            'animationWillLeave',
-            () => {
-              this.setState({
-                childrenStoreInState: children,
-              });
-            },
-          );
-        }
-
-        if (willMount && startAnimation) {
-          clearTimeout(this.animationEnterTimeout);
-
-          this.animationEnterTimeout = this.setAnimationDelay(
-            delayTotalSeconds,
-            'animationWillEnter',
-          );
-        }
+        this.animationLeaveTimeout = this.setAnimationDelay(
+          durationSeconds,
+          'animationWillLeave',
+          () => {
+            this.setState({
+              childrenStoreInState: children,
+            });
+          },
+        );
       }
-    } else if (
-      !this.props.startAnimation &&
-      childrenStoreInState.length === 1
-    ) {
+
+      if (willMount && startAnimation) {
+        clearTimeout(this.animationEnterTimeout);
+
+        this.animationEnterTimeout = this.setAnimationDelay(
+          delaySeconds,
+          'animationWillEnter',
+        );
+      }
+    } else if (!startAnimation && childrenStoreInState.length === 1) {
       this.setState({
         childrenStoreInState,
       });
@@ -207,14 +186,9 @@ export default class Animate extends React.Component<Props, State> {
       startAnimation !== this.props.startAnimation;
 
     this.setState({
-      childrenStoreInState: nextProps.children,
+      childrenStoreInState: children,
+      ...(isAnimationStatusChanged ? { ...{ ...defaultState } } : null),
     });
-
-    if (isAnimationStatusChanged) {
-      this.setState({
-        ...defaultState,
-      });
-    }
 
     this.compareChildren(nextProps);
 
@@ -282,7 +256,6 @@ export default class Animate extends React.Component<Props, State> {
       return React.createElement(
         tag || 'div',
         {},
-        // children,
         mapChildren(this.props, this.state),
       );
     }

@@ -1,7 +1,7 @@
 import mapChildren from '../../src/utils/mapChildren';
 
 describe('mapChildren', () => {
-  it('should return null when childrenStoreInState is null', () => {
+  it.skip('should return null when childrenStoreInState is null', () => {
     expect(
       mapChildren(
         {

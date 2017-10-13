@@ -1,7 +1,7 @@
 // @flow
 type Result = {
   mappedChildren: Array<any>,
-  willUnMount: boolean,
+  willUnmount: boolean,
   willMount: boolean,
 };
 
@@ -9,10 +9,13 @@ export default function filterMountOrUnMount(
   childrenStoreInState: Object | Array<React$Element<any>>,
   children: Object | Array<React$Element<any>>,
 ): Result {
+  const defaultState = {
+    willUnmount: false,
+    willMount: false,
+  };
   const result: Result = {
     mappedChildren: [],
-    willUnMount: false,
-    willMount: false,
+    ...{ ...defaultState },
   };
   const childrenShallowCopy = Array.isArray(children) ? children : [children];
   const childrenStoreInStateShallowCopy = Array.isArray(childrenStoreInState)
@@ -20,27 +23,28 @@ export default function filterMountOrUnMount(
     : [childrenStoreInState];
 
   // any children got removed
-  childrenStoreInStateShallowCopy.forEach((element: React$Element<any>) => {
-    if (!element || !Object.prototype.hasOwnProperty.call(element, 'key')) {
-      return result.mappedChildren.push(null);
-    }
+  result.mappedChildren = childrenStoreInStateShallowCopy.map(
+    (element: React$Element<any>) => {
+      if (!element || !Object.prototype.hasOwnProperty.call(element, 'key')) {
+        return null;
+      }
 
-    if (childrenShallowCopy.find(child => child && child.key === element.key)) {
-      result.mappedChildren.push({
+      if (
+        childrenShallowCopy.find(child => child && child.key === element.key)
+      ) {
+        return {
+          ...element,
+          ...{ ...defaultState },
+        };
+      }
+
+      result.willUnmount = true;
+      return {
         ...element,
-        willUnmount: false,
-        willMount: false,
-      });
-      return null;
-    }
-
-    result.willUnMount = true;
-    result.mappedChildren.push({
-      ...element,
-      willUnmount: true,
-    });
-    return null;
-  });
+        willUnmount: true,
+      };
+    },
+  );
 
   // append missing child
   childrenShallowCopy.forEach((child, index) => {

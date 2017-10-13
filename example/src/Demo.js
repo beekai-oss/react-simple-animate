@@ -8,7 +8,7 @@ import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
 import AddIcon from 'material-ui-icons/Add';
 import RemoveIcon from 'material-ui-icons/Remove';
-import Animate from 'react-simple-animate';
+import Animate from './src/animate';
 import { fields, selectOptions } from './DemoData';
 import './Demo.css';
 

@@ -105,7 +105,7 @@ export default class Animate extends React.Component<Props, State> {
 
     clearTimeout(this.animationCompleteTimeout);
     this.animationCompleteTimeout = this.setAnimationDelay(
-      parseFloat(delaySeconds) + parseFloat(durationSeconds),
+      parseFloat(delaySeconds) || 0 + parseFloat(durationSeconds) || 0,
       'animationWillComplete',
       onComplete,
     );
@@ -120,13 +120,12 @@ export default class Animate extends React.Component<Props, State> {
       durationSeconds,
     } = nextProps;
 
-    if (!Array.isArray(childrenStoreInState)) return;
+    if (!Array.isArray(childrenStoreInState) || !Array.isArray(children)) {
+      return;
+    }
 
-    if (
-      Array.isArray(children) &&
-      childrenStoreInState.length !== children.length
-    ) {
-      const { mappedChildren, willUnMount, willMount } = filterMountOrUnMount(
+    if (childrenStoreInState.length !== children.length) {
+      const { mappedChildren, willUnmount, willMount } = filterMountOrUnMount(
         childrenStoreInState,
         children,
       );
@@ -137,7 +136,7 @@ export default class Animate extends React.Component<Props, State> {
         childrenStoreInState: mappedChildren,
       });
 
-      if (willUnMount && startAnimation) {
+      if (willUnmount && startAnimation) {
         clearTimeout(this.animationLeaveTimeout);
 
         this.animationLeaveTimeout = this.setAnimationDelay(
@@ -182,12 +181,14 @@ export default class Animate extends React.Component<Props, State> {
       ...(isAnimationStatusChanged ? { ...{ ...defaultState } } : null),
     });
 
-    this.compareChildren(nextProps);
-
-    this.setDelayAndOnComplete(
-      nextProps,
-      isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
-    );
+    if (Array.isArray(children)) {
+      this.compareChildren(nextProps);
+    } else {
+      this.setDelayAndOnComplete(
+        nextProps,
+        isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
+      );
+    }
   }
 
   componentDidMount() {
@@ -241,19 +242,23 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    let componentProps: Object = {};
-    const { tag, children } = this.props;
+    const { tag, children, className } = this.props;
+    const tagName = tag || 'div';
 
     if (Array.isArray(children)) {
       return React.createElement(
-        tag || 'div',
-        {}, // need to add the className here
+        tagName,
+        {
+          className,
+        }, // need to add the className here
         mapChildren(this.props, this.state),
       );
     }
 
-    componentProps = propsGenerator(this.props, this.state);
-
-    return React.createElement(tag || 'div', componentProps, children);
+    return React.createElement(
+      tagName,
+      propsGenerator(this.props, this.state),
+      children,
+    );
   }
 }

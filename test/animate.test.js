@@ -363,7 +363,7 @@ describe('Animate', () => {
   });
 
   describe('When animation finished and onComplete function is supplied', () => {
-    it('should run the onComplete function', () => {
+    it.only('should run the onComplete function', () => {
       const onCompleteFunction = jest.fn();
       const tree = mount(
         <Animate

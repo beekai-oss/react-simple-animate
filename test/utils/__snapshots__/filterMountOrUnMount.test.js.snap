@@ -35,7 +35,7 @@ Object {
     },
   ],
   "willMount": true,
-  "willUnMount": true,
+  "willUnmount": true,
 }
 `;
 
@@ -53,7 +53,7 @@ Object {
     },
   ],
   "willMount": false,
-  "willUnMount": true,
+  "willUnmount": true,
 }
 `;
 
@@ -67,7 +67,7 @@ Object {
     },
   ],
   "willMount": false,
-  "willUnMount": false,
+  "willUnmount": false,
 }
 `;
 
@@ -81,7 +81,7 @@ Object {
     null,
   ],
   "willMount": true,
-  "willUnMount": false,
+  "willUnmount": false,
 }
 `;
 
@@ -94,7 +94,7 @@ Object {
     },
   ],
   "willMount": false,
-  "willUnMount": true,
+  "willUnmount": true,
 }
 `;
 
@@ -104,7 +104,7 @@ Object {
     null,
   ],
   "willMount": false,
-  "willUnMount": false,
+  "willUnmount": false,
 }
 `;
 
@@ -121,6 +121,6 @@ Object {
     },
   ],
   "willMount": true,
-  "willUnMount": true,
+  "willUnmount": true,
 }
 `;

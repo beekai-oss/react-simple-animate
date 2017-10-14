@@ -66,10 +66,11 @@ The following example demonstrate animate **individual** or **array of component
 | `endStyle` | string | ✓ | Component transition to inline style. |
 | `tag` | string |  |  Default tag is div, this allow custom tag to be wrap around. |
 | `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
-| `durationSeconds` | number |  | How long the animation takes in seconds. |
+| `durationSeconds` | number |  | How long the animation takes in seconds, same apply to mount and unmount. |
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |
 | `reverseDelaySeconds` | number |  | How much delay should apply when reverse/toggle animation. |
 | `onComplete` | function |  | Call back function after animation complete. |
 | `onError` | function |  | Call back function after component error (**React 16 only**). |
 | `easeType` | string |  | Easing type refer to http://easings.net/ |
 | `className` | string |  | To specify a CSS class. |
+| `forceUpdate` | boolean |  | Force component to re-render. |

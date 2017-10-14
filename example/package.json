@@ -9,7 +9,7 @@
     "react-dom": "^15.6.1",
     "react-highlight": "^0.10.0",
     "react-scripts": "^1.0.11",
-    "react-simple-animate": "1.7.0-beta.4"
+    "react-simple-animate": "1.7.0-beta.5"
   },
   "scripts": {
     "start": "react-scripts start",

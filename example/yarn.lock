@@ -5309,9 +5309,9 @@ react-scrollbar-size@^2.0.2:
     prop-types "^15.5.10"
     react-event-listener "^0.5.0"
 
-react-simple-animate@1.7.0-beta.4:
-  version "1.7.0-beta.4"
-  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.7.0-beta.4.tgz#bd775572cd1b65b00e920354a34e21006b55afd2"
+react-simple-animate@1.7.0-beta.5:
+  version "1.7.0-beta.5"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.7.0-beta.5.tgz#ba48cca86ebc18f7348881d948261f1bc320c0f0"
   dependencies:
     react "^15.6.1"
     react-dom "^15.6.1"

@@ -7,7 +7,7 @@
 }
 
 .demo-section-input {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .demo-button {

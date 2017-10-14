@@ -5,9 +5,12 @@ type Result = {
   willMount: boolean,
 };
 
-export default function filterMountOrUnMount(
-  childrenStoreInState: Object | Array<React$Element<any>>,
-  children: Object | Array<React$Element<any>>,
+const findChild = (children, child) =>
+  children.find(r => r && r.key === child.key);
+
+export default function filterMountOrUnmount(
+  childrenStoreInState: Array<React$Element<any>>,
+  children: Array<React$Element<any>>,
 ): Result {
   const defaultState = {
     willUnmount: false,
@@ -17,41 +20,35 @@ export default function filterMountOrUnMount(
     mappedChildren: [],
     ...{ ...defaultState },
   };
-  const childrenShallowCopy = Array.isArray(children) ? children : [children];
-  const childrenStoreInStateShallowCopy = Array.isArray(childrenStoreInState)
-    ? childrenStoreInState
-    : [childrenStoreInState];
 
   // any children got removed
-  result.mappedChildren = childrenStoreInStateShallowCopy.map(
-    (element: React$Element<any>) => {
-      if (!element || !Object.prototype.hasOwnProperty.call(element, 'key')) {
+  result.mappedChildren = childrenStoreInState.map(
+    (child: React$Element<any>) => {
+      if (!child || !Object.prototype.hasOwnProperty.call(child, 'key')) {
         return null;
       }
 
-      if (
-        childrenShallowCopy.find(child => child && child.key === element.key)
-      ) {
+      if (findChild(children, child)) {
         return {
-          ...element,
+          ...child,
           ...{ ...defaultState },
         };
       }
 
       result.willUnmount = true;
       return {
-        ...element,
+        ...child,
         willUnmount: true,
       };
     },
   );
 
   // append missing child
-  childrenShallowCopy.forEach((child, index) => {
+  children.forEach((child, index) => {
     if (
       child &&
       Object.prototype.hasOwnProperty.call(child, 'key') &&
-      !result.mappedChildren.find(r => r && r.key === child.key)
+      !findChild(result.mappedChildren, child)
     ) {
       result.willMount = true;
       result.mappedChildren.splice(index === 0 ? 0 : index + 1, 0, {

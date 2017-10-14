@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
 import propsGenerator from './utils/propsGenerator';
-import filterMountOrUnMount from './utils/filterMountOrUnMount';
+import filterMountOrUnmount from './utils/filterMountOrUnmount';
 import mapChildren from './utils/mapChildren';
+import setAnimationDelay from './utils/setAnimationDelay';
 
 export const defaultState = {
   animationWillEnd: false,
@@ -44,13 +45,6 @@ export type State = {
 };
 
 export default class Animate extends React.Component<Props, State> {
-  state: State;
-
-  animationTimeout = null;
-  animationCompleteTimeout = null;
-  animationLeaveTimeout = null;
-  animationEnterTimeout = null;
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -59,116 +53,10 @@ export default class Animate extends React.Component<Props, State> {
     };
   }
 
-  setAnimationDelay = (
-    durationSeconds: number = 0,
-    stateName: string,
-    callback?: () => mixed,
-  ): number =>
-    setTimeout(() => {
-      this.setState({
-        [stateName]: true,
-      });
+  state: State;
 
-      if (callback) callback();
-    }, parseFloat(durationSeconds) * 1000);
-
-  setDelayAndOnComplete(
-    {
-      delaySeconds,
-      startAnimation,
-      onCompleteStyle,
-      durationSeconds,
-      onComplete,
-      reverseDelaySeconds,
-    }: Props,
-    isReverseWithDelay: boolean = false,
-  ): void {
-    // delay animation
-    if (!!delaySeconds && startAnimation) {
-      clearTimeout(this.animationTimeout);
-      this.animationTimeout = this.setAnimationDelay(
-        delaySeconds,
-        'animationWillEnd',
-      );
-    }
-
-    // reverse animation
-    if (isReverseWithDelay) {
-      clearTimeout(this.animationTimeout);
-      this.animationTimeout = this.setAnimationDelay(
-        reverseDelaySeconds,
-        'animationWillStart',
-      );
-    }
-
-    if ((!onComplete && !onCompleteStyle) || !startAnimation) return;
-
-    clearTimeout(this.animationCompleteTimeout);
-    this.animationCompleteTimeout = this.setAnimationDelay(
-      parseFloat(delaySeconds) || 0 + parseFloat(durationSeconds) || 0,
-      'animationWillComplete',
-      onComplete,
-    );
-  }
-
-  compareChildren(nextProps: Props) {
-    const { childrenStoreInState } = this.state;
-    const {
-      children,
-      startAnimation,
-      delaySeconds,
-      durationSeconds,
-    } = nextProps;
-
-    if (!Array.isArray(childrenStoreInState) || !Array.isArray(children)) {
-      return;
-    }
-
-    if (childrenStoreInState.length !== children.length) {
-      const { mappedChildren, willUnmount, willMount } = filterMountOrUnMount(
-        childrenStoreInState,
-        children,
-      );
-
-      this.setState({
-        animationWillEnter: false,
-        animationWillLeave: false,
-        childrenStoreInState: mappedChildren,
-      });
-
-      if (willUnmount && startAnimation) {
-        clearTimeout(this.animationLeaveTimeout);
-
-        this.animationLeaveTimeout = this.setAnimationDelay(
-          durationSeconds,
-          'animationWillLeave',
-          () => {
-            this.setState({
-              childrenStoreInState: children,
-            });
-          },
-        );
-      }
-
-      if (willMount && startAnimation) {
-        clearTimeout(this.animationEnterTimeout);
-
-        this.animationEnterTimeout = this.setAnimationDelay(
-          delaySeconds,
-          'animationWillEnter',
-        );
-      }
-    } else if (!startAnimation && childrenStoreInState.length === 1) {
-      this.setState({
-        childrenStoreInState,
-      });
-
-      clearTimeout(this.animationEnterTimeout);
-      this.animationEnterTimeout = this.setAnimationDelay(
-        0,
-        'animationWillEnter',
-      );
-    }
+  componentDidMount() {
+    this.setDelayAndOnComplete(this.props);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -181,18 +69,12 @@ export default class Animate extends React.Component<Props, State> {
       ...(isAnimationStatusChanged ? { ...{ ...defaultState } } : null),
     });
 
-    if (Array.isArray(children)) {
-      this.compareChildren(nextProps);
-    } else {
-      this.setDelayAndOnComplete(
-        nextProps,
-        isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
-      );
-    }
-  }
+    this.compareChildren(nextProps);
 
-  componentDidMount() {
-    this.setDelayAndOnComplete(this.props);
+    this.setDelayAndOnComplete(
+      nextProps,
+      isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
+    );
   }
 
   shouldComponentUpdate(
@@ -235,6 +117,111 @@ export default class Animate extends React.Component<Props, State> {
     this.animationLeaveTimeout = null;
     this.animationEnterTimeout = null;
   }
+
+  setDelayAndOnComplete(
+    {
+      delaySeconds,
+      startAnimation,
+      onCompleteStyle,
+      durationSeconds,
+      onComplete,
+      reverseDelaySeconds,
+    }: Props,
+    isReverseWithDelay: boolean = false,
+  ): void {
+    // delay animation
+    if (!!delaySeconds && startAnimation) {
+      clearTimeout(this.animationTimeout);
+      this.animationTimeout = setAnimationDelay.call(
+        this,
+        delaySeconds,
+        'animationWillEnd',
+      );
+    }
+
+    // reverse animation
+    if (isReverseWithDelay) {
+      clearTimeout(this.animationTimeout);
+      this.animationTimeout = setAnimationDelay.call(
+        this,
+        reverseDelaySeconds,
+        'animationWillStart',
+      );
+    }
+
+    if ((!onComplete && !onCompleteStyle) || !startAnimation) return;
+
+    clearTimeout(this.animationCompleteTimeout);
+    this.animationCompleteTimeout = setAnimationDelay.call(
+      this,
+      parseFloat(delaySeconds) || 0 + parseFloat(durationSeconds) || 0,
+      'animationWillComplete',
+      onComplete,
+    );
+  }
+
+  compareChildren(nextProps: Props): void {
+    const { childrenStoreInState } = this.state;
+    const { children, startAnimation, durationSeconds } = nextProps;
+
+    if (!Array.isArray(childrenStoreInState) || !Array.isArray(children)) {
+      return;
+    }
+
+    if (childrenStoreInState.length !== children.length) {
+      const { mappedChildren, willUnmount, willMount } = filterMountOrUnmount(
+        childrenStoreInState,
+        children,
+      );
+
+      this.setState({
+        animationWillEnter: false,
+        animationWillLeave: false,
+        childrenStoreInState: mappedChildren,
+      });
+
+      if (willUnmount && startAnimation) {
+        clearTimeout(this.animationLeaveTimeout);
+
+        this.animationLeaveTimeout = setAnimationDelay.call(
+          this,
+          durationSeconds,
+          'animationWillLeave',
+          () => {
+            this.setState({
+              childrenStoreInState: children,
+            });
+          },
+        );
+      }
+
+      if (willMount && startAnimation) {
+        clearTimeout(this.animationEnterTimeout);
+
+        this.animationEnterTimeout = setAnimationDelay.call(
+          this,
+          0,
+          'animationWillEnter',
+        );
+      }
+    } else if (!startAnimation) {
+      this.setState({
+        childrenStoreInState,
+      });
+
+      clearTimeout(this.animationEnterTimeout);
+      this.animationEnterTimeout = setAnimationDelay.call(
+        this,
+        0,
+        'animationWillEnter',
+      );
+    }
+  }
+
+  animationTimeout = null;
+  animationCompleteTimeout = null;
+  animationLeaveTimeout = null;
+  animationEnterTimeout = null;
 
   componentDidCatch(error: Object, info: Object) {
     const { onError = false } = this.props;

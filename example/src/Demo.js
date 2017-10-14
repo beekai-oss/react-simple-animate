@@ -115,7 +115,10 @@ export default class Demo extends React.Component {
               }
             />
 
-            {startAnimation && (
+            <Animate
+              startAnimation={startAnimation}
+              {...{ startStyle, endStyle }}
+            >
               <Button
                 fab
                 onClick={() => {
@@ -132,9 +135,12 @@ export default class Demo extends React.Component {
               >
                 <RemoveIcon />
               </Button>
-            )}
+            </Animate>
 
-            {startAnimation && (
+            <Animate
+              startAnimation={startAnimation}
+              {...{ startStyle, endStyle }}
+            >
               <Button
                 fab
                 onClick={() => {
@@ -151,7 +157,7 @@ export default class Demo extends React.Component {
               >
                 <AddIcon />
               </Button>
-            )}
+            </Animate>
           </Grid>
 
           <Grid item xs={6} md={4}>

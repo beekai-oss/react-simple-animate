@@ -14,7 +14,9 @@ exports[`Animate should render correctly 1`] = `
 `;
 
 exports[`Animate should render correctly for children 1`] = `
-<div>
+<div
+  className="test"
+>
   <div
     style={
       Object {

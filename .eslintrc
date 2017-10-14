@@ -1,17 +1,11 @@
 {
-  "extends": [
-    "airbnb", 
-    "plugin:flowtype/recommended"
-  ],
+  "extends": ["airbnb", "plugin:flowtype/recommended"],
   "rules": {
     "flowtype/define-flow-type": 2,
-    "react/sort-comp": 0,
     "react/prop-types": 0,
     "react/no-unused-prop-types": 0,
-    "react/jsx-filename-extension": 0,
+    "react/jsx-filename-extension": 0
   },
   "parser": "babel-eslint",
-  "plugins": [
-    "flowtype"
-  ],
+  "plugins": ["flowtype"]
 }

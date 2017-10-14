@@ -8,7 +8,7 @@ import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
 import AddIcon from 'material-ui-icons/Add';
 import RemoveIcon from 'material-ui-icons/Remove';
-import Animate from './src/animate';
+import Animate from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import './Demo.css';
 
@@ -117,6 +117,7 @@ export default class Demo extends React.Component {
 
             <Animate
               startAnimation={startAnimation}
+              tag="span"
               {...{ startStyle, endStyle }}
             >
               <Button
@@ -139,6 +140,7 @@ export default class Demo extends React.Component {
 
             <Animate
               startAnimation={startAnimation}
+              tag="span"
               {...{ startStyle, endStyle }}
             >
               <Button

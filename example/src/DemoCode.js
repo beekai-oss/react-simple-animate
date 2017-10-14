@@ -13,6 +13,7 @@ export default function DemoCode({
   reverseDelaySeconds,
   onCompleteStyle,
   durationSeconds,
+  count,
 }) {
   return (
     <section className="DemoCode-container">
@@ -41,7 +42,14 @@ export default function DemoCode({
       startStyle={${startStyle}}
       endStyle={${endStyle}
     >
-      <img src="logo" alt="logo" className="demo-logo" />
+      ${count <= 1
+        ? `<img src="logo" alt="logo" className="demo-logo" />`
+        : `{keys.map(item => (
+        <img
+          src={logo}
+          key={item}
+        />
+      ))}`}
     </Animate>
               `}
         </Highlight>

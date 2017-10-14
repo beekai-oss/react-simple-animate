@@ -21,12 +21,11 @@ export type Props = {
   children?: Array<React$Element<any>> | React$Element<any> | null,
   startStyle?: Style,
   endStyle: Style,
-  leavelStyle: Style,
   onCompleteStyle?: Style,
   durationSeconds?: number,
   delaySeconds?: number,
   reverseDelaySeconds?: number,
-  easeType: string,
+  easeType?: string,
   forceUpdate?: boolean,
   tag?: ?string,
   onComplete?: () => mixed,
@@ -52,8 +51,6 @@ export default class Animate extends React.Component<Props, State> {
       ...(props.children ? { childrenStoreInState: props.children } : null),
     };
   }
-
-  state: State;
 
   componentDidMount() {
     this.setDelayAndOnComplete(this.props);
@@ -85,7 +82,6 @@ export default class Animate extends React.Component<Props, State> {
       animationWillComplete,
       animationWillLeave,
       animationWillEnter,
-      childrenStoreInState,
     }: State,
   ) {
     // only situation that should trigger a re-render
@@ -99,10 +95,6 @@ export default class Animate extends React.Component<Props, State> {
       animationWillComplete !== this.state.animationWillComplete ||
       animationWillLeave !== this.state.animationWillLeave ||
       animationWillEnter !== this.state.animationWillEnter ||
-      (Array.isArray(childrenStoreInState) &&
-        Array.isArray(this.state.childrenStoreInState) &&
-        childrenStoreInState.length !==
-          this.state.childrenStoreInState.length) ||
       !!forceUpdate
     );
   }
@@ -130,7 +122,7 @@ export default class Animate extends React.Component<Props, State> {
     isReverseWithDelay: boolean = false,
   ): void {
     // delay animation
-    if (!!delaySeconds && startAnimation) {
+    if (delaySeconds && startAnimation) {
       clearTimeout(this.animationTimeout);
       this.animationTimeout = setAnimationDelay.call(
         this,

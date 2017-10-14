@@ -3,8 +3,6 @@ import React from 'react';
 import propsGenerator from './propsGenerator';
 import type { Props, State } from '../animate';
 
-let componentProps = null;
-
 const filterUnMountChildren = (children: Array<React$Element<any>>) =>
   children.filter((child: Object) => !child.willUnmount);
 
@@ -27,8 +25,7 @@ export default function mapChildren(props: Props, state: State) {
     if (!child) return null;
 
     const { willMount = false, willUnmount = false } = child;
-
-    componentProps = propsGenerator(
+    const componentProps = propsGenerator(
       {
         ...props,
       },

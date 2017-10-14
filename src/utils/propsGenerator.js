@@ -2,7 +2,6 @@
 import type { State, Props } from '../animate';
 
 let style;
-
 let transition;
 
 export default function propsGenerator(

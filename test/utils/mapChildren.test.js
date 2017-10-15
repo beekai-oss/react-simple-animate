@@ -14,13 +14,13 @@ describe('mapChildren', () => {
     ).toBe(null);
   });
 
-  describe('when animationWillLeave set to true', () => {
+  describe('when willLeave set to true', () => {
     it('should filter out components which will unmont', () => {
       expect(
         mapChildren(
           {},
           {
-            animationWillLeave: true,
+            willLeave: true,
             childrenStoreInState: [
               {
                 willUnmount: true,
@@ -32,13 +32,13 @@ describe('mapChildren', () => {
     });
   });
 
-  describe('when animationWillLeave set to false', () => {
+  describe('when willLeave set to false', () => {
     it('should not filter components', () => {
       expect(
         mapChildren(
           {},
           {
-            animationWillLeave: false,
+            willLeave: false,
             childrenStoreInState: [
               {
                 willUnmount: true,

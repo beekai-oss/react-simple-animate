@@ -2,11 +2,11 @@ import propsGenerator from '../../src/utils/propsGenerator';
 
 describe('propsGenerator', () => {
   const state = {
-    animationWillEnd: false,
-    animationWillStart: false,
-    animationWillComplete: false,
-    animationWillEnter: false,
-    animationWillLeave: false,
+    willEnd: false,
+    willStart: false,
+    willComplete: false,
+    willEnter: false,
+    willLeave: false,
     played: false,
   };
 
@@ -57,7 +57,7 @@ describe('propsGenerator', () => {
       expect(
         propsGenerator(
           { ...props, startAnimation: true },
-          { ...state, animationWillEnter: true },
+          { ...state, willEnter: true },
           { willMount: true },
         ).style,
       ).toEqual(endStyleWithTransition);
@@ -77,7 +77,7 @@ describe('propsGenerator', () => {
       expect(
         propsGenerator(
           { ...props, startAnimation: true },
-          { ...state, animationWillLeave: true },
+          { ...state, willLeave: true },
           { willUnmount: true },
         ).style,
       ).toEqual(endStyleWithTransition);
@@ -98,17 +98,17 @@ describe('propsGenerator', () => {
       expect(
         propsGenerator(
           { ...props, startAnimation: false, reverseDelaySeconds: 0.3 },
-          { ...state, animationWillStart: true },
+          { ...state, willStart: true },
         ).style,
       ).toEqual(startStyleWithTransition);
     });
   });
 
-  it('should render end style when animationWillEnd is set to true', () => {
+  it('should render end style when willEnd is set to true', () => {
     expect(
       propsGenerator(
         { ...props, startAnimation: true },
-        { ...state, animationWillEnd: true },
+        { ...state, willEnd: true },
       ).style,
     ).toEqual(endStyleWithTransition);
   });
@@ -131,7 +131,7 @@ describe('propsGenerator', () => {
             display: 'flex',
           },
         },
-        { ...state, animationWillComplete: true },
+        { ...state, willComplete: true },
       ).style,
     ).toEqual({ display: 'flex', transition: null });
   });

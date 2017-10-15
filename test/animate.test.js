@@ -47,7 +47,7 @@ describe('Animate', () => {
       );
 
       jest.runAllTimers();
-      expect(tree.state().animationWillEnd).toEqual(true);
+      expect(tree.state().willEnd).toEqual(true);
     });
   });
 
@@ -70,7 +70,7 @@ describe('Animate', () => {
       });
 
       jest.runAllTimers();
-      expect(tree.state().animationWillComplete).toEqual(true);
+      expect(tree.state().willComplete).toEqual(true);
     });
   });
 
@@ -82,7 +82,7 @@ describe('Animate', () => {
     );
 
     const state = {
-      animationWillEnd: false,
+      willEnd: false,
     };
 
     expect(
@@ -135,7 +135,7 @@ describe('Animate', () => {
     );
 
     let state = {
-      animationWillEnd: true,
+      willEnd: true,
     };
 
     const nextProps = {
@@ -147,7 +147,7 @@ describe('Animate', () => {
     );
 
     state = {
-      animationWillEnd: false,
+      willEnd: false,
     };
 
     expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(
@@ -173,7 +173,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        animationWillComplete: true,
+        willComplete: true,
       });
 
       expect(tree.find('div').props().style).toEqual({
@@ -220,7 +220,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        animationWillEnd: true,
+        willEnd: true,
       });
 
       expect(tree.find('div').props().style).toEqual({
@@ -243,18 +243,15 @@ describe('Animate', () => {
         </Animate>,
       );
 
-      tree.instance().clearAllTimers = clearAllTimers;
-
       tree.setState({
-        animationWillEnd: true,
+        willEnd: true,
       });
 
       tree.setProps({
         startAnimation: false,
       });
 
-      expect(tree.state()).toEqual(defaultState);
-      // expect(clearAllTimers).toBeCalled();
+      expect(tree.state()).toEqual({ ...defaultState, played: true });
     });
   });
 
@@ -275,7 +272,7 @@ describe('Animate', () => {
         forceUpdate: true,
       };
 
-      const nextState = { animationWillEnd: false };
+      const nextState = { willEnd: false };
 
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),
@@ -304,7 +301,7 @@ describe('Animate', () => {
         ),
       };
 
-      const nextState = { animationWillEnd: false };
+      const nextState = { willEnd: false };
 
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),

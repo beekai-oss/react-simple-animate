@@ -1,6 +1,6 @@
 // @flow
 
-export default function setAnimationDelay(
+export default function setDelayState(
   durationSeconds: number = 0,
   stateName: string,
   callback?: () => mixed,

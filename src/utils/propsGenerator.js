@@ -13,11 +13,12 @@ export default function propsGenerator(
   },
 ) {
   const {
-    animationWillEnd,
-    animationWillStart,
-    animationWillComplete,
-    animationWillEnter,
-    animationWillLeave,
+    willEnd,
+    willStart,
+    willComplete,
+    willEnter,
+    willLeave,
+    played,
   } = state;
   const {
     startAnimation,
@@ -37,14 +38,14 @@ export default function propsGenerator(
   transition = transitionValue || `${durationSeconds}s all ${easeType}`;
 
   if (willMount) {
-    style = animationWillEnter ? endStyle : startStyle;
+    style = willEnter ? endStyle : startStyle;
   } else if (willUnmount) {
-    style = animationWillLeave ? endStyle : startStyle;
-  } else if (reverseDelaySeconds && !startAnimation) {
-    style = animationWillStart ? startStyle : endStyle;
-  } else if (animationWillEnd || (startAnimation && !delaySeconds)) {
+    style = willLeave ? endStyle : startStyle;
+  } else if (reverseDelaySeconds && !startAnimation && played) {
+    style = willStart ? startStyle : endStyle;
+  } else if (willEnd || (startAnimation && !delaySeconds)) {
     style = endStyle;
-  } else if (animationWillComplete && onCompleteStyle) {
+  } else if (willComplete && onCompleteStyle) {
     style = onCompleteStyle;
     transition = null;
   }

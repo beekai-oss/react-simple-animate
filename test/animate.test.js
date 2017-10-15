@@ -383,8 +383,8 @@ describe('Animate', () => {
     });
   });
 
-  describe('When children remmoved the component should remain the same', () => {
-    it('sh ', () => {
+  describe('When children remmoved the component', () => {
+    it('should remain the same', () => {
       const tree = shallow(
         <Animate
           {...{

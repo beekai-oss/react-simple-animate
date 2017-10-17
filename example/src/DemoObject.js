@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import Animate from 'react-simple-animate';
+import Animate from './src/animate';
 import Typography from 'material-ui/Typography';
 import './DemoObject.css';
 
@@ -54,13 +54,19 @@ export default function DemoObject({
         tag="span"
       >
         {keys.map(item => (
-          <img
-            src={logo}
-            alt={`"logo id:${item}"`}
-            onClick={() => clickHandler(item)}
-            className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
+          <Animate
+            startStyle={parseJsonWithCatch(startStyle)}
+            endStyle={parseJsonWithCatch(endStyle)}
             key={item}
-          />
+            tag="span"
+          >
+            <img
+              src={logo}
+              alt={`"logo id:${item}"`}
+              onClick={() => clickHandler(item)}
+              className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
+            />
+          </Animate>
         ))}
       </Animate>
     </div>

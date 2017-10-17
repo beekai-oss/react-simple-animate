@@ -16,23 +16,20 @@ exports[`Animate should render correctly 1`] = `
 exports[`Animate should render correctly for children 1`] = `
 <div
   className="test"
+  style={
+    Object {
+      "transition": "1s all linear",
+    }
+  }
 >
   <div
-    style={
-      Object {
-        "transition": "1s all linear",
-      }
-    }
+    startAnimation={true}
   >
     test
     1
   </div>
   <div
-    style={
-      Object {
-        "transition": "1s all linear",
-      }
-    }
+    startAnimation={true}
   >
     test
     2

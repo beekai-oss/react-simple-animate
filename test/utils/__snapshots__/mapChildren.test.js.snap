@@ -2,9 +2,9 @@
 
 exports[`mapChildren when willLeave set to false should not filter components 1`] = `
 Array [
-  <Unknown
-    startAnimation={false}
-/>,
+  Object {
+    "willUnmount": true,
+  },
 ]
 `;
 

@@ -46,6 +46,8 @@ export type State = {
 };
 
 export default class Animate extends React.Component<Props, State> {
+  static displayName = 'ReactSimpleAnimate';
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -152,7 +154,8 @@ export default class Animate extends React.Component<Props, State> {
     if (
       !Array.isArray(childrenStoreInState) ||
       !Array.isArray(children) ||
-      !startAnimation
+      !startAnimation ||
+      !children.find(child => child.type.displayName === 'ReactSimpleAnimate')
     ) {
       return;
     }

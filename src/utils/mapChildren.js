@@ -23,6 +23,14 @@ export default function mapChildren(props: Props, state: State) {
   return children.map((child: Object) => {
     if (!child) return null;
 
+    if (
+      !child.type ||
+      !child.type.displayName ||
+      child.type.displayName !== 'ReactSimpleAnimate'
+    ) {
+      return child;
+    }
+
     const { willMount = false, willUnmount = false } = child;
 
     let startAnimation = true;

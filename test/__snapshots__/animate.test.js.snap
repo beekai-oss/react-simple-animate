@@ -22,15 +22,11 @@ exports[`Animate should render correctly for children 1`] = `
     }
   }
 >
-  <div
-    startAnimation={true}
-  >
+  <div>
     test
     1
   </div>
-  <div
-    startAnimation={true}
-  >
+  <div>
     test
     2
   </div>

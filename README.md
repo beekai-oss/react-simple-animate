@@ -39,17 +39,19 @@ The following example demonstrate animate **individual** or **array of component
     import react from 'react';
     import Animate from 'react-simple-animate';
     import YourComponent from './YourComponent';
+
+    const props = {
+        durationSeconds: 0.2,
+        startAnimation: true,
+        startStyle: { opacity: 0 }
+        endStyle={ opacity: 1 }
+    };
     
     export default function SexyComponent(props) {
-        const props = {
-            durationSeconds: 0.2,
-            startAnimation: true,
-            startStyle: { opacity: 0 }
-            endStyle={ opacity: 1 }
-        };
 	    return <div>
-            // Animate individual component
+            // Animate individual component or components
             <Animate {...props}>
+                <h1>React simple animate</h1>
                 <YourComponent>
             </Animate>
 
@@ -77,7 +79,7 @@ The following example demonstrate animate **individual** or **array of component
 | `startStyle` | string |  | Component initial inline style. |
 | `endStyle` | string | ✓ | Component transition to inline style. |
 | `tag` | string |  |  Default tag is div, this allow custom tag to be wrap around. |
-| `animateOnAddRemove` | boolean |  |  Default to false, enable animation on component mount and unmount. |
+| `animateOnAddRemove` | boolean |  |  Enable animation on component add and remove. |
 | `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
 | `durationSeconds` | number |  | How long the animation takes in seconds, same apply to mount and unmount. |
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |

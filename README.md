@@ -41,19 +41,31 @@ The following example demonstrate animate **individual** or **array of component
     import YourComponent from './YourComponent';
     
     export default function SexyComponent(props) {
-	    return <Animate durationSeconds={0.2}
-             startAnimation
-             startStyle={{
-               opacity: 0,
-             }}
-             endStyle={{
-               opacity: 1,
-             }}
-           >
-           {Array.isArray(props.componentsArray) ? 
-             props.componentsArray.map((key) => <YourComponent key={key}>)
-             : <YourComponent>}
-        </Animate>;
+        const props = {
+            durationSeconds: 0.2,
+            startAnimation: true,
+            startStyle: { opacity: 0 }
+            endStyle={ opacity: 1 }
+        };
+	    return <div>
+            // Animate individual component
+            <Animate {...props}>
+                <YourComponent>
+            </Animate>
+
+            // Animate components with add/remove, style will inherit from parent Animate props
+            <Animate {...props} animateOnAddRemove>
+                {props.componentsArray.map((key) => <YourComponent key={key}>}
+            </Animate>
+
+            // Animate components with customise style for add or remove
+            <Animate {...props} animateOnAddRemove>
+                {props.componentsArray.map((key) => 
+                    <Animate startStyle={{ background: 'none' }} endStyle={{ background: 'red' }>
+                        <YourComponent key={key}>
+                    </Animatee>}
+            </Animate>
+        </div>;
     }
 
 ## API
@@ -65,6 +77,7 @@ The following example demonstrate animate **individual** or **array of component
 | `startStyle` | string |  | Component initial inline style. |
 | `endStyle` | string | ✓ | Component transition to inline style. |
 | `tag` | string |  |  Default tag is div, this allow custom tag to be wrap around. |
+| `animateOnAddRemove` | boolean |  |  Default to false, enable animation on component mount and unmount. |
 | `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
 | `durationSeconds` | number |  | How long the animation takes in seconds, same apply to mount and unmount. |
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |

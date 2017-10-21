@@ -9,28 +9,25 @@ const filterUnMountChildren = (children: Array<React$Element<any>>) =>
 export default function mapChildren(props: Props, state: State) {
   const { childrenStoreInState, willLeave, willEnter } = state;
 
-  const tempChildren =
-    Array.isArray(childrenStoreInState) && childrenStoreInState.length
-      ? childrenStoreInState
-      : props.children;
+  if (!Array.isArray(childrenStoreInState)) {
+    return null;
+  }
 
-  const children =
-    willLeave && Array.isArray(childrenStoreInState)
-      ? filterUnMountChildren(childrenStoreInState)
-      : tempChildren;
-
-  if (!Array.isArray(children)) return null;
+  const children = willLeave
+    ? filterUnMountChildren(childrenStoreInState)
+    : childrenStoreInState;
 
   return children.map((child: Object) => {
     if (!child) return null;
+
+    let componentProps = {};
+    let startAnimation = true;
 
     const { willMount = false, willUnmount = false } = child;
     const isAnimateComponent =
       child.type &&
       child.type.displayName &&
       child.type.displayName === 'ReactSimpleAnimate';
-    let componentProps = {};
-    let startAnimation = true;
 
     if (isAnimateComponent) {
       if (willMount) {

@@ -4,23 +4,10 @@ import type { State, Props } from '../animate';
 let style;
 let transition;
 
+type MountProps = { willUnmount: boolean, willMount: boolean };
+
 export default function propsGenerator(
-  props: Props,
-  state: State,
-  mountProps: { willUnmount: boolean, willMount: boolean } = {
-    willUnmount: false,
-    willMount: false,
-  },
-) {
-  const {
-    willEnd,
-    willStart,
-    willComplete,
-    willEnter,
-    willLeave,
-    played,
-  } = state;
-  const {
+  {
     startAnimation,
     startStyle,
     endStyle,
@@ -31,9 +18,14 @@ export default function propsGenerator(
     easeType = 'linear',
     className,
     transition: transitionValue,
-  } = props;
+  }: Props,
+  { willEnd, willStart, willComplete, willEnter, willLeave, played }: State,
+  mountProps: MountProps = {
+    willUnmount: false,
+    willMount: false,
+  },
+) {
   const { willUnmount, willMount } = mountProps;
-
   style = startStyle;
   transition = transitionValue || `${durationSeconds}s all ${easeType}`;
 

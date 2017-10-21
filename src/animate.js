@@ -129,14 +129,12 @@ export default class Animate extends React.Component<Props, State> {
     isReverseWithDelay: boolean = false,
   ): void {
     // delay animation
-    if (delaySeconds && startAnimation) {
-      clearTimeout(this.delayTimeout);
-      this.delayTimeout = setDelayState.call(this, delaySeconds, 'willEnd');
-    }
+    clearTimeout(this.delayTimeout);
 
-    // reverse animation
-    if (isReverseWithDelay) {
-      clearTimeout(this.delayTimeout);
+    if (delaySeconds && startAnimation) {
+      this.delayTimeout = setDelayState.call(this, delaySeconds, 'willEnd');
+    } else if (isReverseWithDelay) {
+      // reverse animation
       this.delayTimeout = setDelayState.call(
         this,
         reverseDelaySeconds,

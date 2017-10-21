@@ -11,6 +11,7 @@ const props = {
   endStyle: {},
   durationSeconds: 1,
   className: 'test',
+  animateOnAddRemove: false,
 };
 
 const startStyle = { display: 'inline-block' };
@@ -32,6 +33,32 @@ describe('Animate', () => {
     );
 
     expect(tree).toMatchSnapshot();
+  });
+
+  describe('when animate on add or remove enabled', () => {
+    it('should render correctly for children', () => {
+      const tree = renderer.create(
+        <Animate {...{ ...props, animateOnAddRemove: true }}>
+          {[1, 2].map(item => <div key={item}>test{item}</div>)}
+        </Animate>,
+      );
+
+      expect(tree).toMatchSnapshot();
+    });
+
+    it('should render correctly for Animate children', () => {
+      const tree = renderer.create(
+        <Animate {...{ ...props, animateOnAddRemove: true }}>
+          {[1, 2].map(item => (
+            <Animate key={item}>
+              <div>test{item}</div>
+            </Animate>
+          ))}
+        </Animate>,
+      );
+
+      expect(tree).toMatchSnapshot();
+    });
   });
 
   it('should render custome tag correctly', () => {

@@ -26,6 +26,7 @@ export default function DemoObject({
   keys,
   clickHandler,
 }) {
+  console.log(keys);
   return (
     <div className="DemoObject-container">
       <Animate
@@ -47,6 +48,7 @@ export default function DemoObject({
           durationSeconds,
           reverseDelaySeconds,
         }}
+        animateOnAddRemove
         onComplete={() => console.log('Animation completed 🤘')}
         onCompleteStyle={parseJsonWithCatch(onCompleteStyle)}
         startStyle={parseJsonWithCatch(startStyle)}
@@ -54,19 +56,13 @@ export default function DemoObject({
         tag="span"
       >
         {keys.map(item => (
-          <Animate
-            startStyle={parseJsonWithCatch(startStyle)}
-            endStyle={parseJsonWithCatch(endStyle)}
+          <img
             key={item}
-            tag="span"
-          >
-            <img
-              src={logo}
-              alt={`"logo id:${item}"`}
-              onClick={() => clickHandler(item)}
-              className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
-            />
-          </Animate>
+            src={logo}
+            alt={`"logo id:${item}"`}
+            onClick={() => clickHandler(item)}
+            className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
+          />
         ))}
       </Animate>
     </div>

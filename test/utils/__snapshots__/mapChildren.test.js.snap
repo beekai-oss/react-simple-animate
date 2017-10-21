@@ -2,9 +2,13 @@
 
 exports[`mapChildren when willLeave set to false should not filter components 1`] = `
 Array [
-  Object {
-    "willUnmount": true,
-  },
+  <Unknown
+    style={
+        Object {
+            "transition": "0.3s all linear",
+          }
+    }
+/>,
 ]
 `;
 

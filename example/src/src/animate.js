@@ -32,6 +32,7 @@ export type Props = {
   onComplete?: () => mixed,
   onError?: (Object, Object) => mixed,
   className?: string,
+  animateOnAddRemove: boolean,
   transition?: string,
 };
 
@@ -61,7 +62,12 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { startAnimation, reverseDelaySeconds, children } = nextProps;
+    const {
+      startAnimation,
+      reverseDelaySeconds,
+      children,
+      animateOnAddRemove,
+    } = nextProps;
     const isAnimationStatusChanged =
       startAnimation !== this.props.startAnimation;
 
@@ -71,7 +77,9 @@ export default class Animate extends React.Component<Props, State> {
       played: isAnimationStatusChanged,
     });
 
-    this.setChildrenState(nextProps);
+    if (animateOnAddRemove) {
+      this.setChildrenState(nextProps);
+    }
 
     this.setDelayAndOnComplete(
       nextProps,
@@ -154,8 +162,7 @@ export default class Animate extends React.Component<Props, State> {
     if (
       !Array.isArray(childrenStoreInState) ||
       !Array.isArray(children) ||
-      !startAnimation ||
-      !children.find(child => child.type.displayName === 'ReactSimpleAnimate')
+      !startAnimation
     ) {
       return;
     }
@@ -213,11 +220,11 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    const { tag, children } = this.props;
+    const { tag, children, animateOnAddRemove } = this.props;
     const tagName = tag || 'div';
     const componentProps = propsGenerator(this.props, this.state);
 
-    if (Array.isArray(children)) {
+    if (Array.isArray(children) && animateOnAddRemove) {
       return React.createElement(
         tagName,
         componentProps,

@@ -74,7 +74,7 @@ export default class Demo extends React.Component {
 
       if (count > keys.length) {
         keysCopy.push(new Date().getTime());
-      } else if (count < keys.length) {
+      } else if (count <= keys.length) {
         keysCopy.pop();
       }
 

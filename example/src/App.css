@@ -26,3 +26,12 @@
     transform: rotate(360deg);
   }
 }
+
+.App-bar {
+  display: flex;
+  flex-direction: column;
+}
+
+.App-bar h2 {
+  flex: 1;
+}

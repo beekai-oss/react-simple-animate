@@ -17,9 +17,11 @@ export const defaultState = {
 
 export type Style = { [string]: string | number };
 
+type ChildrenType = Array<React$Element<any>> | React$Element<any> | null;
+
 export type Props = {
   startAnimation: boolean,
-  children?: Array<React$Element<any>> | React$Element<any> | null,
+  children?: ChildrenType,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
@@ -43,7 +45,7 @@ export type State = {
   willEnter: boolean,
   willLeave: boolean,
   played: boolean,
-  childrenStoreInState?: Array<React$Element<any>> | React$Element<any> | null,
+  childrenStoreInState?: ChildrenType,
 };
 
 export default class Animate extends React.Component<Props, State> {
@@ -68,22 +70,20 @@ export default class Animate extends React.Component<Props, State> {
       children,
       animateOnAddRemove,
     } = nextProps;
-    const isAnimationStatusChanged =
-      startAnimation !== this.props.startAnimation;
+    const toggledAnimation = startAnimation !== this.props.startAnimation;
 
     this.setState({
       childrenStoreInState: children,
-      ...(isAnimationStatusChanged ? { ...{ ...defaultState } } : null),
-      played: isAnimationStatusChanged,
+      ...(toggledAnimation ? { ...{ ...defaultState } } : null),
+      played: toggledAnimation,
     });
 
-    if (animateOnAddRemove) {
-      this.setChildrenState(nextProps);
-    }
+    // animation  on mount or unmount
+    if (animateOnAddRemove) this.setChildrenState(nextProps);
 
     this.setDelayAndOnComplete(
       nextProps,
-      isAnimationStatusChanged && !startAnimation && !!reverseDelaySeconds,
+      toggledAnimation && !startAnimation && !!reverseDelaySeconds,
     );
   }
 
@@ -93,6 +93,7 @@ export default class Animate extends React.Component<Props, State> {
   ) {
     // only situation that should trigger a re-render
     return (
+      // object compare can be enahnced, but try to keep it simple here
       JSON.stringify(startStyle) !== JSON.stringify(this.props.startStyle) ||
       JSON.stringify(endStyle) !== JSON.stringify(this.props.endStyle) ||
       startAnimation !== this.props.startAnimation ||
@@ -166,20 +167,14 @@ export default class Animate extends React.Component<Props, State> {
     }
 
     if (childrenStoreInState.length !== children.length) {
-      const { mappedChildren, willUnmount, willMount } = filterMountOrUnmount(
-        childrenStoreInState,
-        children,
-      );
+      const {
+        mappedChildren,
+        childrenWillUnmount,
+        childrenWillMount,
+      } = filterMountOrUnmount(childrenStoreInState, children);
 
-      this.setState({
-        willEnter: false,
-        willLeave: false,
-        childrenStoreInState: mappedChildren,
-      });
-
-      if (willUnmount && startAnimation) {
+      if (childrenWillUnmount && startAnimation) {
         clearTimeout(this.leaveTimeout);
-
         this.leaveTimeout = setDelayState.call(
           this,
           durationSeconds,
@@ -192,18 +187,23 @@ export default class Animate extends React.Component<Props, State> {
         );
       }
 
-      if (willMount && startAnimation) {
+      if (childrenWillMount && startAnimation) {
         clearTimeout(this.enterTimeout);
-
         this.enterTimeout = setDelayState.call(this, 0, 'willEnter');
       }
+
+      this.setState({
+        willEnter: false,
+        willLeave: false,
+        childrenStoreInState: mappedChildren,
+      });
     } else if (!startAnimation) {
+      clearTimeout(this.enterTimeout);
+      this.enterTimeout = setDelayState.call(this, 0, 'willEnter');
+
       this.setState({
         childrenStoreInState,
       });
-
-      clearTimeout(this.enterTimeout);
-      this.enterTimeout = setDelayState.call(this, 0, 'willEnter');
     }
   }
 
@@ -222,14 +222,12 @@ export default class Animate extends React.Component<Props, State> {
     const tagName = tag || 'div';
     const componentProps = propsGenerator(this.props, this.state);
 
-    if (Array.isArray(children) && animateOnAddRemove) {
-      return React.createElement(
-        tagName,
-        componentProps,
-        mapChildren(this.props, this.state),
-      );
-    }
-
-    return React.createElement(tagName, componentProps, children);
+    return React.createElement(
+      tagName,
+      componentProps,
+      Array.isArray(children) && animateOnAddRemove
+        ? mapChildren(this.props, this.state)
+        : children,
+    );
   }
 }

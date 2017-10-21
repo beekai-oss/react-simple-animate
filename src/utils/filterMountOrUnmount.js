@@ -1,24 +1,26 @@
 // @flow
 type Result = {
   mappedChildren: Array<any>,
-  willUnmount: boolean,
-  willMount: boolean,
+  childrenWillUnmount: boolean,
+  childrenWillMount: boolean,
 };
 
 const findChild = (children, child) =>
   children.find(r => r && r.key === child.key);
 
+const childDefaultState = {
+  willUnmount: false,
+  willMount: false,
+};
+
 export default function filterMountOrUnmount(
   childrenStoreInState: Array<React$Element<any>>,
   children: Array<React$Element<any>>,
 ): Result {
-  const defaultState = {
-    willUnmount: false,
-    willMount: false,
-  };
   const result: Result = {
     mappedChildren: [],
-    ...{ ...defaultState },
+    childrenWillUnmount: false,
+    childrenWillMount: false,
   };
 
   // any children got removed
@@ -28,17 +30,13 @@ export default function filterMountOrUnmount(
         return null;
       }
 
-      if (findChild(children, child)) {
-        return {
-          ...child,
-          ...{ ...defaultState },
-        };
-      }
+      if (!findChild(children, child)) result.childrenWillUnmount = true;
 
-      result.willUnmount = true;
       return {
         ...child,
-        willUnmount: true,
+        ...(findChild(children, child)
+          ? { ...childDefaultState }
+          : { willUnmount: true }),
       };
     },
   );
@@ -50,7 +48,7 @@ export default function filterMountOrUnmount(
       Object.prototype.hasOwnProperty.call(child, 'key') &&
       !findChild(result.mappedChildren, child)
     ) {
-      result.willMount = true;
+      result.childrenWillMount = true;
       result.mappedChildren.splice(index === 0 ? 0 : index + 1, 0, {
         ...child,
         willMount: true,

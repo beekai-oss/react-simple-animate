@@ -2,6 +2,8 @@
 
 exports[`filterMountOrUnMount should append new children 1`] = `
 Object {
+  "childrenWillMount": true,
+  "childrenWillUnmount": true,
   "mappedChildren": Array [
     Object {
       "key": 0,
@@ -34,13 +36,13 @@ Object {
       "willMount": true,
     },
   ],
-  "willMount": true,
-  "willUnmount": true,
 }
 `;
 
 exports[`filterMountOrUnMount should mark child is about to be unMount 1`] = `
 Object {
+  "childrenWillMount": false,
+  "childrenWillUnmount": true,
   "mappedChildren": Array [
     Object {
       "key": 1,
@@ -52,7 +54,5 @@ Object {
       "willUnmount": true,
     },
   ],
-  "willMount": false,
-  "willUnmount": true,
 }
 `;

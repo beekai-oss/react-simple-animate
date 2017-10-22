@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`mapChildren when children is Animate component should apply startAnimation 1`] = `
+Array [
+  <ReactSimpleAnimate
+    startAnimation={true}
+/>,
+]
+`;
+
+exports[`mapChildren when children is Animate component should apply startAnimation according to willEnter state 1`] = `
+Array [
+  <ReactSimpleAnimate
+    startAnimation={false}
+/>,
+]
+`;
+
+exports[`mapChildren when children is Animate component should apply startAnimation according to willEnter state 2`] = `
+Array [
+  <ReactSimpleAnimate
+    startAnimation={true}
+/>,
+]
+`;
+
+exports[`mapChildren when children is Animate component should apply startAnimation according to willLeave state 1`] = `
+Array [
+  <ReactSimpleAnimate
+    startAnimation={false}
+/>,
+]
+`;
+
+exports[`mapChildren when children is Animate component should apply startAnimation according to willLeave state 2`] = `Array []`;
+
 exports[`mapChildren when willLeave set to false should not filter components 1`] = `
 Array [
   <Unknown

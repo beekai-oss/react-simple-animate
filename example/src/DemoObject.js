@@ -26,7 +26,6 @@ export default function DemoObject({
   keys,
   clickHandler,
 }) {
-  console.log(keys);
   return (
     <div className="DemoObject-container">
       <Animate

@@ -7,7 +7,7 @@
 Features:
 
  - Simple animation from inline style A to style B
- - Support will mount and unmount (New)
+ - Support add and remove child (New)
  - Make animation toggle easy
  - In-built delay animation mechanism
  - Tiny size without other dependency
@@ -81,7 +81,7 @@ The following example demonstrate animate **individual** or **array of component
 | `tag` | string |  |  Default tag is div, this allow custom tag to be wrap around. |
 | `animateOnAddRemove` | boolean |  |  Enable animation on component add and remove. |
 | `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
-| `durationSeconds` | number |  | How long the animation takes in seconds, same apply to mount and unmount. |
+| `durationSeconds` | number |  | How long the animation takes in seconds. |
 | `delaySeconds` | number |  | How much delay should apply before animation starts. |
 | `reverseDelaySeconds` | number |  | How much delay should apply when reverse/toggle animation. |
 | `onComplete` | function |  | Call back function after animation complete. |

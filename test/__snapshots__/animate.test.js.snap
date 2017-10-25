@@ -13,6 +13,26 @@ exports[`Animate should render correctly 1`] = `
 </div>
 `;
 
+exports[`Animate should render correctly for children 1`] = `
+<div
+  className="test"
+  style={
+    Object {
+      "transition": "1s all linear",
+    }
+  }
+>
+  <div>
+    test
+    1
+  </div>
+  <div>
+    test
+    2
+  </div>
+</div>
+`;
+
 exports[`Animate should render custome tag correctly 1`] = `
 <l
   className="test"
@@ -22,4 +42,74 @@ exports[`Animate should render custome tag correctly 1`] = `
     }
   }
 />
+`;
+
+exports[`Animate when animate on add or remove enabled should render correctly for Animate children 1`] = `
+<div
+  className="test"
+  style={
+    Object {
+      "transition": "1s all linear",
+    }
+  }
+>
+  <div
+    className={undefined}
+    style={
+      Object {
+        "transition": "0.3s all linear",
+      }
+    }
+  >
+    <div>
+      test
+      1
+    </div>
+  </div>
+  <div
+    className={undefined}
+    style={
+      Object {
+        "transition": "0.3s all linear",
+      }
+    }
+  >
+    <div>
+      test
+      2
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Animate when animate on add or remove enabled should render correctly for children 1`] = `
+<div
+  className="test"
+  style={
+    Object {
+      "transition": "1s all linear",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "transition": "1s all linear",
+      }
+    }
+  >
+    test
+    1
+  </div>
+  <div
+    style={
+      Object {
+        "transition": "1s all linear",
+      }
+    }
+  >
+    test
+    2
+  </div>
+</div>
 `;

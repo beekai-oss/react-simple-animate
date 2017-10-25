@@ -1,11 +1,26 @@
 .DemoObject-container {
   overflow: hidden;
-  text-align: right;
+  text-align: left;
   position: fixed;
 }
 
 @media (min-width: 640px) {
   .DemoObject-container {
     position: relative;
+    text-align: center;
   }
+}
+
+.demo-logo {
+  width: 90%;
+}
+
+.demo-small-logo {
+  width: 20%;
+}
+
+.demoObject-title {
+  margin-bottom: 20px;
+  font-size: 20px !important;
+  color: #797979 !important;
 }

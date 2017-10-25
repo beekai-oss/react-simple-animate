@@ -11,6 +11,7 @@ const props = {
   endStyle: {},
   durationSeconds: 1,
   className: 'test',
+  animateOnAddRemove: false,
 };
 
 const startStyle = { display: 'inline-block' };
@@ -22,6 +23,42 @@ describe('Animate', () => {
     const tree = renderer.create(<Animate {...props}>test</Animate>);
 
     expect(tree).toMatchSnapshot();
+  });
+
+  it('should render correctly for children', () => {
+    const tree = renderer.create(
+      <Animate {...props}>
+        {[1, 2].map(item => <div key={item}>test{item}</div>)}
+      </Animate>,
+    );
+
+    expect(tree).toMatchSnapshot();
+  });
+
+  describe('when animate on add or remove enabled', () => {
+    it('should render correctly for children', () => {
+      const tree = renderer.create(
+        <Animate {...{ ...props, animateOnAddRemove: true }}>
+          {[1, 2].map(item => <div key={item}>test{item}</div>)}
+        </Animate>,
+      );
+
+      expect(tree).toMatchSnapshot();
+    });
+
+    it('should render correctly for Animate children', () => {
+      const tree = renderer.create(
+        <Animate {...{ ...props, animateOnAddRemove: true }}>
+          {[1, 2].map(item => (
+            <Animate key={item}>
+              <div>test{item}</div>
+            </Animate>
+          ))}
+        </Animate>,
+      );
+
+      expect(tree).toMatchSnapshot();
+    });
   });
 
   it('should render custome tag correctly', () => {
@@ -37,7 +74,7 @@ describe('Animate', () => {
       );
 
       jest.runAllTimers();
-      expect(tree.state().animationWillEnd).toEqual(true);
+      expect(tree.state().willEnd).toEqual(true);
     });
   });
 
@@ -60,7 +97,7 @@ describe('Animate', () => {
       });
 
       jest.runAllTimers();
-      expect(tree.state().animationWillComplete).toEqual(true);
+      expect(tree.state().willComplete).toEqual(true);
     });
   });
 
@@ -72,7 +109,7 @@ describe('Animate', () => {
     );
 
     const state = {
-      animationWillEnd: false,
+      willEnd: false,
     };
 
     expect(
@@ -125,7 +162,7 @@ describe('Animate', () => {
     );
 
     let state = {
-      animationWillEnd: true,
+      willEnd: true,
     };
 
     const nextProps = {
@@ -137,7 +174,7 @@ describe('Animate', () => {
     );
 
     state = {
-      animationWillEnd: false,
+      willEnd: false,
     };
 
     expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(
@@ -163,7 +200,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        animationWillComplete: true,
+        willComplete: true,
       });
 
       expect(tree.find('div').props().style).toEqual({
@@ -210,7 +247,7 @@ describe('Animate', () => {
       );
 
       tree.setState({
-        animationWillEnd: true,
+        willEnd: true,
       });
 
       expect(tree.find('div').props().style).toEqual({
@@ -233,18 +270,15 @@ describe('Animate', () => {
         </Animate>,
       );
 
-      tree.instance().clearAllTimers = clearAllTimers;
-
       tree.setState({
-        animationWillEnd: true,
+        willEnd: true,
       });
 
       tree.setProps({
         startAnimation: false,
       });
 
-      expect(tree.state()).toEqual(defaultState);
-      expect(clearAllTimers).toBeCalled();
+      expect(tree.state()).toEqual({ ...defaultState, played: true });
     });
   });
 
@@ -265,7 +299,7 @@ describe('Animate', () => {
         forceUpdate: true,
       };
 
-      const nextState = { animationWillEnd: false };
+      const nextState = { willEnd: false };
 
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),
@@ -294,7 +328,7 @@ describe('Animate', () => {
         ),
       };
 
-      const nextState = { animationWillEnd: false };
+      const nextState = { willEnd: false };
 
       expect(
         tree.instance().shouldComponentUpdate(nextProps, nextState),
@@ -373,6 +407,28 @@ describe('Animate', () => {
       jest.runAllTimers();
 
       expect(onCompleteFunction).toBeCalledWith();
+    });
+  });
+
+  describe('When children remmoved the component', () => {
+    it('should remain the same', () => {
+      const tree = shallow(
+        <Animate
+          {...{
+            ...props,
+            startAnimation: true,
+            reverseDelaySeconds: 0.5,
+            startStyle,
+            endStyle,
+          }}
+        >
+          <div key={0}>test</div>
+        </Animate>,
+      );
+
+      tree.setProps({
+        children: [0, 1].map(i => <div key={i}>test</div>),
+      });
     });
   });
 });

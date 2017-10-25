@@ -6,6 +6,8 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
+import AddIcon from 'material-ui-icons/Add';
+import RemoveIcon from 'material-ui-icons/Remove';
 import Animate from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import './Demo.css';
@@ -36,6 +38,8 @@ export default class Demo extends React.Component {
     durationSeconds: '0.3',
     showCode: false,
     easyMode: false,
+    count: 1,
+    keys: [],
   };
 
   handleChange = (name, value) => {
@@ -63,6 +67,37 @@ export default class Demo extends React.Component {
     }
   };
 
+  setKeys() {
+    this.setState(previousState => {
+      const { keys, count } = previousState;
+      const keysCopy = [...keys];
+
+      if (count > keys.length) {
+        keysCopy.push(new Date().getTime());
+      } else if (count <= keys.length) {
+        keysCopy.pop();
+      }
+
+      return {
+        keys: keysCopy,
+      };
+    });
+  }
+
+  componentDidMount() {
+    this.setKeys();
+  }
+
+  clickHandler(item) {
+    this.setState(previousState => {
+      const { keys } = previousState;
+
+      return {
+        keys: keys.filter(key => key !== item),
+      };
+    });
+  }
+
   render() {
     const { startAnimation, easyMode } = this.state;
 
@@ -79,10 +114,56 @@ export default class Demo extends React.Component {
                 />
               }
             />
+
+            <Animate
+              startAnimation={startAnimation}
+              tag="span"
+              {...{ startStyle, endStyle }}
+            >
+              <Button
+                fab
+                onClick={() => {
+                  this.setState(previousState => {
+                    return {
+                      count: --previousState.count,
+                    };
+                  });
+                  this.setKeys();
+                }}
+                color="accent"
+                aria-label="add"
+                className="new-button"
+              >
+                <RemoveIcon />
+              </Button>
+            </Animate>
+
+            <Animate
+              startAnimation={startAnimation}
+              tag="span"
+              {...{ startStyle, endStyle }}
+            >
+              <Button
+                fab
+                onClick={() => {
+                  this.setState(previousState => {
+                    return {
+                      count: ++previousState.count,
+                    };
+                  });
+                  this.setKeys();
+                }}
+                color="primary"
+                aria-label="add"
+                className="new-button"
+              >
+                <AddIcon />
+              </Button>
+            </Animate>
           </Grid>
 
           <Grid item xs={6} md={4}>
-            {easyMode &&
+            {easyMode && (
               <Animate startAnimation {...{ startStyle, endStyle }}>
                 <div className="demo-simple">
                   <label htmlFor="animationStyle">Animation style: </label>
@@ -99,9 +180,10 @@ export default class Demo extends React.Component {
                     })}
                   </select>
                 </div>
-              </Animate>}
+              </Animate>
+            )}
 
-            {!easyMode &&
+            {!easyMode && (
               <Animate
                 startAnimation
                 {...{ startStyle, endStyle, delaySeconds }}
@@ -114,6 +196,7 @@ export default class Demo extends React.Component {
                   } else if (field.label === 'Ease Type') {
                     helperText = `Note: css transition ease, eg: ease ease-in cubic-bezier() ect`;
                   }
+
                   return (
                     <Grid item xs={12} key={field.value}>
                       <TextField
@@ -130,11 +213,15 @@ export default class Demo extends React.Component {
                     </Grid>
                   );
                 })}
-              </Animate>}
+              </Animate>
+            )}
           </Grid>
 
           <Grid item xs={6} md={8}>
-            <DemoObject {...this.state} />
+            <DemoObject
+              {...this.state}
+              clickHandler={item => this.clickHandler(item)}
+            />
           </Grid>
 
           <Grid item xs={12}>

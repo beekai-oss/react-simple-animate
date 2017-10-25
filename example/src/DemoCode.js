@@ -13,7 +13,27 @@ export default function DemoCode({
   reverseDelaySeconds,
   onCompleteStyle,
   durationSeconds,
+  count,
 }) {
+  const code = `
+  <Animate
+    startAnimation=${startAnimation}
+    startStyle={${startStyle}}
+    endStyle={${endStyle}
+    durationSeconds="${durationSeconds}"
+    easeType="${easeType}"
+    ${count > 1 ? 'animateOnAddRemove' : ''}
+    ${delaySeconds ? `delaySeconds=${delaySeconds}` : ''}
+    ${reverseDelaySeconds ? `reverseDelaySeconds={${reverseDelaySeconds}}` : ''}
+    ${onCompleteStyle ? `onCompleteStyle={${onCompleteStyle}}` : ''}
+  >
+    ${count <= 1
+      ? `<img src="logo" alt="logo" className="demo-logo" />`
+      : `{keys.map((item, i) => (
+      <img src={logo} key={i} />
+    ))}`}
+  </Animate>`;
+
   return (
     <section className="DemoCode-container">
       <Animate
@@ -27,24 +47,7 @@ export default function DemoCode({
         easeType="cubic-bezier(0, 0, 0.24, 0.93)"
         forceUpdate
       >
-        <Highlight>
-          {`
-    <Animate
-      easeType="${easeType}"
-      durationSeconds="${durationSeconds}"
-      startAnimation=${startAnimation}
-      ${delaySeconds ? `delaySeconds=${delaySeconds}` : ''}
-      ${reverseDelaySeconds
-        ? `reverseDelaySeconds={${reverseDelaySeconds}}`
-        : ''}
-      ${onCompleteStyle ? `onCompleteStyle={${onCompleteStyle}}` : ''}
-      startStyle={${startStyle}}
-      endStyle={${endStyle}
-    >
-      <img src="logo" alt="logo" className="demo-logo" />
-    </Animate>
-              `}
-        </Highlight>
+        <Highlight>{code.replace(/(^[ \t]*\n)/gm, '')}</Highlight>
       </Animate>
     </section>
   );

@@ -4,11 +4,12 @@
   "private": true,
   "dependencies": {
     "material-ui": "^1.0.0-beta.4",
+    "material-ui-icons": "^1.0.0-beta.15",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-highlight": "^0.10.0",
     "react-scripts": "^1.0.11",
-    "react-simple-animate": "^1.6.0"
+    "react-simple-animate": "1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",

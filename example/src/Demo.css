@@ -7,22 +7,21 @@
 }
 
 .demo-section-input {
-  margin-bottom: 20px;
-}
-
-.demo-logo {
-  width: 90%;
+  margin-bottom: 20px !important;
 }
 
 .demo-button {
   margin-right: 10px;
 }
 
-.Demo-mode-selector {
-  text-align: right;
-}
-
 .demo-simple {
   margin-bottom: 20px;
   min-height: 130px;
+}
+
+.new-button {
+  float: right;
+  width: 40px !important;
+  height: 40px !important;
+  margin-right: 20px;
 }

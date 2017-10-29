@@ -1,5 +1,5 @@
 import Animate from 'react-simple-animate';
-import Highlight from 'react-highlight';
+import Highlight from 'react-syntax-highlight';
 import React from 'react';
 import './DemoCode.css';
 
@@ -47,7 +47,7 @@ export default function DemoCode({
         easeType="cubic-bezier(0, 0, 0.24, 0.93)"
         forceUpdate
       >
-        <Highlight>{code.replace(/(^[ \t]*\n)/gm, '')}</Highlight>
+        <Highlight lang="html" value={code.replace(/(^[ \t]*\n)/gm, '')} />
       </Animate>
     </section>
   );

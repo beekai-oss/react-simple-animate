@@ -73,8 +73,8 @@ export default class Animate extends React.Component<Props, State> {
     const toggledAnimation = startAnimation !== this.props.startAnimation;
 
     this.setState({
-      childrenStoreInState: children,
       ...(toggledAnimation ? { ...{ ...defaultState } } : null),
+      childrenStoreInState: children,
       played: toggledAnimation,
     });
 

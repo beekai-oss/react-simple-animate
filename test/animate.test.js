@@ -278,7 +278,11 @@ describe('Animate', () => {
         startAnimation: false,
       });
 
-      expect(tree.state()).toEqual({ ...defaultState, played: true });
+      expect(tree.state()).toEqual({
+        ...defaultState,
+        played: true,
+        childrenStoreInState: 'test',
+      });
     });
   });
 

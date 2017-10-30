@@ -33,13 +33,13 @@ export default function propsGenerator(
     style = willEnter ? endStyle : startStyle;
   } else if (willUnmount) {
     style = willLeave ? endStyle : startStyle;
+  } else if (willComplete && onCompleteStyle) {
+    style = onCompleteStyle;
+    transition = null;
   } else if (reverseDelaySeconds && !startAnimation && played) {
     style = willStart ? startStyle : endStyle;
   } else if (willEnd || (startAnimation && !delaySeconds)) {
     style = endStyle;
-  } else if (willComplete && onCompleteStyle) {
-    style = onCompleteStyle;
-    transition = null;
   }
 
   return {

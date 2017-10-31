@@ -19,7 +19,7 @@ export default function DemoCode({
   <Animate
     startAnimation=${startAnimation}
     startStyle={${startStyle}}
-    endStyle={${endStyle}
+    endStyle={${endStyle}}
     durationSeconds="${durationSeconds}"
     easeType="${easeType}"
     ${count > 1 ? 'animateOnAddRemove' : ''}

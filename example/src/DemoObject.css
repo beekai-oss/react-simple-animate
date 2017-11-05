@@ -13,10 +13,14 @@
 
 .demo-logo {
   width: 90%;
+  overflow: hidden;
+  display: inline-block;
 }
 
-.demo-small-logo svg {
+.demo-small-logo {
   width: 20%;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .demoObject-title {

@@ -44,19 +44,19 @@ export const selectOptions = [
   {
     name: 'transformX',
     startStyle: {
-      transform: 'translateX(0)',
+      transform: 'translateX(500px)',
     },
     endStyle: {
-      transform: 'translateX(500px)',
+      transform: 'translateX(0)',
     },
   },
   {
     name: 'transformY',
     startStyle: {
-      transform: 'translateY(0)',
+      transform: 'translateY(500px)',
     },
     endStyle: {
-      transform: 'translateY(500px)',
+      transform: 'translateY(0)',
     },
   },
   {

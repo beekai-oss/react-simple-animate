@@ -29,8 +29,8 @@ export default function DemoObject({
     <div className="DemoObject-container">
       <Animate
         startAnimation={count > 1}
-        startStyle={{ ...parseJsonWithCatch(startStyle), maxHeight: 0 }}
-        endStyle={{ ...parseJsonWithCatch(endStyle), maxHeight: '100px' }}
+        startStyle={{ startStyle: 0, maxHeight: 0 }}
+        endStyle={{ startStyle: 1, maxHeight: '100px' }}
       >
         <Typography type="headline" component="h2" className="demoObject-title">
           Tap or click to remove the logo

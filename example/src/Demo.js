@@ -10,6 +10,7 @@ import AddIcon from 'material-ui-icons/Add';
 import RemoveIcon from 'material-ui-icons/Remove';
 import Animate from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
+import tryParseJson from './tryParseJson';
 import './Demo.css';
 
 const startStyle = {
@@ -40,31 +41,7 @@ export default class Demo extends React.Component {
     easyMode: false,
     count: 1,
     keys: [],
-  };
-
-  handleChange = (name, value) => {
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleSwitchChange = name => (event, checked) => {
-    this.setState({
-      [name]: checked,
-      startAnimation: false,
-    });
-  };
-
-  changeAnimateStyle = e => {
-    const result = selectOptions.find(({ name }) => name === e.target.value);
-
-    if (result) {
-      this.setState({
-        startStyle: JSON.stringify(result.startStyle),
-        endStyle: JSON.stringify(result.endStyle),
-        startAnimation: false,
-      });
-    }
+    errroFields: new Map(),
   };
 
   setKeys() {
@@ -83,6 +60,43 @@ export default class Demo extends React.Component {
       };
     });
   }
+
+  changeAnimateStyle = e => {
+    const result = selectOptions.find(({ name }) => name === e.target.value);
+
+    if (result) {
+      this.setState({
+        startStyle: JSON.stringify(result.startStyle),
+        endStyle: JSON.stringify(result.endStyle),
+        startAnimation: false,
+      });
+    }
+  };
+
+  handleSwitchChange = name => (event, checked) => {
+    this.setState({
+      [name]: checked,
+      startAnimation: false,
+    });
+  };
+
+  handleOnBlur = (e, name) => {
+    if (name.includes('Style')) {
+      const valid = tryParseJson(e.target.value);
+
+      this.setState(previousState => {
+        return {
+          errroFields: new Map(previousState.errroFields.set(name, !!valid)),
+        };
+      });
+    }
+  };
+
+  handleChange = (name, value) => {
+    this.setState({
+      [name]: value,
+    });
+  };
 
   componentDidMount() {
     this.setKeys();
@@ -203,12 +217,21 @@ export default class Demo extends React.Component {
                         className="demo-section-input"
                         rowsMax="4"
                         fullWidth
+                        onBlur={e => this.handleOnBlur(e, field.value)}
                         onChange={e =>
                           this.handleChange(field.value, e.target.value)}
                         value={this.state[field.value]}
                         label={field.label}
+                        {...(field.value.includes('Seconds')
+                          ? { type: 'number' }
+                          : null)}
                         multiline={i < 2}
-                        helperText={helperText}
+                        {...(this.state.errroFields.get(field.value) === false
+                          ? {
+                              error: true,
+                              helperText: helperText,
+                            }
+                          : null)}
                       />
                     </Grid>
                   );

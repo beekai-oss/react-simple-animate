@@ -36,7 +36,7 @@ export default class Demo extends React.Component {
     onCompleteStyle: '',
     easeType: 'linear',
     reverseDelaySeconds: 0,
-    durationSeconds: '0.3',
+    durationSeconds: '0.5',
     showCode: false,
     easyMode: false,
     count: 1,

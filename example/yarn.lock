@@ -5188,15 +5188,6 @@ react-dev-utils@^3.1.0:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-dom@^15.6.1:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
-
 react-dom@^16.0.0:
   version "16.0.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0.tgz#9cc3079c3dcd70d4c6e01b84aab2a7e34c303f58"
@@ -5298,12 +5289,9 @@ react-scrollbar-size@^2.0.2:
     prop-types "^15.5.10"
     react-event-listener "^0.5.0"
 
-react-simple-animate@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.7.2.tgz#2735194d3584110eecd459c5fdb0b4b770557f8c"
-  dependencies:
-    react "^15.6.1"
-    react-dom "^15.6.1"
+react-simple-animate@react-simple-animate@1.7.4-beta.4:
+  version "1.7.4-beta.4"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.7.4-beta.4.tgz#66d66d76a2839f0b013e9ed7ba93c417cab710f2"
 
 react-syntax-highlight@^15.3.1:
   version "15.3.1"
@@ -5323,7 +5311,7 @@ react-transition-group@^2.2.1:
     prop-types "^15.5.8"
     warning "^3.0.0"
 
-react@^15.5.4, react@^15.6.1:
+react@^15.5.4:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:

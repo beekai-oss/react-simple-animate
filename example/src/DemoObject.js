@@ -57,7 +57,9 @@ export default function DemoObject({
           <span
             key={item}
             onClick={() => clickHandler(item)}
-            className={count === 1 ? 'demo-logo' : 'demo-small-logo'}
+            className={
+              count === 1 && keys.length === 1 ? 'demo-logo' : 'demo-small-logo'
+            }
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3">
               <g fill="#61DAFB">

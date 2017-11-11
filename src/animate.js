@@ -154,6 +154,12 @@ export default class Animate extends React.Component<Props, State> {
     );
   }
 
+  setCurrentChildrenToState = () => {
+    this.setState({
+      childrenStoreInState: this.props.children,
+    });
+  };
+
   setChildrenState(nextProps: Props): void {
     const { childrenStoreInState } = this.state;
     const { children, startAnimation, durationSeconds } = nextProps;
@@ -179,17 +185,8 @@ export default class Animate extends React.Component<Props, State> {
           this,
           durationSeconds,
           'willLeave',
-          () => {
-            this.setState({
-              childrenStoreInState: children,
-            });
-          },
+          this.setCurrentChildrenToState,
         );
-      }
-
-      if (childrenWillMount && startAnimation) {
-        clearTimeout(this.enterTimeout);
-        this.enterTimeout = setDelayState.call(this, 0, 'willEnter');
       }
 
       this.setState({
@@ -197,9 +194,24 @@ export default class Animate extends React.Component<Props, State> {
         willLeave: false,
         childrenStoreInState: mappedChildren,
       });
+
+      if (childrenWillMount && startAnimation) {
+        clearTimeout(this.enterTimeout);
+        this.enterTimeout = setDelayState.call(
+          this,
+          0.01,
+          'willEnter',
+          this.setCurrentChildrenToState,
+        );
+      }
     } else if (!startAnimation) {
       clearTimeout(this.enterTimeout);
-      this.enterTimeout = setDelayState.call(this, 0, 'willEnter');
+      this.enterTimeout = setDelayState.call(
+        this,
+        0.01,
+        'willEnter',
+        this.setCurrentChildrenToState,
+      );
 
       this.setState({
         childrenStoreInState,

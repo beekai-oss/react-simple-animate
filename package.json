@@ -1,12 +1,9 @@
 {
   "name": "react-simple-animate",
-  "version": "1.7.3",
+  "version": "1.7.4-beta.4",
   "description": "react simple animate",
   "main": "lib/animate.js",
-  "keywords": [
-    "react",
-    "animate"
-  ],
+  "keywords": ["react", "animate"],
   "scripts": {
     "clean": "rimraf lib/",
     "release": "npm version",
@@ -15,7 +12,8 @@
     "testw": "yarn test -- --watchAll",
     "build": "babel src/ -d lib/",
     "lint": "eslint ./src",
-    "prepublish": "yarn test && yarn flow && yarn lint && yarn run clean && yarn build",
+    "prepublish":
+      "yarn test && yarn flow && yarn lint && yarn run clean && yarn build",
     "flow": "flow"
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",

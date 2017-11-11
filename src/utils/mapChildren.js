@@ -9,13 +9,17 @@ const filterUnMountChildren = (children: Array<React$Element<any>>) =>
 export default function mapChildren(props: Props, state: State) {
   const { childrenStoreInState, willLeave, willEnter } = state;
 
-  if (!Array.isArray(childrenStoreInState)) {
+  if (!Array.isArray(childrenStoreInState) || !Array.isArray(props.children)) {
     return null;
   }
 
-  const children = willLeave
-    ? filterUnMountChildren(childrenStoreInState)
-    : childrenStoreInState;
+  let children = childrenStoreInState;
+
+  if (willLeave) {
+    children = filterUnMountChildren(childrenStoreInState);
+  } else if (willEnter) {
+    children = props.children;
+  }
 
   return children.map((child: Object) => {
     if (!child) return null;

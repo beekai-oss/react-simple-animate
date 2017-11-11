@@ -20,7 +20,9 @@ describe('mapChildren', () => {
     it('should filter out components which will unmont', () => {
       expect(
         mapChildren(
-          {},
+          {
+            children: [],
+          },
           {
             willLeave: true,
             childrenStoreInState: [
@@ -38,7 +40,9 @@ describe('mapChildren', () => {
     it('should not filter components', () => {
       expect(
         mapChildren(
-          {},
+          {
+            children: [],
+          },
           {
             willLeave: false,
             childrenStoreInState: [
@@ -58,7 +62,9 @@ describe('mapChildren', () => {
     it('should apply startAnimation', () => {
       expect(
         mapChildren(
-          {},
+          {
+            children: [],
+          },
           {
             childrenStoreInState: [{ ...animateComponent }],
           },
@@ -69,7 +75,9 @@ describe('mapChildren', () => {
     it('should apply startAnimation according to willEnter state', () => {
       expect(
         mapChildren(
-          {},
+          {
+            children: [],
+          },
           {
             willEnter: false,
             childrenStoreInState: [{ ...animateComponent, willMount: true }],
@@ -79,7 +87,9 @@ describe('mapChildren', () => {
 
       expect(
         mapChildren(
-          {},
+          {
+            children: [{ ...animateComponent, willMount: true }],
+          },
           {
             willEnter: true,
             childrenStoreInState: [{ ...animateComponent, willMount: true }],
@@ -91,7 +101,9 @@ describe('mapChildren', () => {
     it('should apply startAnimation according to willLeave state', () => {
       expect(
         mapChildren(
-          {},
+          {
+            children: [],
+          },
           {
             willLeave: false,
             childrenStoreInState: [{ ...animateComponent, willUnmount: true }],
@@ -101,7 +113,9 @@ describe('mapChildren', () => {
 
       expect(
         mapChildren(
-          {},
+          {
+            children: [],
+          },
           {
             willLeave: true,
             childrenStoreInState: [{ ...animateComponent, willUnmount: true }],

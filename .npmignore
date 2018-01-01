@@ -7,3 +7,5 @@ test/
 .npmignore
 yarn-error.log
 yarn.lock
+CONTRIBUTING.md
+.eslintrc

@@ -51,6 +51,7 @@ export default function propsGenerator(
         transition,
       },
     },
-    ...refCallback ? ref => refCallback(ref) : null,
+
+    ref: refCallback ? (ref) => { refCallback(ref); } : null,
   };
 }

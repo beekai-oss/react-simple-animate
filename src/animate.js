@@ -36,6 +36,7 @@ export type Props = {
   className?: string,
   animateOnAddRemove: boolean,
   transition?: string,
+  refCallback?: (React$Element<any>) => {},
 };
 
 export type State = {

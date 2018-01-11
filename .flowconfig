@@ -1,10 +1,12 @@
 [ignore]
 .*/example
+.*/node_modules/eslint-plugin-jsx-a11y
 
 [include]
 
 [libs]
 
 [options]
+suppress_comment=\\(.\\|\n\\)*\\$FlowIgnoreLine
 
 [lints]

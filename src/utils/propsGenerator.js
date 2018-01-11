@@ -18,6 +18,7 @@ export default function propsGenerator(
     easeType = 'linear',
     className,
     transition: transitionValue,
+    refCallback,
   }: Props,
   { willEnd, willStart, willComplete, willEnter, willLeave, played }: State,
   mountProps: MountProps = {
@@ -50,5 +51,7 @@ export default function propsGenerator(
         transition,
       },
     },
+    // $FlowIgnoreLine
+    ...refCallback ? { ref: (r) => { refCallback(r); } } : null,
   };
 }

@@ -43,12 +43,6 @@ export default function propsGenerator(
     style = endStyle;
   }
 
-  let ref = null;
-  if (refCallback) {
-    // $FlowIgnoreLine
-    ref = (r) => { refCallback(r); };
-  }
-
   return {
     className,
     style: {
@@ -57,6 +51,7 @@ export default function propsGenerator(
         transition,
       },
     },
-    ref,
+    // $FlowIgnoreLine
+    ...refCallback ? { ref: (r) => { refCallback(r); } } : null,
   };
 }

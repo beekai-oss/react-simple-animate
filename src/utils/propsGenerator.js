@@ -6,11 +6,10 @@ let transition;
 
 type MountProps = { willUnmount: boolean, willMount: boolean };
 
-const getDelay = ({ reverseDelaySeconds, startAnimation, played, delaySeconds }) => {
+const getTransitionDelay = ({ reverseDelaySeconds, startAnimation, played, delaySeconds }) => {
   if (reverseDelaySeconds && !startAnimation && played) {
     return ` ${reverseDelaySeconds}s`;
-  }
-  if (delaySeconds) {
+  } else if (delaySeconds) {
     return ` ${delaySeconds}s`;
   }
   return '';
@@ -40,7 +39,7 @@ export default function propsGenerator(
   style = startStyle;
   transition =
     transitionValue ||
-    `${durationSeconds}s all ${easeType}${getDelay({ reverseDelaySeconds, startAnimation, played, delaySeconds })}`;
+    `${durationSeconds}s all ${easeType}${getTransitionDelay({ reverseDelaySeconds, startAnimation, played, delaySeconds })}`;
 
   if (willMount) {
     style = willEnter ? endStyle : startStyle;

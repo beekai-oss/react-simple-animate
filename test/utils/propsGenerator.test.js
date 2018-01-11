@@ -119,7 +119,10 @@ describe('propsGenerator', () => {
         { ...props, startAnimation: true, delaySeconds: 0.3 },
         state,
       ).style,
-    ).toEqual(startStyleWithTransition);
+    ).toEqual({
+      ...endStyleWithTransition,
+      transition: '0.3s all linear 0.3s',
+    });
   });
 
   it('should render complete style and set transition to null', () => {

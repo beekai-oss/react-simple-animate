@@ -67,17 +67,6 @@ describe('Animate', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  describe('when animation is ready and delay have been set', () => {
-    it('should play animation with delay', () => {
-      const tree = mount(
-        <Animate {...{ ...props, delaySeconds: 1 }}>test</Animate>,
-      );
-
-      jest.runAllTimers();
-      expect(tree.state().willEnd).toEqual(true);
-    });
-  });
-
   describe('when animate end style is defined and ready to animate', () => {
     it('should update animation will end state to true', () => {
       const tree = mount(
@@ -252,14 +241,13 @@ describe('Animate', () => {
 
       expect(tree.find('div').props().style).toEqual({
         ...endStyle,
-        transition: '1s all linear',
+        transition: '1s all linear 1s',
       });
     });
   });
 
   describe('when is animate prop value get changed', () => {
     it('should trigger state reset and clear all timers', () => {
-      const clearAllTimers = jest.fn();
       const tree = mount(
         <Animate
           {...{
@@ -269,10 +257,6 @@ describe('Animate', () => {
           test
         </Animate>,
       );
-
-      tree.setState({
-        willEnd: true,
-      });
 
       tree.setProps({
         startAnimation: false,
@@ -385,7 +369,7 @@ describe('Animate', () => {
 
       expect(tree.find('div').props().style).toEqual({
         ...startStyle,
-        transition,
+        transition: `${transition} 0.5s`,
       });
     });
   });

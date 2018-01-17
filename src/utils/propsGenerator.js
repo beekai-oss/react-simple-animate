@@ -6,6 +6,15 @@ let transition;
 
 type MountProps = { willUnmount: boolean, willMount: boolean };
 
+const getTransitionDelay = ({ reverseDelaySeconds, startAnimation, played, delaySeconds }) => {
+  if (reverseDelaySeconds && !startAnimation && played) {
+    return ` ${reverseDelaySeconds}s`;
+  } else if (delaySeconds) {
+    return ` ${delaySeconds}s`;
+  }
+  return '';
+};
+
 export default function propsGenerator(
   {
     startAnimation,
@@ -14,13 +23,13 @@ export default function propsGenerator(
     onCompleteStyle,
     durationSeconds = 0.3,
     reverseDelaySeconds,
-    delaySeconds,
+    delaySeconds = 0,
     easeType = 'linear',
     className,
     transition: transitionValue,
     refCallback,
   }: Props,
-  { willEnd, willStart, willComplete, willEnter, willLeave, played }: State,
+  { willComplete, willEnter, willLeave, played }: State,
   mountProps: MountProps = {
     willUnmount: false,
     willMount: false,
@@ -28,7 +37,9 @@ export default function propsGenerator(
 ) {
   const { willUnmount, willMount } = mountProps;
   style = startStyle;
-  transition = transitionValue || `${durationSeconds}s all ${easeType}`;
+  transition =
+    transitionValue ||
+    `${durationSeconds}s all ${easeType}${getTransitionDelay({ reverseDelaySeconds, startAnimation, played, delaySeconds })}`;
 
   if (willMount) {
     style = willEnter ? endStyle : startStyle;
@@ -37,9 +48,7 @@ export default function propsGenerator(
   } else if (willComplete && onCompleteStyle) {
     style = onCompleteStyle;
     transition = null;
-  } else if (reverseDelaySeconds && !startAnimation && played) {
-    style = willStart ? startStyle : endStyle;
-  } else if (willEnd || (startAnimation && !delaySeconds)) {
+  } else if (startAnimation) {
     style = endStyle;
   }
 
@@ -51,7 +60,12 @@ export default function propsGenerator(
         transition,
       },
     },
-    // $FlowIgnoreLine
-    ...refCallback ? { ref: (r) => { refCallback(r); } } : null,
+    ...(refCallback
+      ? {
+        ref: (element: any): void => {
+          if (element && refCallback) refCallback(element);
+        },
+      }
+      : null),
   };
 }

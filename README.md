@@ -8,11 +8,11 @@
 
 Features:
 
- - Simple animation from inline style A to style B
- - Support add and remove child (New)
- - Make animation toggle easy
- - In-built delay animation mechanism
- - Tiny size without other dependency
+* Simple animation from inline style A to style B
+* Support add and remove child (New)
+* Make animation toggle easy
+* In-built delay animation mechanism
+* Tiny size without other dependency
 
 ## Install
 
@@ -36,7 +36,7 @@ Screenshot of the example app below
 
 ## Quick start
 
-The following example demonstrate animate **individual** or **array of components**. React simple animate will take cares component **will mount** and **unmount**. 
+The following example demonstrate animate **individual** or **array of components**. React simple animate will take cares component **will mount** and **unmount**.
 
     import react from 'react';
     import Animate from 'react-simple-animate';
@@ -48,9 +48,9 @@ The following example demonstrate animate **individual** or **array of component
         startStyle: { opacity: 0 }
         endStyle={ opacity: 1 }
     };
-    
+
     export default function SexyComponent(props) {
-	    return <div>
+        return <div>
             // Animate individual component or components
             <Animate {...props}>
                 <h1>React simple animate</h1>
@@ -64,7 +64,7 @@ The following example demonstrate animate **individual** or **array of component
 
             // Animate components with customise style for add or remove
             <Animate {...props} animateOnAddRemove>
-                {props.componentsArray.map((key) => 
+                {props.componentsArray.map((key) =>
                     <Animate startStyle={{ background: 'none' }} endStyle={{ background: 'red' }>
                         <YourComponent key={key}>
                     </Animatee>}
@@ -74,20 +74,17 @@ The following example demonstrate animate **individual** or **array of component
 
 ## API
 
-| Prop | Type | Required | Description |
-| :--- | :--- | :---: | :--- |
-| `startAnimation` | boolean | ✓ | Defaults to false. Set to true to start the animation. |
-| `children` | node | ✓ | Child component to be animated. |
-| `startStyle` | string |  | Component initial inline style. |
-| `endStyle` | string | ✓ | Component transition to inline style. |
-| `tag` | string |  |  Default tag is div, this allow custom tag to be wrap around. |
-| `animateOnAddRemove` | boolean |  |  Enable animation on component add and remove. |
-| `onCompleteStyle` | string |  | Style to be applied after the animation is completed. |
-| `durationSeconds` | number |  | How long the animation takes in seconds. |
-| `delaySeconds` | number |  | How much delay should apply before animation starts. |
-| `reverseDelaySeconds` | number |  | How much delay should apply when reverse/toggle animation. |
-| `onComplete` | function |  | Call back function after animation complete. |
-| `onError` | function |  | Call back function after component error (**React 16 only**). |
-| `easeType` | string |  | Easing type refer to http://easings.net/ |
-| `className` | string |  | To specify a CSS class. |
-| `forceUpdate` | boolean |  | Force component to re-render. |
+| Prop                  | Type     | Required | Description                                                |
+| :-------------------- | :------- | :------: | :--------------------------------------------------------- |
+| `startAnimation`      | boolean  |    ✓     | Defaults to false. Set to true to start the animation.     |
+| `children`            | node     |    ✓     | Child component to be animated.                            |
+| `startStyle`          | string   |          | Component initial inline style.                            |
+| `endStyle`            | string   |    ✓     | Component transition to inline style.                      |
+| `animateOnAddRemove`  | boolean  |          | Enable animation on component add and remove.              |
+| `onCompleteStyle`     | string   |          | Style to be applied after the animation is completed.      |
+| `durationSeconds`     | number   |          | How long the animation takes in seconds.                   |
+| `delaySeconds`        | number   |          | How much delay should apply before animation starts.       |
+| `reverseDelaySeconds` | number   |          | How much delay should apply when reverse/toggle animation. |
+| `onComplete`          | function |          | Call back function after animation complete.               |
+| `easeType`            | string   |          | Easing type refer to http://easings.net/                   |
+| `className`           | string   |          | To specify a CSS class.                                    |

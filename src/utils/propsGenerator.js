@@ -6,15 +6,6 @@ let transition;
 
 type MountProps = { willUnmount: boolean, willMount: boolean };
 
-const getTransitionDelay = ({ reverseDelaySeconds, startAnimation, played, delaySeconds }) => {
-  if (reverseDelaySeconds && !startAnimation && played) {
-    return ` ${reverseDelaySeconds}s`;
-  } else if (delaySeconds) {
-    return ` ${delaySeconds}s`;
-  }
-  return '';
-};
-
 export default function propsGenerator(
   {
     startAnimation,
@@ -23,13 +14,13 @@ export default function propsGenerator(
     onCompleteStyle,
     durationSeconds = 0.3,
     reverseDelaySeconds,
-    delaySeconds = 0,
+    delaySeconds,
     easeType = 'linear',
     className,
     transition: transitionValue,
     refCallback,
   }: Props,
-  { willComplete, willEnter, willLeave, played }: State,
+  { willEnd, willStart, willComplete, willEnter, willLeave, played }: State,
   mountProps: MountProps = {
     willUnmount: false,
     willMount: false,
@@ -37,9 +28,7 @@ export default function propsGenerator(
 ) {
   const { willUnmount, willMount } = mountProps;
   style = startStyle;
-  transition =
-    transitionValue ||
-    `${durationSeconds}s all ${easeType}${getTransitionDelay({ reverseDelaySeconds, startAnimation, played, delaySeconds })}`;
+  transition = transitionValue || `${durationSeconds}s all ${easeType}`;
 
   if (willMount) {
     style = willEnter ? endStyle : startStyle;
@@ -48,7 +37,9 @@ export default function propsGenerator(
   } else if (willComplete && onCompleteStyle) {
     style = onCompleteStyle;
     transition = null;
-  } else if (startAnimation) {
+  } else if (reverseDelaySeconds && !startAnimation && played) {
+    style = willStart ? startStyle : endStyle;
+  } else if (willEnd || (startAnimation && !delaySeconds)) {
     style = endStyle;
   }
 
@@ -60,12 +51,7 @@ export default function propsGenerator(
         transition,
       },
     },
-    ...(refCallback
-      ? {
-        ref: (element: any): void => {
-          if (element && refCallback) refCallback(element);
-        },
-      }
-      : null),
+    // $FlowIgnoreLine
+    ...refCallback ? { ref: (r) => { refCallback(r); } } : null,
   };
 }

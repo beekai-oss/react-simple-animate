@@ -33,6 +33,19 @@ exports[`Animate should render correctly for children 1`] = `
 </div>
 `;
 
+exports[`Animate should render correctly with render props 1`] = `
+<div
+  className="test"
+  style={
+    Object {
+      "transition": "1s all linear",
+    }
+  }
+>
+  what
+</div>
+`;
+
 exports[`Animate should render custome tag correctly 1`] = `
 <l
   className="test"

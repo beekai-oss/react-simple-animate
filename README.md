@@ -72,8 +72,8 @@ cares component **will mount** and **unmount**.
 | Prop                  | Type     | Required | Description                                                                            |
 | :-------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
 | `startAnimation`      | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
-| `render`              | Function |          | pass html element attributes as argument eg. `(attributes) => <div {...attributes} />` |
 | `children`            | node     |          | Child component to be animated.                                                        |
+| `render`              | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
 | `startStyle`          | string   |          | Component initial inline style.                                                        |
 | `endStyle`            | string   |    ✓     | Component transition to inline style.                                                  |
 | `animateOnAddRemove`  | boolean  |          | Enable animation on component add and remove.                                          |

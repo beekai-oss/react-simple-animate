@@ -27,7 +27,7 @@ export default function mapChildren(props: Props, state: State) {
     let componentProps = {};
     let startAnimation = true;
 
-    const { willMount = false, willUnmount = false } = child;
+    const { willMount = false, willUnmount = false, props: childProps } = child;
     const isAnimateComponent =
       child.type &&
       child.type.displayName &&
@@ -53,7 +53,7 @@ export default function mapChildren(props: Props, state: State) {
     }
 
     return React.cloneElement(child, {
-      ...{ ...child.props },
+      ...childProps,
       ...(!isAnimateComponent && componentProps.style
         ? { style: componentProps.style }
         : { startAnimation }),

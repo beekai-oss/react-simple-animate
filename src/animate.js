@@ -235,14 +235,15 @@ export default class Animate extends React.Component<Props, State> {
     const { tag, children, animateOnAddRemove, render } = this.props;
     const tagName = tag || 'div';
     const componentProps = propsGenerator(this.props, this.state);
+    const haveChildToAnimate = Array.isArray(children) && animateOnAddRemove;
 
-    if (render) {
+    if (render && !haveChildToAnimate) {
       return render(componentProps);
     }
     return React.createElement(
       tagName,
       componentProps,
-      Array.isArray(children) && animateOnAddRemove
+      haveChildToAnimate
         ? mapChildren(this.props, this.state)
         : children,
     );

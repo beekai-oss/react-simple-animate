@@ -25,12 +25,14 @@ describe('Animate', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('should render correctly with render props', () => {
+    const tree = renderer.create(<Animate render={attributes => <div {...attributes}>what</div>} {...props} />);
+
+    expect(tree).toMatchSnapshot();
+  });
+
   it('should render correctly for children', () => {
-    const tree = renderer.create(
-      <Animate {...props}>
-        {[1, 2].map(item => <div key={item}>test{item}</div>)}
-      </Animate>,
-    );
+    const tree = renderer.create(<Animate {...props}>{[1, 2].map(item => <div key={item}>test{item}</div>)}</Animate>);
 
     expect(tree).toMatchSnapshot();
   });
@@ -69,9 +71,7 @@ describe('Animate', () => {
 
   describe('when animation is ready and delay have been set', () => {
     it('should play animation with delay', () => {
-      const tree = mount(
-        <Animate {...{ ...props, delaySeconds: 1 }}>test</Animate>,
-      );
+      const tree = mount(<Animate {...{ ...props, delaySeconds: 1 }}>test</Animate>);
 
       jest.runAllTimers();
       expect(tree.state().willEnd).toEqual(true);
@@ -102,11 +102,7 @@ describe('Animate', () => {
   });
 
   it('should update component when animation is ready', () => {
-    const tree = shallow(
-      <Animate {...{ ...props, startAnimation: false, endStyle }}>
-        test
-      </Animate>,
-    );
+    const tree = shallow(<Animate {...{ ...props, startAnimation: false, endStyle }}>test</Animate>);
 
     const state = {
       willEnd: false,
@@ -123,11 +119,7 @@ describe('Animate', () => {
   });
 
   it('should not update component when animation already played', () => {
-    const tree = shallow(
-      <Animate {...{ ...props, startAnimation: false, endStyle }}>
-        test
-      </Animate>,
-    );
+    const tree = shallow(<Animate {...{ ...props, startAnimation: false, endStyle }}>test</Animate>);
 
     const state = defaultState;
 
@@ -147,18 +139,12 @@ describe('Animate', () => {
       ),
     ).toEqual(true);
 
-    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(
-      false,
-    );
+    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(false);
   });
 
   it('should update component when animation is about to end or delay animation about to end ', () => {
     const tree = shallow(
-      <Animate
-        {...{ ...props, startAnimation: false, endStyle: { display: 'block' } }}
-      >
-        test
-      </Animate>,
+      <Animate {...{ ...props, startAnimation: false, endStyle: { display: 'block' } }}>test</Animate>,
     );
 
     let state = {
@@ -169,17 +155,13 @@ describe('Animate', () => {
       startAnimation: false,
     };
 
-    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(
-      true,
-    );
+    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(true);
 
     state = {
       willEnd: false,
     };
 
-    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(
-      true,
-    );
+    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(true);
   });
 
   describe('When animation complete style has been set', () => {
@@ -305,9 +287,7 @@ describe('Animate', () => {
 
       const nextState = { willEnd: false };
 
-      expect(
-        tree.instance().shouldComponentUpdate(nextProps, nextState),
-      ).toEqual(true);
+      expect(tree.instance().shouldComponentUpdate(nextProps, nextState)).toEqual(true);
     });
   });
 
@@ -334,9 +314,7 @@ describe('Animate', () => {
 
       const nextState = { willEnd: false };
 
-      expect(
-        tree.instance().shouldComponentUpdate(nextProps, nextState),
-      ).toEqual(true);
+      expect(tree.instance().shouldComponentUpdate(nextProps, nextState)).toEqual(true);
     });
   });
 

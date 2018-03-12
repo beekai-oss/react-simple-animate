@@ -35,6 +35,7 @@ export type Props = {
   onError?: (Object, Object) => mixed,
   className?: string,
   animateOnAddRemove: boolean,
+  render: (Object) => any,
   transition?: string,
   refCallback?: (React$Element<any>) => {},
 };
@@ -231,14 +232,18 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   render() {
-    const { tag, children, animateOnAddRemove } = this.props;
+    const { tag, children, animateOnAddRemove, render } = this.props;
     const tagName = tag || 'div';
     const componentProps = propsGenerator(this.props, this.state);
+    const haveChildToAnimate = Array.isArray(children) && animateOnAddRemove;
 
+    if (render && !haveChildToAnimate) {
+      return render(componentProps);
+    }
     return React.createElement(
       tagName,
       componentProps,
-      Array.isArray(children) && animateOnAddRemove
+      haveChildToAnimate
         ? mapChildren(this.props, this.state)
         : children,
     );

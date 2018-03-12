@@ -2,7 +2,10 @@
     <img width="675" src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/logo.png" alt="React Simple Animate Logo - UI Animation Made Simple" />
 </p>
 
-[![npm version](https://img.shields.io/npm/v/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://img.shields.io/npm/l/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
+[![npm version](https://img.shields.io/npm/v/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
+[![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
+[![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
+[![npm](https://img.shields.io/npm/l/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
 
 > **Make web animation simple** :clap:
 
@@ -36,14 +39,14 @@ Screenshot of the example app below
 
 ## Quick start
 
-The following example demonstrate animate **individual** or **array of components**. React simple animate will take cares component **will mount** and **unmount**.
+The following example demonstrate animate **individual** or **array of components**. React simple animate will take
+cares component **will mount** and **unmount**.
 
     import react from 'react';
     import Animate from 'react-simple-animate';
     import YourComponent from './YourComponent';
 
     const props = {
-        durationSeconds: 0.2,
         startAnimation: true,
         startStyle: { opacity: 0 }
         endStyle={ opacity: 1 }
@@ -61,30 +64,27 @@ The following example demonstrate animate **individual** or **array of component
             <Animate {...props} animateOnAddRemove>
                 {props.componentsArray.map((key) => <YourComponent key={key}>}
             </Animate>
-
-            // Animate components with customise style for add or remove
-            <Animate {...props} animateOnAddRemove>
-                {props.componentsArray.map((key) =>
-                    <Animate startStyle={{ background: 'none' }} endStyle={{ background: 'red' }>
-                        <YourComponent key={key}>
-                    </Animatee>}
-            </Animate>
         </div>;
     }
 
 ## API
 
-| Prop                  | Type     | Required | Description                                                |
-| :-------------------- | :------- | :------: | :--------------------------------------------------------- |
-| `startAnimation`      | boolean  |    ✓     | Defaults to false. Set to true to start the animation.     |
-| `children`            | node     |    ✓     | Child component to be animated.                            |
-| `startStyle`          | string   |          | Component initial inline style.                            |
-| `endStyle`            | string   |    ✓     | Component transition to inline style.                      |
-| `animateOnAddRemove`  | boolean  |          | Enable animation on component add and remove.              |
-| `onCompleteStyle`     | string   |          | Style to be applied after the animation is completed.      |
-| `durationSeconds`     | number   |          | How long the animation takes in seconds.                   |
-| `delaySeconds`        | number   |          | How much delay should apply before animation starts.       |
-| `reverseDelaySeconds` | number   |          | How much delay should apply when reverse/toggle animation. |
-| `onComplete`          | function |          | Call back function after animation complete.               |
-| `easeType`            | string   |          | Easing type refer to http://easings.net/                   |
-| `className`           | string   |          | To specify a CSS class.                                    |
+| Prop                  | Type     | Required | Description                                                                            |
+| :-------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
+| `startAnimation`      | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
+| `children`            | node     |          | Child component to be animated.                                                        |
+| `render`              | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
+| `startStyle`          | string   |          | Component initial inline style.                                                        |
+| `endStyle`            | string   |    ✓     | Component transition to inline style.                                                  |
+| `animateOnAddRemove`  | boolean  |          | Enable animation on component add and remove.                                          |
+| `onCompleteStyle`     | string   |          | Style to be applied after the animation is completed.                                  |
+| `durationSeconds`     | number   |          | How long the animation takes in seconds.                                               |
+| `delaySeconds`        | number   |          | How much delay should apply before animation starts.                                   |
+| `reverseDelaySeconds` | number   |          | How much delay should apply when reverse/toggle animation.                             |
+| `onComplete`          | function |          | Call back function after animation complete.                                           |
+| `easeType`            | string   |          | Easing type refer to http://easings.net/                                               |
+| `className`           | string   |          | To specify a CSS class.                                                                |
+
+## Reference
+
+https://medium.com/jsdownunder/react-ui-animation-made-simple-c2ff98056659

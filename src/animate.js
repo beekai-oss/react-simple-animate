@@ -30,7 +30,7 @@ export type Props = {
   reverseDelaySeconds?: number,
   easeType?: string,
   forceUpdate?: boolean,
-  tag?: ?string,
+  tag?: string,
   onComplete?: () => mixed,
   onError?: (Object, Object) => mixed,
   className?: string,
@@ -52,6 +52,23 @@ export type State = {
 
 export default class Animate extends React.Component<Props, State> {
   static displayName = 'ReactSimpleAnimate';
+
+  static defaultProps = {
+    startStyle: {},
+    onCompleteStyle: {},
+    durationSeconds: 0.3,
+    delaySeconds: 0,
+    children: null,
+    reverseDelaySeconds: 0,
+    easeType: 'linear',
+    forceUpdate: false,
+    tag: 'div',
+    onComplete: undefined,
+    onError: undefined,
+    className: {},
+    transition: '',
+    refCallback: undefined,
+  };
 
   constructor(props: Props) {
     super(props);
@@ -107,6 +124,11 @@ export default class Animate extends React.Component<Props, State> {
       willEnter !== this.state.willEnter ||
       !!forceUpdate
     );
+  }
+
+  componentDidCatch(error: Object, info: Object) {
+    const { onError = false } = this.props;
+    if (onError) onError(error, info);
   }
 
   componentWillUnmount() {
@@ -225,11 +247,6 @@ export default class Animate extends React.Component<Props, State> {
   completeTimeout = null;
   leaveTimeout = null;
   enterTimeout = null;
-
-  componentDidCatch(error: Object, info: Object) {
-    const { onError = false } = this.props;
-    if (onError) onError(error, info);
-  }
 
   render() {
     const { tag, children, animateOnAddRemove, render } = this.props;

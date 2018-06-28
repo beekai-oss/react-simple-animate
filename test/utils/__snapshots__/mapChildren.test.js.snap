@@ -3,7 +3,20 @@
 exports[`mapChildren when children is Animate component should apply startAnimation 1`] = `
 Array [
   <ReactSimpleAnimate
+    className={Object {}}
+    delaySeconds={0}
+    durationSeconds={0.3}
+    easeType="linear"
+    forceUpdate={false}
+    onComplete={undefined}
+    onCompleteStyle={undefined}
+    onError={undefined}
+    refCallback={undefined}
+    reverseDelaySeconds={0}
     startAnimation={true}
+    startStyle={Object {}}
+    tag="div"
+    transition=""
 />,
 ]
 `;
@@ -11,7 +24,20 @@ Array [
 exports[`mapChildren when children is Animate component should apply startAnimation according to willEnter state 1`] = `
 Array [
   <ReactSimpleAnimate
+    className={Object {}}
+    delaySeconds={0}
+    durationSeconds={0.3}
+    easeType="linear"
+    forceUpdate={false}
+    onComplete={undefined}
+    onCompleteStyle={undefined}
+    onError={undefined}
+    refCallback={undefined}
+    reverseDelaySeconds={0}
     startAnimation={false}
+    startStyle={Object {}}
+    tag="div"
+    transition=""
 />,
 ]
 `;
@@ -19,7 +45,20 @@ Array [
 exports[`mapChildren when children is Animate component should apply startAnimation according to willEnter state 2`] = `
 Array [
   <ReactSimpleAnimate
+    className={Object {}}
+    delaySeconds={0}
+    durationSeconds={0.3}
+    easeType="linear"
+    forceUpdate={false}
+    onComplete={undefined}
+    onCompleteStyle={undefined}
+    onError={undefined}
+    refCallback={undefined}
+    reverseDelaySeconds={0}
     startAnimation={true}
+    startStyle={Object {}}
+    tag="div"
+    transition=""
 />,
 ]
 `;
@@ -27,7 +66,20 @@ Array [
 exports[`mapChildren when children is Animate component should apply startAnimation according to willLeave state 1`] = `
 Array [
   <ReactSimpleAnimate
+    className={Object {}}
+    delaySeconds={0}
+    durationSeconds={0.3}
+    easeType="linear"
+    forceUpdate={false}
+    onComplete={undefined}
+    onCompleteStyle={undefined}
+    onError={undefined}
+    refCallback={undefined}
+    reverseDelaySeconds={0}
     startAnimation={false}
+    startStyle={Object {}}
+    tag="div"
+    transition=""
 />,
 ]
 `;

@@ -8,6 +8,16 @@ const filterUnMountChildren = (children: Array<React$Element<any>>) =>
 
 export default function mapChildren(props: Props, state: State) {
   const { childrenStoreInState, willLeave, willEnter } = state;
+  const {
+    durationSeconds,
+    onCompleteStyle,
+    delaySeconds,
+    reverseDelaySeconds,
+    onComplete,
+    easeType,
+    startStyle,
+    endStyle,
+  } = props;
 
   if (!Array.isArray(childrenStoreInState) || !Array.isArray(props.children)) {
     return null;
@@ -28,10 +38,7 @@ export default function mapChildren(props: Props, state: State) {
     let startAnimation = true;
 
     const { willMount = false, willUnmount = false, props: childProps } = child;
-    const isAnimateComponent =
-      child.type &&
-      child.type.displayName &&
-      child.type.displayName === 'ReactSimpleAnimate';
+    const isAnimateComponent = child.type && child.type.displayName && child.type.displayName === 'ReactSimpleAnimate';
 
     if (isAnimateComponent) {
       if (willMount) {
@@ -56,7 +63,17 @@ export default function mapChildren(props: Props, state: State) {
       ...childProps,
       ...(!isAnimateComponent && componentProps.style
         ? { style: componentProps.style }
-        : { startAnimation }),
+        : {
+          startStyle,
+          endStyle,
+          startAnimation,
+          durationSeconds,
+          onCompleteStyle,
+          delaySeconds,
+          reverseDelaySeconds,
+          onComplete,
+          easeType,
+        }),
     });
   });
 }

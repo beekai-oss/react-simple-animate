@@ -55,7 +55,7 @@ export default class Animate extends React.Component<Props, State> {
 
   static defaultProps = {
     startStyle: {},
-    onCompleteStyle: {},
+    onCompleteStyle: undefined,
     durationSeconds: 0.3,
     delaySeconds: 0,
     children: null,

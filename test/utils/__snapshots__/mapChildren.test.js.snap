@@ -3,7 +3,7 @@
 exports[`mapChildren when children is Animate component should apply startAnimation 1`] = `
 Array [
   <ReactSimpleAnimate
-    className={Object {}}
+    className={undefined}
     delaySeconds={0}
     durationSeconds={0.3}
     easeType="linear"
@@ -25,7 +25,7 @@ Array [
 exports[`mapChildren when children is Animate component should apply startAnimation according to willEnter state 1`] = `
 Array [
   <ReactSimpleAnimate
-    className={Object {}}
+    className={undefined}
     delaySeconds={0}
     durationSeconds={0.3}
     easeType="linear"
@@ -47,7 +47,7 @@ Array [
 exports[`mapChildren when children is Animate component should apply startAnimation according to willEnter state 2`] = `
 Array [
   <ReactSimpleAnimate
-    className={Object {}}
+    className={undefined}
     delaySeconds={0}
     durationSeconds={0.3}
     easeType="linear"
@@ -69,7 +69,7 @@ Array [
 exports[`mapChildren when children is Animate component should apply startAnimation according to willLeave state 1`] = `
 Array [
   <ReactSimpleAnimate
-    className={Object {}}
+    className={undefined}
     delaySeconds={0}
     durationSeconds={0.3}
     easeType="linear"

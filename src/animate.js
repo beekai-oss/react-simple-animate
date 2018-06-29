@@ -65,7 +65,7 @@ export default class Animate extends React.Component<Props, State> {
     tag: 'div',
     onComplete: undefined,
     onError: undefined,
-    className: {},
+    className: undefined,
     transition: '',
     refCallback: undefined,
   };

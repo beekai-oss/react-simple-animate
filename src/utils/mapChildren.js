@@ -64,15 +64,11 @@ export default function mapChildren(props: Props, state: State) {
       ...(!isAnimateComponent && componentProps.style
         ? { style: componentProps.style }
         : {
-          startStyle,
-          endStyle,
           startAnimation,
           durationSeconds,
-          onCompleteStyle,
           delaySeconds,
           reverseDelaySeconds,
           onComplete,
-          easeType,
         }),
     });
   });

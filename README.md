@@ -61,8 +61,10 @@ cares component **will mount** and **unmount**.
             </Animate>
 
             // Animate components with add/remove, style will inherit from parent Animate props
-            <Animate {...props} animateOnAddRemove>
-                {props.componentsArray.map((key) => <YourComponent key={key}>}
+            <Animate animateOnAddRemove>
+                {props.componentsArray.map((key) => <Animate {...props}>
+                    <YourComponent key={key}>
+                </Animate>}
             </Animate>
         </div>;
     }

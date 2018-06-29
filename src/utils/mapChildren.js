@@ -10,13 +10,9 @@ export default function mapChildren(props: Props, state: State) {
   const { childrenStoreInState, willLeave, willEnter } = state;
   const {
     durationSeconds,
-    onCompleteStyle,
     delaySeconds,
     reverseDelaySeconds,
     onComplete,
-    easeType,
-    startStyle,
-    endStyle,
   } = props;
 
   if (!Array.isArray(childrenStoreInState) || !Array.isArray(props.children)) {

@@ -336,7 +336,7 @@ describe('Animate', () => {
 
   describe('when reverse animation with delay has been set', () => {
     it('should delay animation on reversing', () => {
-      const tree = mount(
+      const tree = shallow(
         <Animate
           {...{
             ...props,
@@ -360,6 +360,8 @@ describe('Animate', () => {
       });
 
       jest.runAllTimers();
+
+      tree.update();
 
       expect(tree.find('div').props().style).toEqual({
         ...startStyle,

@@ -67,7 +67,6 @@ exports[`Animate when animate on add or remove enabled should render correctly f
   }
 >
   <div
-    className={undefined}
     style={
       Object {
         "transition": "1s all linear",
@@ -80,7 +79,6 @@ exports[`Animate when animate on add or remove enabled should render correctly f
     </div>
   </div>
   <div
-    className={undefined}
     style={
       Object {
         "transition": "1s all linear",

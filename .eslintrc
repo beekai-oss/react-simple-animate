@@ -1,16 +1,10 @@
 {
-  "extends": ["airbnb", "plugin:flowtype/recommended", "prettier"],
+  "extends": ["airbnb", "plugin:flowtype/recommended"],
   "rules": {
     "flowtype/define-flow-type": 2,
     "react/prop-types": 0,
     "react/no-unused-prop-types": 0,
-    "react/jsx-filename-extension": 0,
-    "import/no-cycle": 0,
-    "react/destructuring-assignment": 0,
-    "no-unused-expressions": 0,
-    "react/sort-comp": 0,
-    "lines-between-class-members": 0,
-    "prefer-destructuring": 0
+    "react/jsx-filename-extension": 0
   },
   "parser": "babel-eslint",
   "plugins": ["flowtype"]

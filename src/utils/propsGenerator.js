@@ -25,7 +25,7 @@ export default function propsGenerator(
     willUnmount: false,
     willMount: false,
   },
-): Object {
+) {
   const { willUnmount, willMount } = mountProps;
   style = startStyle;
   transition = transitionValue || `${durationSeconds}s all ${easeType}`;
@@ -52,12 +52,6 @@ export default function propsGenerator(
       },
     },
     // $FlowIgnoreLine
-    ...(refCallback
-      ? {
-          ref: r => {
-            refCallback(r);
-          },
-        }
-      : null),
+    ...refCallback ? { ref: (r) => { refCallback(r); } } : null,
   };
 }

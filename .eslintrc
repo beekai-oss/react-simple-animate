@@ -4,7 +4,11 @@
     "flowtype/define-flow-type": 2,
     "react/prop-types": 0,
     "react/no-unused-prop-types": 0,
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": 0,
+    "no-unused-expressions": 0,
+    "max-len": 0,
+    "indent": 0,
+    "arrow-parens": 0
   },
   "parser": "babel-eslint",
   "plugins": ["flowtype"]

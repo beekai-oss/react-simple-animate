@@ -83,7 +83,7 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { startAnimation, reverseDelaySeconds, children, animateOnAddRemove } = nextProps;
+    const { startAnimation, children } = nextProps;
     const toggledAnimation = startAnimation !== this.props.startAnimation;
 
     this.setState({
@@ -91,11 +91,6 @@ export default class Animate extends React.Component<Props, State> {
       childrenStoreInState: children,
       played: toggledAnimation,
     });
-
-    // animation  on mount or unmount
-    if (animateOnAddRemove) this.setChildrenState(nextProps);
-
-    this.setDelayAndOnComplete(nextProps, toggledAnimation && !startAnimation && !!reverseDelaySeconds);
   }
 
   shouldComponentUpdate(
@@ -116,6 +111,15 @@ export default class Animate extends React.Component<Props, State> {
       willEnter !== this.state.willEnter ||
       !!forceUpdate
     );
+  }
+
+  componentDidUpdate(previousProps: Props) {
+    const { reverseDelaySeconds, animateOnAddRemove, startAnimation } = this.props;
+    const toggledAnimation = startAnimation !== previousProps.startAnimation;
+    // animation on mount or unmount
+    if (animateOnAddRemove) this.setChildrenState(this.props);
+
+    this.setDelayAndOnComplete(this.props, toggledAnimation && !startAnimation && !!reverseDelaySeconds);
   }
 
   componentDidCatch(error: Object, info: Object) {

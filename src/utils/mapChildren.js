@@ -6,14 +6,9 @@ import type { Props, State } from '../animate';
 const filterUnMountChildren = (children: Array<React$Element<any>>) =>
   children.filter((child: Object) => !child.willUnmount);
 
-export default function mapChildren(props: Props, state: State) {
+export default function mapChildren(props: Props, state: State): ?Array<?React.Component<*>> {
   const { childrenStoreInState, willLeave, willEnter } = state;
-  const {
-    durationSeconds,
-    delaySeconds,
-    reverseDelaySeconds,
-    onComplete,
-  } = props;
+  const { durationSeconds, delaySeconds, reverseDelaySeconds, onComplete } = props;
 
   if (!Array.isArray(childrenStoreInState) || !Array.isArray(props.children)) {
     return null;
@@ -60,12 +55,12 @@ export default function mapChildren(props: Props, state: State) {
       ...(!isAnimateComponent && componentProps.style
         ? { style: componentProps.style }
         : {
-          startAnimation,
-          durationSeconds,
-          delaySeconds,
-          reverseDelaySeconds,
-          onComplete,
-        }),
+            startAnimation,
+            durationSeconds,
+            delaySeconds,
+            reverseDelaySeconds,
+            onComplete,
+          }),
     });
   });
 }

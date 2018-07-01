@@ -6,7 +6,7 @@ import type { Props, State } from '../animate';
 const filterUnMountChildren = (children: Array<React$Element<any>>) =>
   children.filter((child: Object) => !child.willUnmount);
 
-export default function mapChildren(props: Props, state: State) {
+export default function mapChildren(props: Props, state: State): ?Array<?React.Component<*>> {
   const { childrenStoreInState, willLeave, willEnter } = state;
   const {
     durationSeconds,

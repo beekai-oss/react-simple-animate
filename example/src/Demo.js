@@ -121,21 +121,15 @@ export default class Demo extends React.Component {
           <Grid item xs={12} className="Demo-mode-selector">
             <FormControlLabel
               label="🤘 Easy Mode"
-              control={
-                <Switch
-                  aria-label="pro"
-                  onChange={this.handleSwitchChange('easyMode')}
-                />
-              }
+              control={<Switch aria-label="pro" onChange={this.handleSwitchChange('easyMode')} />}
             />
 
-            <Animate
-              startAnimation={startAnimation}
-              tag="span"
-              {...{ startStyle, endStyle }}
-            >
+            <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
               <Button
-                fab
+                style={{
+                  marginRight: '20px',
+                }}
+                variant="fab"
                 onClick={() => {
                   this.setState(previousState => {
                     return {
@@ -144,21 +138,16 @@ export default class Demo extends React.Component {
                   });
                   this.setKeys();
                 }}
-                color="accent"
+                color="secondary"
                 aria-label="add"
-                className="new-button"
               >
                 <RemoveIcon />
               </Button>
             </Animate>
 
-            <Animate
-              startAnimation={startAnimation}
-              tag="span"
-              {...{ startStyle, endStyle }}
-            >
+            <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
               <Button
-                fab
+                variant="fab"
                 onClick={() => {
                   this.setState(previousState => {
                     return {
@@ -169,7 +158,6 @@ export default class Demo extends React.Component {
                 }}
                 color="primary"
                 aria-label="add"
-                className="new-button"
               >
                 <AddIcon />
               </Button>
@@ -181,10 +169,7 @@ export default class Demo extends React.Component {
               <Animate startAnimation {...{ startStyle, endStyle }}>
                 <div className="demo-simple">
                   <label htmlFor="animationStyle">Animation style: </label>
-                  <select
-                    id="animationStyle"
-                    onChange={this.changeAnimateStyle}
-                  >
+                  <select id="animationStyle" onChange={this.changeAnimateStyle}>
                     {selectOptions.map(({ name }) => {
                       return (
                         <option value={name} key={name}>
@@ -198,10 +183,7 @@ export default class Demo extends React.Component {
             )}
 
             {!easyMode && (
-              <Animate
-                startAnimation
-                {...{ startStyle, endStyle, delaySeconds }}
-              >
+              <Animate startAnimation {...{ startStyle, endStyle, delaySeconds }}>
                 {fields.map((field, i) => {
                   let helperText = '';
 
@@ -218,13 +200,10 @@ export default class Demo extends React.Component {
                         rowsMax="4"
                         fullWidth
                         onBlur={e => this.handleOnBlur(e, field.value)}
-                        onChange={e =>
-                          this.handleChange(field.value, e.target.value)}
+                        onChange={e => this.handleChange(field.value, e.target.value)}
                         value={this.state[field.value]}
                         label={field.label}
-                        {...(field.value.includes('Seconds')
-                          ? { type: 'number' }
-                          : null)}
+                        {...(field.value.includes('Seconds') ? { type: 'number' } : null)}
                         multiline={i < 2}
                         {...(this.state.errroFields.get(field.value) === false
                           ? {
@@ -241,16 +220,15 @@ export default class Demo extends React.Component {
           </Grid>
 
           <Grid item xs={6} md={8}>
-            <DemoObject
-              {...this.state}
-              clickHandler={item => this.clickHandler(item)}
-            />
+            <DemoObject {...this.state} clickHandler={item => this.clickHandler(item)} />
           </Grid>
 
           <Grid item xs={12}>
             <Button
-              className="demo-button"
-              raised
+              style={{
+                marginRight: '20px',
+              }}
+              variant="raised"
               color="primary"
               onClick={() => {
                 this.setState(prevState => {
@@ -264,8 +242,8 @@ export default class Demo extends React.Component {
             </Button>
 
             <Button
-              raised
-              color="accent"
+              variant="raised"
+              color="secondary"
               onClick={() => {
                 this.setState(prevState => {
                   return {

@@ -11,16 +11,30 @@ export default function App() {
     <div className="App-bar">
       <AppBar position="static">
         <Toolbar>
-          <Typography type="title" color="inherit">
+          <Typography variant="title" color="inherit">
             React Simple Animate
           </Typography>
 
           <a href="https://medium.com/jsdownunder/react-ui-animation-made-simple-c2ff98056659">
-            <Button color="contrast">Blog</Button>
+            <Button
+              style={{
+                color: 'white',
+              }}
+              color="default"
+            >
+              Blog
+            </Button>
           </a>
 
           <a href="https://github.com/bluebill1049/react-simple-animate">
-            <Button color="contrast">Github</Button>
+            <Button
+              style={{
+                color: 'white',
+              }}
+              color="default"
+            >
+              Github
+            </Button>
           </a>
         </Toolbar>
       </AppBar>

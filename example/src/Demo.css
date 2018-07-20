@@ -25,3 +25,11 @@
   height: 40px !important;
   margin-right: 20px;
 }
+
+.Demo-mode-selector {
+  display: flex;
+}
+
+.Demo-mode-selector > label {
+  flex: 1;
+}

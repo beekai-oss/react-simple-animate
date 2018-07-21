@@ -50,8 +50,6 @@ export type State = {
   childrenStoreInState?: ChildrenType,
 };
 
-const timeDelayForChildEnterOrLeave = 0.005;
-
 export default class Animate extends React.Component<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
@@ -159,7 +157,7 @@ export default class Animate extends React.Component<Props, State> {
     this.completeTimeout && clearTimeout(this.completeTimeout);
     this.completeTimeout = setDelayState.call(
       this,
-      parseFloat(delaySeconds) || parseFloat(durationSeconds) || 0,
+      parseFloat(delaySeconds) || 0 + parseFloat(durationSeconds) || 0,
       'willComplete',
       onComplete,
     );
@@ -198,11 +196,11 @@ export default class Animate extends React.Component<Props, State> {
 
       if (childrenWillMount && startAnimation) {
         this.enterTimeout && clearTimeout(this.enterTimeout);
-        this.enterTimeout = setDelayState.call(this, timeDelayForChildEnterOrLeave, 'willEnter', this.setCurrentChildrenToState);
+        this.enterTimeout = setDelayState.call(this, 0.01, 'willEnter', this.setCurrentChildrenToState);
       }
     } else if (!startAnimation) {
       this.enterTimeout && clearTimeout(this.enterTimeout);
-      this.enterTimeout = setDelayState.call(this, timeDelayForChildEnterOrLeave, 'willEnter', this.setCurrentChildrenToState);
+      this.enterTimeout = setDelayState.call(this, 0.01, 'willEnter', this.setCurrentChildrenToState);
 
       this.setState({
         childrenStoreInState,

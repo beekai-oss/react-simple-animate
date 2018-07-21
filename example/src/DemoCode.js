@@ -20,18 +20,20 @@ export default function DemoCode({
     startAnimation=${startAnimation}
     startStyle={${startStyle}}
     endStyle={${endStyle}}
-    durationSeconds="${durationSeconds}"
-    easeType="${easeType}"
+    ${durationSeconds !== '0.3' ? `durationSeconds="${durationSeconds}"` : ''}
+    ${easeType !== 'linear' ? `easeType="${easeType}"` : ''}
     ${count > 1 ? 'animateOnAddRemove' : ''}
     ${delaySeconds ? `delaySeconds=${delaySeconds}` : ''}
     ${reverseDelaySeconds ? `reverseDelaySeconds={${reverseDelaySeconds}}` : ''}
     ${onCompleteStyle ? `onCompleteStyle={${onCompleteStyle}}` : ''}
   >
-    ${count <= 1
-      ? `<img src="logo" alt="logo" className="demo-logo" />`
-      : `{keys.map((item, i) => (
+    ${
+      count <= 1
+        ? `<img src={logo} />`
+        : `{keys.map((item, i) => (
       <img src={logo} key={i} />
-    ))}`}
+    ))}`
+    }
   </Animate>`;
 
   return (

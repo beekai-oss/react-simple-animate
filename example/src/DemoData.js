@@ -44,7 +44,7 @@ export const selectOptions = [
   {
     name: 'transformX',
     startStyle: {
-      transform: 'translateX(500px)',
+      transform: 'translateX(550px)',
     },
     endStyle: {
       transform: 'translateX(0)',

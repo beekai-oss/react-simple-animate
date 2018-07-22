@@ -5854,9 +5854,9 @@ react-scrollbar-size@^2.0.2:
     react-event-listener "^0.5.1"
     stifle "^1.0.2"
 
-react-simple-animate@1.9.5:
-  version "1.9.5"
-  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.9.5.tgz#9a1cb92f33a29f1bb2add8dab918e746843e1b5a"
+react-simple-animate@1.9.8:
+  version "1.9.8"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-1.9.8.tgz#149bcc848b4545946570cc07d7a56cee41987826"
 
 react-syntax-highlight@^15.3.1:
   version "15.3.1"

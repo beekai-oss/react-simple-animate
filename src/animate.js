@@ -50,6 +50,8 @@ export type State = {
   childrenStoreInState?: ChildrenType,
 };
 
+const timeDelayForChildren = 0.001;
+
 export default class Animate extends React.Component<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
@@ -83,7 +85,7 @@ export default class Animate extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { startAnimation, children } = nextProps;
+    const { startAnimation, children, animateOnAddRemove, reverseDelaySeconds } = nextProps;
     const toggledAnimation = startAnimation !== this.props.startAnimation;
 
     this.setState({
@@ -91,6 +93,8 @@ export default class Animate extends React.Component<Props, State> {
       childrenStoreInState: children,
       played: toggledAnimation,
     });
+    if (animateOnAddRemove) this.setChildrenState(nextProps);
+    this.setDelayAndOnComplete(nextProps, toggledAnimation && !startAnimation && !!reverseDelaySeconds);
   }
 
   shouldComponentUpdate(
@@ -111,15 +115,6 @@ export default class Animate extends React.Component<Props, State> {
       willEnter !== this.state.willEnter ||
       !!forceUpdate
     );
-  }
-
-  componentDidUpdate(previousProps: Props) {
-    const { reverseDelaySeconds, animateOnAddRemove, startAnimation } = this.props;
-    const toggledAnimation = startAnimation !== previousProps.startAnimation;
-    // animation on mount or unmount
-    if (animateOnAddRemove) this.setChildrenState(this.props);
-
-    this.setDelayAndOnComplete(this.props, toggledAnimation && !startAnimation && !!reverseDelaySeconds);
   }
 
   componentDidCatch(error: Object, info: Object) {
@@ -157,7 +152,7 @@ export default class Animate extends React.Component<Props, State> {
     this.completeTimeout && clearTimeout(this.completeTimeout);
     this.completeTimeout = setDelayState.call(
       this,
-      parseFloat(delaySeconds) || 0 + parseFloat(durationSeconds) || 0,
+      parseFloat(delaySeconds) || parseFloat(durationSeconds) || 0,
       'willComplete',
       onComplete,
     );
@@ -196,11 +191,11 @@ export default class Animate extends React.Component<Props, State> {
 
       if (childrenWillMount && startAnimation) {
         this.enterTimeout && clearTimeout(this.enterTimeout);
-        this.enterTimeout = setDelayState.call(this, 0.01, 'willEnter', this.setCurrentChildrenToState);
+        this.enterTimeout = setDelayState.call(this, timeDelayForChildren, 'willEnter', this.setCurrentChildrenToState);
       }
     } else if (!startAnimation) {
       this.enterTimeout && clearTimeout(this.enterTimeout);
-      this.enterTimeout = setDelayState.call(this, 0.01, 'willEnter', this.setCurrentChildrenToState);
+      this.enterTimeout = setDelayState.call(this, timeDelayForChildren, 'willEnter', this.setCurrentChildrenToState);
 
       this.setState({
         childrenStoreInState,

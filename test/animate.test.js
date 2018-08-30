@@ -101,69 +101,6 @@ describe('Animate', () => {
     });
   });
 
-  it('should update component when animation is ready', () => {
-    const tree = shallow(<Animate {...{ ...props, startAnimation: false, endStyle }}>test</Animate>);
-
-    const state = {
-      willEnd: false,
-    };
-
-    expect(
-      tree.instance().shouldComponentUpdate(
-        {
-          startAnimation: true,
-        },
-        state,
-      ),
-    ).toEqual(true);
-  });
-
-  it('should not update component when animation already played', () => {
-    const tree = shallow(<Animate {...{ ...props, startAnimation: false, endStyle }}>test</Animate>);
-
-    const state = defaultState;
-
-    const nextProps = {
-      startAnimation: false,
-      children: 'test',
-      startStyle: {},
-      endStyle,
-    };
-
-    expect(
-      tree.instance().shouldComponentUpdate(
-        {
-          startAnimation: true,
-        },
-        state,
-      ),
-    ).toEqual(true);
-
-    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(false);
-  });
-
-  it('should update component when animation is about to end or delay animation about to end ', () => {
-    const tree = shallow(
-      <Animate {...{ ...props, startAnimation: false, endStyle: { display: 'block' } }}>test</Animate>,
-    );
-
-    let state = {
-      willEnd: true,
-    };
-
-    const nextProps = {
-      startAnimation: false,
-    };
-
-    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(true);
-
-    state = {
-      willEnd: false,
-    };
-
-    expect(tree.instance().shouldComponentUpdate(nextProps, state)).toEqual(true);
-  });
-
   describe('When animation complete style has been set', () => {
     it('should update the style', () => {
       const onCompleteStyle = {
@@ -184,6 +121,12 @@ describe('Animate', () => {
       tree.setState({
         willComplete: true,
       });
+
+      // tree.setProps({
+      //   startAnimation: true,
+      // });
+
+      jest.runAllTimers();
 
       expect(tree.find('div').props().style).toEqual({
         ...onCompleteStyle,
@@ -262,59 +205,11 @@ describe('Animate', () => {
 
       expect(tree.state()).toEqual({
         ...defaultState,
+        startAnimation: false,
+        toggledAnimation: true,
         played: true,
         childrenStoreInState: 'test',
       });
-    });
-  });
-
-  describe('when force update passed as prop', () => {
-    it('should re-render the component', () => {
-      const tree = shallow(
-        <Animate
-          {...{
-            ...props,
-          }}
-        >
-          test
-        </Animate>,
-      );
-
-      const nextProps = {
-        ...props,
-        forceUpdate: true,
-      };
-
-      const nextState = { willEnd: false };
-
-      expect(tree.instance().shouldComponentUpdate(nextProps, nextState)).toEqual(true);
-    });
-  });
-
-  describe('when children component updated', () => {
-    it('should trigger re-render', () => {
-      const tree = shallow(
-        <Animate
-          {...{
-            ...props,
-          }}
-        >
-          <div>test</div>
-        </Animate>,
-      );
-
-      const nextProps = {
-        ...props,
-        children: (
-          <div>
-            <span>test</span>
-          </div>
-        ),
-      };
-
-      const nextState = { willEnd: false };
-
-      expect(tree.instance().shouldComponentUpdate(nextProps, nextState)).toEqual(true);
     });
   });
 

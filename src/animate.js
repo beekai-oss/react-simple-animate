@@ -47,12 +47,14 @@ export type State = {
   willEnter: boolean,
   willLeave: boolean,
   played: boolean,
+  startAnimation: boolean,
   childrenStoreInState?: ChildrenType,
+  toggledAnimation: boolean,
 };
 
 const timeDelayForChildren = 0.001;
 
-export default class Animate extends React.Component<Props, State> {
+export default class Animate extends React.PureComponent<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
   static defaultProps = {
@@ -80,41 +82,23 @@ export default class Animate extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {
-    this.setDelayAndOnComplete(this.props);
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { startAnimation, children } = nextProps;
+    const toggledAnimation = prevState.startAnimation && startAnimation !== prevState.startAnimation;
+
+    return {
+      ...(toggledAnimation ? { ...defaultState } : null),
+      childrenStoreInState: children,
+      played: toggledAnimation,
+      startAnimation,
+      toggledAnimation,
+    };
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { startAnimation, children, animateOnAddRemove, reverseDelaySeconds } = nextProps;
-    const toggledAnimation = startAnimation !== this.props.startAnimation;
-
-    this.setState({
-      ...(toggledAnimation ? { ...{ ...defaultState } } : null),
-      childrenStoreInState: children,
-      played: toggledAnimation,
-    });
-    if (animateOnAddRemove) this.setChildrenState(nextProps);
-    this.setDelayAndOnComplete(nextProps, toggledAnimation && !startAnimation && !!reverseDelaySeconds);
-  }
-
-  shouldComponentUpdate(
-    { startStyle, endStyle, startAnimation, children, forceUpdate }: Props,
-    { willEnd, willStart, willComplete, willLeave, willEnter }: State,
-  ) {
-    // only situation that should trigger a re-render
-    return (
-      // object compare can be enahnced, but try to keep it simple here
-      JSON.stringify(startStyle) !== JSON.stringify(this.props.startStyle) ||
-      JSON.stringify(endStyle) !== JSON.stringify(this.props.endStyle) ||
-      startAnimation !== this.props.startAnimation ||
-      children !== this.props.children ||
-      willEnd !== this.state.willEnd ||
-      willStart !== this.state.willStart ||
-      willComplete !== this.state.willComplete ||
-      willLeave !== this.state.willLeave ||
-      willEnter !== this.state.willEnter ||
-      !!forceUpdate
-    );
+    // const { startAnimation, reverseDelaySeconds } = nextProps;
+    // const toggledAnimation = startAnimation !== this.props.startAnimation;
+    // if (animateOnAddRemove) this.setChildrenState(nextProps);
   }
 
   componentDidCatch(error: Object, info: Object) {
@@ -133,10 +117,15 @@ export default class Animate extends React.Component<Props, State> {
     this.enterTimeout = undefined;
   }
 
-  setDelayAndOnComplete(
-    { delaySeconds, startAnimation, onCompleteStyle, durationSeconds, onComplete, reverseDelaySeconds }: Props,
-    isReverseWithDelay: boolean = false,
-  ): void {
+  setDelayAndOnComplete(isReverseWithDelay: boolean = false): void {
+    const {
+      delaySeconds,
+      startAnimation,
+      onCompleteStyle,
+      durationSeconds,
+      onComplete,
+      reverseDelaySeconds,
+    } = this.props;
     // delay animation
     this.delayTimeout && clearTimeout(this.delayTimeout);
 
@@ -209,7 +198,11 @@ export default class Animate extends React.Component<Props, State> {
   enterTimeout = null;
 
   render() {
-    const { tag, children, animateOnAddRemove, render } = this.props;
+    const { tag, children, animateOnAddRemove, render, startAnimation, reverseDelaySeconds } = this.props;
+    this.setDelayAndOnComplete(
+      this.state.toggledAnimation && !startAnimation && !!reverseDelaySeconds,
+    );
+
     const tagName = tag || 'div';
     const componentProps = propsGenerator(this.props, this.state);
     const haveChildToAnimate = Array.isArray(children) && animateOnAddRemove;

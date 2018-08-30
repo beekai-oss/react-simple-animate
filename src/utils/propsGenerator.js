@@ -20,7 +20,7 @@ export default function propsGenerator(
     transition: transitionValue,
     refCallback,
   }: Props,
-  { willEnd, willStart, willComplete, willEnter, willLeave, played }: State,
+  { willStart, willComplete, willEnter, willLeave, played }: State,
   mountProps: MountProps = {
     willUnmount: false,
     willMount: false,
@@ -28,7 +28,7 @@ export default function propsGenerator(
 ): Object {
   const { willUnmount, willMount } = mountProps;
   style = startStyle;
-  transition = transitionValue || `${durationSeconds}s all ${easeType}`;
+  transition = transitionValue || `${durationSeconds}s all ${easeType} ${delaySeconds}`;
 
   if (willMount) {
     style = willEnter ? endStyle : startStyle;
@@ -39,7 +39,7 @@ export default function propsGenerator(
     transition = null;
   } else if (reverseDelaySeconds && !startAnimation && played) {
     style = willStart ? startStyle : endStyle;
-  } else if (willEnd || (startAnimation && !delaySeconds)) {
+  } else if (startAnimation) {
     style = endStyle;
   }
 

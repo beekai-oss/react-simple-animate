@@ -1,12 +1,9 @@
 // @flow
 import React from 'react';
 import propsGenerator from './utils/propsGenerator';
-import filterMountOrUnmount from './utils/filterMountOrUnmount';
-import mapChildren from './utils/mapChildren';
 import setDelayState from './utils/setDelayState';
 
 export const defaultState = {
-  willEnd: false,
   willStart: false,
   willComplete: false,
   willEnter: false,
@@ -41,7 +38,6 @@ export type Props = {
 };
 
 export type State = {
-  willEnd: boolean,
   willStart: boolean,
   willComplete: boolean,
   willEnter: boolean,
@@ -51,8 +47,6 @@ export type State = {
   childrenStoreInState?: ChildrenType,
   toggledAnimation: boolean,
 };
-
-const timeDelayForChildren = 0.001;
 
 export default class Animate extends React.PureComponent<Props, State> {
   static displayName = 'ReactSimpleAnimate';
@@ -95,12 +89,6 @@ export default class Animate extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    // const { startAnimation, reverseDelaySeconds } = nextProps;
-    // const toggledAnimation = startAnimation !== this.props.startAnimation;
-    // if (animateOnAddRemove) this.setChildrenState(nextProps);
-  }
-
   componentDidCatch(error: Object, info: Object) {
     const { onError = false } = this.props;
     if (onError) onError(error, info);
@@ -111,10 +99,6 @@ export default class Animate extends React.PureComponent<Props, State> {
     this.completeTimeout && clearTimeout(this.completeTimeout);
     this.leaveTimeout && clearTimeout(this.leaveTimeout);
     this.enterTimeout && clearTimeout(this.enterTimeout);
-    this.delayTimeout = undefined;
-    this.completeTimeout = undefined;
-    this.leaveTimeout = undefined;
-    this.enterTimeout = undefined;
   }
 
   setDelayAndOnComplete(isReverseWithDelay: boolean = false): void {
@@ -129,9 +113,7 @@ export default class Animate extends React.PureComponent<Props, State> {
     // delay animation
     this.delayTimeout && clearTimeout(this.delayTimeout);
 
-    if (delaySeconds && startAnimation) {
-      this.delayTimeout = setDelayState.call(this, delaySeconds, 'willEnd');
-    } else if (isReverseWithDelay) {
+    if (isReverseWithDelay) {
       // reverse animation
       this.delayTimeout = setDelayState.call(this, reverseDelaySeconds, 'willStart');
     }
@@ -153,67 +135,17 @@ export default class Animate extends React.PureComponent<Props, State> {
     });
   };
 
-  setChildrenState(nextProps: Props): void {
-    const { childrenStoreInState } = this.state;
-    const { children, startAnimation, durationSeconds } = nextProps;
-
-    if (!Array.isArray(childrenStoreInState) || !Array.isArray(children) || !startAnimation) {
-      return;
-    }
-
-    if (childrenStoreInState.length !== children.length) {
-      const { mappedChildren, childrenWillUnmount, childrenWillMount } = filterMountOrUnmount(
-        childrenStoreInState,
-        children,
-      );
-
-      if (childrenWillUnmount && startAnimation) {
-        this.leaveTimeout && clearTimeout(this.leaveTimeout);
-        this.leaveTimeout = setDelayState.call(this, durationSeconds, 'willLeave', this.setCurrentChildrenToState);
-      }
-
-      this.setState({
-        willEnter: false,
-        willLeave: false,
-        childrenStoreInState: mappedChildren,
-      });
-
-      if (childrenWillMount && startAnimation) {
-        this.enterTimeout && clearTimeout(this.enterTimeout);
-        this.enterTimeout = setDelayState.call(this, timeDelayForChildren, 'willEnter', this.setCurrentChildrenToState);
-      }
-    } else if (!startAnimation) {
-      this.enterTimeout && clearTimeout(this.enterTimeout);
-      this.enterTimeout = setDelayState.call(this, timeDelayForChildren, 'willEnter', this.setCurrentChildrenToState);
-
-      this.setState({
-        childrenStoreInState,
-      });
-    }
-  }
-
   delayTimeout = null;
   completeTimeout = null;
   leaveTimeout = null;
   enterTimeout = null;
 
   render() {
-    const { tag, children, animateOnAddRemove, render, startAnimation, reverseDelaySeconds } = this.props;
-    this.setDelayAndOnComplete(
-      this.state.toggledAnimation && !startAnimation && !!reverseDelaySeconds,
-    );
+    const { tag, children, render } = this.props;
 
     const tagName = tag || 'div';
     const componentProps = propsGenerator(this.props, this.state);
-    const haveChildToAnimate = Array.isArray(children) && animateOnAddRemove;
 
-    if (render && !haveChildToAnimate) {
-      return render(componentProps);
-    }
-    return React.createElement(
-      tagName,
-      componentProps,
-      haveChildToAnimate ? mapChildren(this.props, this.state) : children,
-    );
+    return render ? render(componentProps) : React.createElement(tagName, componentProps, children);
   }
 }

@@ -5,7 +5,7 @@ import { AnimateContext } from './animateContext';
 
 export type Style = { [string]: string | number };
 
-type ChildrenType = Array<React$Element<any>> | React$Element<any> | null;
+type ChildrenType = Array<React.Element<*>> | React.Element<*> | null;
 
 export type Props = {
   play: boolean,
@@ -20,7 +20,8 @@ export type Props = {
   onComplete?: () => mixed,
   className?: string,
   render: Object => any,
-  refCallback?: (React$Element<any>) => {},
+  unMount: boolean,
+  refCallback?: (React.Element<*>) => {},
 };
 
 export type State = {
@@ -36,6 +37,8 @@ export default class Animate extends React.PureComponent<Props, State> {
     onCompleteStyle: undefined,
     durationSeconds: 0.3,
     delaySeconds: 0,
+    reverseDurationSeconds: undefined,
+    reverseDelaySeconds: 0,
     children: null,
     easing: 'linear',
     tag: 'div',
@@ -46,8 +49,8 @@ export default class Animate extends React.PureComponent<Props, State> {
 
   state: State = {
     willComplete: false,
-    played: false,
     play: false,
+    shouldRender: true,
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -58,7 +61,10 @@ export default class Animate extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    this.onComplete(prevProps);
+    this.onComplete();
+    if (!prevProps.unMount && this.props.unMount) {
+      setTimeout(() => this.setState({ shouldRender: false }), this.props.durationSeconds);
+    }
   }
 
   componentWillUnmount() {
@@ -82,16 +88,15 @@ export default class Animate extends React.PureComponent<Props, State> {
   completeTimeout = null;
 
   render() {
-    const { tag, children, render } = this.props;
-
-    const tagName = tag || 'div';
+    const { tag = 'div', children, render } = this.props;
+    const { shouldRender } = this.state;
     const componentProps = propsGenerator(this.props, this.state);
 
-    return (
+    return !shouldRender ? null : (
       <AnimateContext.Consumer>
         {data => {
           console.log(data);
-          return render ? render(componentProps) : React.createElement(tagName, componentProps, children);
+          return render ? render(componentProps) : React.createElement(tag, componentProps, children);
         }}
       </AnimateContext.Consumer>
     );

@@ -5,11 +5,8 @@ import { AnimateContext } from './animateContext';
 
 export type Style = { [string]: string | number };
 
-type ChildrenType = Array<React.Element<*>> | React.Element<*> | null;
-
 export type Props = {
   play: boolean,
-  children?: ChildrenType,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
@@ -21,7 +18,8 @@ export type Props = {
   className?: string,
   render: Object => any,
   unMount: boolean,
-  refCallback?: (React.Element<*>) => {},
+  innerRef?: (React.Element<*>) => {},
+  id?: string,
 };
 
 export type State = {
@@ -29,7 +27,7 @@ export type State = {
   play: boolean,
 };
 
-export default class Animate extends React.PureComponent<Props, State> {
+export class Animate extends React.PureComponent<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
   static defaultProps = {
@@ -39,18 +37,19 @@ export default class Animate extends React.PureComponent<Props, State> {
     delaySeconds: 0,
     reverseDurationSeconds: undefined,
     reverseDelaySeconds: 0,
-    children: null,
     easing: 'linear',
     tag: 'div',
     onComplete: undefined,
     className: undefined,
-    refCallback: undefined,
+    innerRef: undefined,
+    register: undefined,
+    id: undefined,
   };
 
   state: State = {
     willComplete: false,
     play: false,
-    shouldRender: true,
+    shouldUnMount: false,
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -63,7 +62,7 @@ export default class Animate extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props) {
     this.onComplete();
     if (!prevProps.unMount && this.props.unMount) {
-      setTimeout(() => this.setState({ shouldRender: false }), this.props.durationSeconds);
+      setTimeout(() => this.setState({ shouldUnMount: false }), this.props.durationSeconds);
     }
   }
 
@@ -89,16 +88,17 @@ export default class Animate extends React.PureComponent<Props, State> {
 
   render() {
     const { tag = 'div', children, render } = this.props;
-    const { shouldRender } = this.state;
+    const { shouldUnMount } = this.state;
     const componentProps = propsGenerator(this.props, this.state);
 
-    return !shouldRender ? null : (
-      <AnimateContext.Consumer>
-        {data => {
-          console.log(data);
-          return render ? render(componentProps) : React.createElement(tag, componentProps, children);
-        }}
-      </AnimateContext.Consumer>
-    );
+    if (shouldUnMount) return null;
+
+    return render ? render(componentProps) : React.createElement(tag, componentProps, children);
   }
 }
+
+const AnimateWithContext = (props: any) => (
+  <AnimateContext.Consumer>{({ register }) => <Animate {...{ ...props, register }} />};</AnimateContext.Consumer>
+);
+
+export default AnimateWithContext;

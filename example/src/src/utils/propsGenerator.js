@@ -41,7 +41,7 @@ export default function propsGenerator(
       },
     },
     // $FlowIgnoreLine
-    ...(refCallback
+    ...(innerRef
       ? {
           ref: r => {
             refCallback(r);

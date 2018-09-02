@@ -1,46 +1,41 @@
 // @flow
 import type { State, Props } from '../animate';
 
-let style;
-let transition;
+const mapAnimationSequenceOverProps = props => {
+  const { animationStates, id } = props;
+  if (!animationStates[id]) return props;
 
-type MountProps = { willUnmount: boolean, willMount: boolean };
+  const stateCopy = { ...animationStates[id] };
+  return { ...stateCopy, ...props };
+};
 
-export default function propsGenerator(
-  {
-    startAnimation,
+export default function propsGenerator(props: Props, { willComplete }: State): Object {
+  const {
+    play,
     startStyle,
     endStyle,
     onCompleteStyle,
-    durationSeconds = 0.3,
-    reverseDelaySeconds,
+    durationSeconds,
     delaySeconds,
-    easeType = 'linear',
+    easing = 'linear',
     className,
-    transition: transitionValue,
     refCallback,
-  }: Props,
-  { willStart, willComplete, willEnter, willLeave, played }: State,
-  mountProps: MountProps = {
-    willUnmount: false,
-    willMount: false,
-  },
-): Object {
-  const { willUnmount, willMount } = mountProps;
-  style = startStyle;
-  transition = transitionValue || `${durationSeconds}s all ${easeType} ${delaySeconds}`;
+    unMount,
+    reverseDurationSeconds,
+    reverseDelaySeconds,
+  } = mapAnimationSequenceOverProps(props);
+  let style = startStyle;
+  let transition = `all ${durationSeconds}s ${easing} ${delaySeconds}s`;
 
-  if (willMount) {
-    style = willEnter ? endStyle : startStyle;
-  } else if (willUnmount) {
-    style = willLeave ? endStyle : startStyle;
-  } else if (willComplete && onCompleteStyle) {
-    style = onCompleteStyle;
-    transition = null;
-  } else if (reverseDelaySeconds && !startAnimation && played) {
-    style = willStart ? startStyle : endStyle;
-  } else if (startAnimation) {
-    style = endStyle;
+  if (!unMount) {
+    if (willComplete && onCompleteStyle && play) {
+      style = onCompleteStyle;
+      transition = null;
+    } else if (play || (props.animationStates[props.id] && props.animationStates[props.id].play)) {
+      style = endStyle;
+    } else if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
+      transition = `all ${reverseDurationSeconds}s ${easing} ${reverseDelaySeconds}s`;
+    }
   }
 
   return {

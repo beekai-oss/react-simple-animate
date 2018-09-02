@@ -5,13 +5,16 @@ import { AnimateContext } from './animateContext';
 
 export type Style = { [string]: string | number };
 
-export type Props = {
+export type AnimationType = {
   play: boolean,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
   durationSeconds?: number,
   delaySeconds?: number,
+};
+
+export type Props = {
   easing?: string,
   tag?: string,
   onComplete?: () => mixed,
@@ -20,7 +23,9 @@ export type Props = {
   unMount: boolean,
   innerRef?: (React.Element<*>) => {},
   id?: string,
-};
+  forceUpdate: boolean,
+  animationStates: any,
+} & AnimationType;
 
 export type State = {
   willComplete: boolean,
@@ -52,6 +57,10 @@ export class Animate extends React.PureComponent<Props, State> {
     shouldUnMount: false,
   };
 
+  componentDidMount() {
+    this.props.register && this.props.register(this.props);
+  }
+
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     return {
       willComplete: !(prevState.willComplete && nextProps.play && !prevState.play),
@@ -61,6 +70,7 @@ export class Animate extends React.PureComponent<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     this.onComplete();
+    this.props.register && this.props.register(this.props);
     if (!prevProps.unMount && this.props.unMount) {
       setTimeout(() => this.setState({ shouldUnMount: false }), this.props.durationSeconds);
     }
@@ -89,16 +99,16 @@ export class Animate extends React.PureComponent<Props, State> {
   render() {
     const { tag = 'div', children, render } = this.props;
     const { shouldUnMount } = this.state;
-    const componentProps = propsGenerator(this.props, this.state);
+    const props = propsGenerator(this.props, this.state);
 
     if (shouldUnMount) return null;
 
-    return render ? render(componentProps) : React.createElement(tag, componentProps, children);
+    return render ? render(props) : React.createElement(tag, props, children);
   }
 }
 
-const AnimateWithContext = (props: any) => (
-  <AnimateContext.Consumer>{({ register }) => <Animate {...{ ...props, register }} />};</AnimateContext.Consumer>
+export default props => (
+  <AnimateContext.Consumer>
+    {({ animationStates = {}, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
+  </AnimateContext.Consumer>
 );
-
-export default AnimateWithContext;

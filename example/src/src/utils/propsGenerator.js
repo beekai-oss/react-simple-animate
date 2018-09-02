@@ -1,8 +1,19 @@
 // @flow
 import type { State, Props } from '../animate';
 
-export default function propsGenerator(
-  {
+const mapAnimationSequenceOverProps = props => {
+  const { animationStates, id, ...restAttributes } = props;
+  if (!animationStates[id]) return props;
+
+  return Object.entries(restAttributes).reduce((previousValue, [key, value]) => {
+    const copy = { ...previousValue };
+    copy[key] = value || animationStates[id][key];
+    return copy;
+  }, {});
+};
+
+export default function propsGenerator(props: Props, { willComplete }: State): Object {
+  const {
     play,
     startStyle,
     endStyle,
@@ -15,9 +26,7 @@ export default function propsGenerator(
     unMount,
     reverseDurationSeconds,
     reverseDelaySeconds,
-  }: Props,
-  { willComplete }: State,
-): Object {
+  } = mapAnimationSequenceOverProps(props);
   let style = startStyle;
   let transition = `all ${durationSeconds}s ${easing} ${delaySeconds}s`;
 
@@ -25,7 +34,7 @@ export default function propsGenerator(
     if (willComplete && onCompleteStyle && play) {
       style = onCompleteStyle;
       transition = null;
-    } else if (play) {
+    } else if (play || (props.animationStates[props.id] && props.animationStates[props.id].play)) {
       style = endStyle;
     } else if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
       transition = `all ${reverseDurationSeconds}s ${easing} ${reverseDelaySeconds}s`;
@@ -41,7 +50,7 @@ export default function propsGenerator(
       },
     },
     // $FlowIgnoreLine
-    ...(innerRef
+    ...(refCallback
       ? {
           ref: r => {
             refCallback(r);

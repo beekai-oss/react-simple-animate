@@ -1,7 +1,7 @@
 import React from 'react';
 import Animate from './src/animate';
 import AnimateGroup from './src/animateGroup';
-import Typography from 'material-ui/Typography';
+// import Typography from 'material-ui/Typography';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {
@@ -27,7 +27,7 @@ export default function DemoObject({
   clickHandler,
 }) {
   return (
-    <AnimateGroup play={startAnimation} sequences={[{ id: 'test'}, { id: 'fuck'}]}>
+    <AnimateGroup play={startAnimation} sequences={[{ id: 'test' }, { id: 'fuck' }]}>
       <div className="DemoObject-container">
         {/*<Animate*/}
         {/*startAnimation={count > 1}*/}

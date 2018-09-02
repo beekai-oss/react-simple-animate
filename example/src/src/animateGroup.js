@@ -14,7 +14,7 @@ type State = {
   animationStates: any,
 };
 
-export default class AnimateGroup extends React.Component<Props, State> {
+export default class AnimateGroup extends React.PureComponent<Props, State> {
   state = {
     animationStates: {},
   };
@@ -22,16 +22,6 @@ export default class AnimateGroup extends React.Component<Props, State> {
   componentDidMount() {
     this.props.sequences && this.calculateSequences();
   }
-
-  // shouldComponentUpdate(nextProps: Props) {
-  //   console.log(nextProps);
-  //   console.log('this.props', this.props);
-  //   // return true;
-  //   return (
-  //     this.props.play !== nextProps.play ||
-  //     JSON.stringify(this.props.sequences) !== JSON.stringify(nextProps.sequences)
-  //   );
-  // }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.play !== prevProps.play) this.calculateSequences();

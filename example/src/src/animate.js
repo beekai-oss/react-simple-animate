@@ -62,6 +62,14 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (nextProps.animationStates[nextProps.id]) {
+      const state = nextProps.animationStates[nextProps.id];
+      return {
+        willComplete: !((prevState.willComplete || state.willComplete) && state.play && !prevState.play),
+        play: state.play,
+      };
+    }
+
     return {
       willComplete: !(prevState.willComplete && nextProps.play && !prevState.play),
       play: nextProps.play,
@@ -81,9 +89,9 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   onComplete(): void {
-    const { delaySeconds, play, onCompleteStyle, durationSeconds, onComplete } = this.props;
+    const { delaySeconds, play, onCompleteStyle, durationSeconds, onComplete, animationStates, id } = this.props;
 
-    if ((onComplete || onCompleteStyle) && !this.state.willComplete && play) {
+    if ((onComplete || onCompleteStyle) && !this.state.willComplete && (play || animationStates[id].play)) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {
         this.setState({

@@ -2,14 +2,11 @@
 import type { State, Props } from '../animate';
 
 const mapAnimationSequenceOverProps = props => {
-  const { animationStates, id, ...restAttributes } = props;
+  const { animationStates, id } = props;
   if (!animationStates[id]) return props;
 
-  return Object.entries(restAttributes).reduce((previousValue, [key, value]) => {
-    const copy = { ...previousValue };
-    copy[key] = value || animationStates[id][key];
-    return copy;
-  }, {});
+  const stateCopy = { ...animationStates[id] };
+  return { ...stateCopy, ...props };
 };
 
 export default function propsGenerator(props: Props, { willComplete }: State): Object {

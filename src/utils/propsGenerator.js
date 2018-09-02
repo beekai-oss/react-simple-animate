@@ -15,14 +15,14 @@ export default function propsGenerator(props: Props, { willComplete }: State): O
     startStyle,
     endStyle,
     onCompleteStyle,
-    durationSeconds,
-    delaySeconds,
+    durationSeconds = 0,
+    delaySeconds = 0,
     easing = 'linear',
     className,
     refCallback,
     unMount,
-    reverseDurationSeconds,
-    reverseDelaySeconds,
+    reverseDurationSeconds = 0,
+    reverseDelaySeconds = 0,
   } = mapAnimationSequenceOverProps(props);
   let style = startStyle;
   let transition = `all ${durationSeconds}s ${easing} ${delaySeconds}s`;

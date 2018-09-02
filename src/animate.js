@@ -10,8 +10,12 @@ export type AnimationType = {
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
+  beginEarlySeconds?: number,
   durationSeconds?: number,
+  reverseDelaySeconds?: number,
+  reverseDurationSeconds?: number,
   delaySeconds?: number,
+  children?: React.Component<*>,
 };
 
 export type Props = {
@@ -21,8 +25,9 @@ export type Props = {
   className?: string,
   render: Object => any,
   unMount: boolean,
-  innerRef?: (React.Element<*>) => {},
+  refCallback?: (React.Component<*>) => {},
   id?: string,
+  register?: Function,
   forceUpdate: boolean,
   animationStates: any,
 } & AnimationType;
@@ -103,7 +108,7 @@ export class Animate extends React.PureComponent<Props, State> {
     }
   }
 
-  completeTimeout = null;
+  completeTimeout: TimeoutID;
 
   render() {
     const { tag = 'div', children, render } = this.props;
@@ -116,7 +121,7 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 }
 
-export default props => (
+export default (props: Props) => (
   <AnimateContext.Consumer>
     {({ animationStates = {}, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
   </AnimateContext.Consumer>

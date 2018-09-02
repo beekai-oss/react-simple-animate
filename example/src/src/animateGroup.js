@@ -3,16 +3,21 @@ import React from 'react';
 import { AnimateContext } from './animateContext';
 import type { AnimationType } from './animate';
 
-type SequencesType = AnimationType;
-
 type Props = {
   play: boolean,
-  sequences: SequencesType,
+  sequences: AnimationType,
 };
 
 type State = {
-  animationStates: any,
+  animationStates: Array<AnimationType>,
 };
+
+const calculateTotalDuration = (animations, { durationSeconds, delaySeconds, beginEarlySeconds, id }, previous) =>
+  (parseFloat(animations[id].durationSeconds || durationSeconds || 0) +
+    parseFloat(animations[id].delaySeconds || delaySeconds || 0) -
+    parseFloat(beginEarlySeconds || 0)) *
+    1000 +
+  previous;
 
 export default class AnimateGroup extends React.PureComponent<Props, State> {
   state = {
@@ -23,8 +28,9 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     this.props.sequences && this.calculateSequences();
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (this.props.play !== prevProps.play) this.calculateSequences();
+  componentDidUpdate(prevProps: Props) {
+    const { sequences, play } = this.props;
+    if (play !== prevProps.play && sequences) this.calculateSequences();
   }
 
   componentWillUnmount() {
@@ -35,30 +41,28 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   animations = [];
 
   calculateSequences = () => {
-    this.props.sequences.reduce((previous, current) => {
-      const { id, ...restAttributes } = current;
-      const { durationSeconds, delaySeconds, beginEarlySeconds } = restAttributes;
+    const { sequences, play } = this.props;
 
-      const totalDuration =
-        (parseFloat(this.animations[id].durationSeconds || durationSeconds || 0) +
-          parseFloat(this.animations[id].delaySeconds || delaySeconds || 0) -
-          parseFloat(beginEarlySeconds || 0)) *
-          1000 +
-        previous;
+    sequences.reduce((previous, current) => {
+      const { id, ...restAttributes } = current;
+      const totalDuration = calculateTotalDuration(this.animations, { ...restAttributes, id }, previous);
 
       this.timers[id] = setTimeout(() => {
         this.setState(previousState => {
           const copy = { ...previousState.animationStates };
+
           if (!copy[id]) copy[id] = {};
           Object.entries(restAttributes).forEach(([key, value]) => {
             copy[id][key] = value;
           });
-          copy[id].play = this.props.play;
+          copy[id].play = play;
+
           return {
             animationStates: copy,
           };
         });
       }, totalDuration);
+
       return totalDuration;
     }, 0);
   };

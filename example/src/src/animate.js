@@ -30,6 +30,7 @@ export type Props = {
 export type State = {
   willComplete: boolean,
   play: boolean,
+  shouldUnMount: boolean,
 };
 
 export class Animate extends React.PureComponent<Props, State> {

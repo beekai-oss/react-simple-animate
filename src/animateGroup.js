@@ -52,8 +52,9 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   calculateSequences = () => {
     const { sequences, startAnimation } = this.props;
+    const sequencesToAnimate = sequences || Object.values(this.animations);
 
-    (sequences || Object.values(this.animations)).reduce((previous, current, currentIndex) => {
+    (startAnimation ? sequencesToAnimate : sequencesToAnimate.reverse()).reduce((previous, current, currentIndex) => {
       const { sequenceId, ...restAttributes } = current;
       if (!sequenceId) return previous;
       const id = sequenceId || currentIndex;

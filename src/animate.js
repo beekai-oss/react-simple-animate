@@ -23,13 +23,13 @@ export type Props = {
   tag?: string,
   onComplete?: () => mixed,
   className?: string,
-  render: Object => any,
-  unMount: boolean,
+  render?: Object => any,
+  unMount?: boolean,
   refCallback?: (React.Component<*>) => {},
   sequenceId?: string,
   register?: Function,
-  forceUpdate: boolean,
-  animationStates: any,
+  forceUpdate?: boolean,
+  animationStates?: { [string]: AnimationType },
 } & AnimationType;
 
 export type State = {
@@ -39,7 +39,7 @@ export type State = {
 };
 
 export class Animate extends React.PureComponent<Props, State> {
-  static disstartAnimationName = 'ReactSimpleAnimate';
+  static displayName = 'ReactSimpleAnimate';
 
   static defaultProps = {
     startStyle: {},
@@ -53,8 +53,8 @@ export class Animate extends React.PureComponent<Props, State> {
     onComplete: undefined,
     className: undefined,
     innerRef: undefined,
-    register: undefined,
     sequenceId: undefined,
+    sequenceIndex: undefined,
   };
 
   state: State = {
@@ -68,17 +68,23 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    if (nextProps.animationStates[nextProps.sequenceId]) {
-      const state = nextProps.animationStates[nextProps.sequenceId];
+    const { animationStates, startAnimation, sequenceId } = nextProps;
+
+    if (animationStates && animationStates[sequenceId]) {
+      const state = animationStates[sequenceId];
       return {
-        willComplete: !((prevState.willComplete || state.willComplete) && state.startAnimation && !prevState.startAnimation),
+        willComplete: !(
+          (prevState.willComplete || state.willComplete) &&
+          state.startAnimation &&
+          !prevState.startAnimation
+        ),
         startAnimation: state.startAnimation,
       };
     }
 
     return {
-      willComplete: !(prevState.willComplete && nextProps.startAnimation && !prevState.startAnimation),
-      startAnimation: nextProps.startAnimation,
+      willComplete: !(prevState.willComplete && startAnimation && !prevState.startAnimation),
+      startAnimation,
     };
   }
 
@@ -95,9 +101,21 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   onComplete(): void {
-    const { delaySeconds, startAnimation, onCompleteStyle, durationSeconds, onComplete, animationStates, sequenceId } = this.props;
+    const {
+      delaySeconds,
+      startAnimation,
+      onCompleteStyle,
+      durationSeconds,
+      onComplete,
+      animationStates,
+      sequenceId,
+    } = this.props;
 
-    if ((onComplete || onCompleteStyle) && !this.state.willComplete && (startAnimation || animationStates[sequenceId].startAnimation)) {
+    if (
+      (onComplete || onCompleteStyle) &&
+      !this.state.willComplete &&
+      (startAnimation || animationStates[sequenceId].startAnimation)
+    ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {
         this.setState({

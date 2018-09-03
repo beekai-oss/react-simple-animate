@@ -23,6 +23,8 @@ export const AnimateContext = React.createContext({
 });
 
 export default class AnimateGroup extends React.PureComponent<Props, State> {
+  static displayName = 'ReactSimpleAnimateGroup';
+
   static defaultProps = {
     sequences: [],
   };
@@ -51,10 +53,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   calculateSequences = () => {
     const { sequences, startAnimation } = this.props;
 
-    sequences.reduce((previous, current) => {
-      const { sequenceId, sequenceIndex, ...restAttributes } = current;
+    (sequences || Object.values(this.animations)).reduce((previous, current, currentIndex) => {
+      const { sequenceId, ...restAttributes } = current;
       if (!sequenceId) return previous;
-      const id = sequenceId || sequenceIndex;
+      const id = sequenceId || currentIndex;
 
       const totalDuration = calculateTotalDuration(this.animations, { ...restAttributes, id }, previous);
 

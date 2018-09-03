@@ -3,7 +3,10 @@ import React, { type Element } from 'react';
 import type { AnimationType } from './animate';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 
-type Sequence = AnimationType & { sequenceId: string };
+type Sequence = AnimationType & {
+  sequenceId?: string,
+  sequenceIndex?: string,
+};
 type Sequences = Array<Sequence>;
 type Props = {
   startAnimation: boolean,
@@ -49,20 +52,21 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     const { sequences, startAnimation } = this.props;
 
     sequences.reduce((previous, current) => {
-      const { sequenceId, ...restAttributes } = current;
+      const { sequenceId, sequenceIndex, ...restAttributes } = current;
       if (!sequenceId) return previous;
+      const id = sequenceId || sequenceIndex;
 
-      const totalDuration = calculateTotalDuration(this.animations, { ...restAttributes, sequenceId }, previous);
+      const totalDuration = calculateTotalDuration(this.animations, { ...restAttributes, id }, previous);
 
-      this.timers[sequenceId] = setTimeout(() => {
+      this.timers[id] = setTimeout(() => {
         this.setState(previousState => {
           const copy = { ...previousState.animationStates };
 
-          if (!copy[sequenceId]) copy[sequenceId] = {};
+          if (!copy[id]) copy[id] = {};
           Object.entries(restAttributes).forEach(([key, value]) => {
-            copy[sequenceId][key] = value;
+            copy[id][key] = value;
           });
-          copy[sequenceId].startAnimation = startAnimation;
+          copy[id].startAnimation = startAnimation;
 
           return {
             animationStates: copy,
@@ -75,7 +79,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   register = (props: Sequence) => {
-    this.animations[props.sequenceId] = {
+    const id = props.sequenceId || props.sequenceIndex || false;
+    if (!id) return;
+
+    this.animations[id] = {
       ...props,
     };
   };

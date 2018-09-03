@@ -12,6 +12,7 @@ type State = {
   animationStates: Array<AnimationType>,
 };
 
+// overlapSeconds
 const calculateTotalDuration = (animations, { durationSeconds, delaySeconds, beginEarlySeconds, id }, previous) =>
   (parseFloat(animations[id].durationSeconds || durationSeconds || 0) +
     parseFloat(animations[id].delaySeconds || delaySeconds || 0) -

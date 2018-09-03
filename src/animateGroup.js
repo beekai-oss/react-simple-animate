@@ -1,25 +1,17 @@
 // @flow
 import React, { type Element } from 'react';
 import type { AnimationType } from './animate';
+import calculateTotalDuration from './utils/calculateTotalDuration';
 
-type Sequence = AnimationType & { id: string };
+type Sequence = AnimationType & { sequenceId: string };
 type Sequences = Array<Sequence>;
 type Props = {
-  play: boolean,
+  startAnimation: boolean,
   sequences: Sequences,
   children: Element<*>,
 };
 type State = {
   animationStates: { [string]: AnimationType },
-};
-
-const calculateTotalDuration = (animations, { durationSeconds, delaySeconds, beginEarlySeconds, id }, previous) => {
-  const duration =
-    parseFloat(animations[id].durationSeconds || durationSeconds || 0) +
-    parseFloat(animations[id].delaySeconds || delaySeconds || 0);
-  const withEarlySeconds = duration - parseFloat(beginEarlySeconds || 0);
-  const ms = withEarlySeconds * 1000;
-  return ms + previous;
 };
 
 export const AnimateContext = React.createContext({
@@ -41,8 +33,8 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { sequences, play } = this.props;
-    if (play !== prevProps.play && sequences) this.calculateSequences();
+    const { sequences, startAnimation } = this.props;
+    if (startAnimation !== prevProps.startAnimation && sequences) this.calculateSequences();
   }
 
   componentWillUnmount() {
@@ -54,23 +46,23 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   animations = {};
 
   calculateSequences = () => {
-    const { sequences, play } = this.props;
+    const { sequences, startAnimation } = this.props;
 
     sequences.reduce((previous, current) => {
-      const { id, ...restAttributes } = current;
-      if (!id) return previous;
+      const { sequenceId, ...restAttributes } = current;
+      if (!sequenceId) return previous;
 
-      const totalDuration = calculateTotalDuration(this.animations, { ...restAttributes, id }, previous);
+      const totalDuration = calculateTotalDuration(this.animations, { ...restAttributes, sequenceId }, previous);
 
-      this.timers[id] = setTimeout(() => {
+      this.timers[sequenceId] = setTimeout(() => {
         this.setState(previousState => {
           const copy = { ...previousState.animationStates };
 
-          if (!copy[id]) copy[id] = {};
+          if (!copy[sequenceId]) copy[sequenceId] = {};
           Object.entries(restAttributes).forEach(([key, value]) => {
-            copy[id][key] = value;
+            copy[sequenceId][key] = value;
           });
-          copy[id].play = play;
+          copy[sequenceId].startAnimation = startAnimation;
 
           return {
             animationStates: copy,
@@ -83,7 +75,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   register = (props: Sequence) => {
-    this.animations[props.id] = {
+    this.animations[props.sequenceId] = {
       ...props,
     };
   };

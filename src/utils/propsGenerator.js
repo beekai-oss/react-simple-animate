@@ -2,22 +2,22 @@
 import type { State, Props } from '../animate';
 
 const mapAnimationSequenceOverProps = props => {
-  const { animationStates, id } = props;
-  if (!animationStates[id]) return props;
+  const { animationStates, sequenceId } = props;
+  if (!animationStates[sequenceId]) return props;
 
-  const stateCopy = { ...animationStates[id] };
+  const stateCopy = { ...animationStates[sequenceId] };
   return { ...stateCopy, ...props };
 };
 
 export default function propsGenerator(props: Props, { willComplete }: State): Object {
   const {
-    play,
+    startAnimation,
     startStyle,
     endStyle,
     onCompleteStyle,
     durationSeconds = 0,
     delaySeconds = 0,
-    easing = 'linear',
+    easeType = 'linear',
     className,
     refCallback,
     unMount,
@@ -25,16 +25,19 @@ export default function propsGenerator(props: Props, { willComplete }: State): O
     reverseDelaySeconds = 0,
   } = mapAnimationSequenceOverProps(props);
   let style = startStyle;
-  let transition = `all ${durationSeconds}s ${easing} ${delaySeconds}s`;
+  let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
 
   if (!unMount) {
-    if (willComplete && onCompleteStyle && play) {
+    if (willComplete && onCompleteStyle && startAnimation) {
       style = onCompleteStyle;
       transition = null;
-    } else if (play || (props.animationStates[props.id] && props.animationStates[props.id].play)) {
+    } else if (
+      startAnimation ||
+      (props.animationStates[props.sequenceId] && props.animationStates[props.sequenceId].startAnimation)
+    ) {
       style = endStyle;
-    } else if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
-      transition = `all ${reverseDurationSeconds}s ${easing} ${reverseDelaySeconds}s`;
+    } else if (!startAnimation && (reverseDurationSeconds || reverseDelaySeconds)) {
+      transition = `all ${reverseDurationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
     }
   }
 

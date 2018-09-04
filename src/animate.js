@@ -27,9 +27,10 @@ export type Props = {
   unMount?: boolean,
   refCallback?: (React.Component<*>) => {},
   sequenceId?: string,
+  sequenceIndex?: number,
   register?: Function,
   forceUpdate?: boolean,
-  animationStates?: { [string]: AnimationType },
+  animationStates?: { [string | number]: AnimationType },
 } & AnimationType;
 
 export type State = {
@@ -68,36 +69,35 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, startAnimation, sequenceId } = nextProps;
+    const { animationStates, startAnimation, sequenceId, sequenceIndex } = nextProps;
+    const id = sequenceId || sequenceIndex;
+    let currentStartAnimation = startAnimation;
 
-    if (animationStates && animationStates[sequenceId]) {
-      const state = animationStates[sequenceId];
-      return {
-        willComplete: !(
-          (prevState.willComplete || state.willComplete) &&
-          state.startAnimation &&
-          !prevState.startAnimation
-        ),
-        startAnimation: state.startAnimation,
-      };
+    if (id && animationStates && animationStates[id]) {
+      const state = animationStates[id];
+      currentStartAnimation = state.startAnimation;
     }
 
     return {
       willComplete: !(prevState.willComplete && startAnimation && !prevState.startAnimation),
-      startAnimation,
+      startAnimation: currentStartAnimation,
     };
   }
 
   componentDidUpdate(prevProps: Props) {
+    const { durationSeconds, register, unMount } = this.props;
+
     this.onComplete();
-    this.props.register && this.props.register(this.props);
-    if (!prevProps.unMount && this.props.unMount) {
-      setTimeout(() => this.setState({ shouldUnMount: false }), this.props.durationSeconds);
+    register && register(this.props);
+
+    if (!prevProps.unMount && unMount) {
+      this.unMountTimeout = setTimeout(() => this.setState({ shouldUnMount: false }), durationSeconds);
     }
   }
 
   componentWillUnmount() {
     clearTimeout(this.completeTimeout);
+    clearTimeout(this.unMountTimeout);
   }
 
   onComplete(): void {
@@ -109,12 +109,14 @@ export class Animate extends React.PureComponent<Props, State> {
       onComplete,
       animationStates,
       sequenceId,
+      sequenceIndex,
     } = this.props;
+    const id = sequenceId || sequenceIndex;
 
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (startAnimation || animationStates[sequenceId].startAnimation)
+      (startAnimation || (animationStates && id && animationStates[id].startAnimation))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {
@@ -127,6 +129,7 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   completeTimeout: TimeoutID;
+  unMountTimeout: TimeoutID;
 
   render() {
     const { tag = 'div', children, render } = this.props;
@@ -141,6 +144,6 @@ export class Animate extends React.PureComponent<Props, State> {
 
 export default (props: Props) => (
   <AnimateContext.Consumer>
-    {({ animationStates = {}, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
+    {({ animationStates = undefined, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
   </AnimateContext.Consumer>
 );

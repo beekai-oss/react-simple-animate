@@ -66,7 +66,7 @@ export class Animate extends React.PureComponent<Props, State> {
     if (nextProps.animationStates[nextProps.id]) {
       const state = nextProps.animationStates[nextProps.id];
       return {
-        willComplete: !((prevState.willComplete || state.willComplete) && state.play && !prevState.play),
+        willComplete: !((prevState.willComplete) && state.play && !prevState.play),
         play: state.play,
       };
     }

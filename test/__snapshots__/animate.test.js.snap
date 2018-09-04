@@ -78,3 +78,82 @@ exports[`Animate should render custome tag correctly 1`] = `
   tag="li"
 />
 `;
+
+exports[`AnimateWrapper should render correctly by start animation with minimum props 1`] = `
+<div
+  animationStates={Object {}}
+  delaySeconds={0}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
+    Object {
+      "display": "block",
+    }
+  }
+  reverseDelaySeconds={0}
+  startAnimation={true}
+  startStyle={Object {}}
+  tag="div"
+>
+  test
+</div>
+`;
+
+exports[`AnimateWrapper should render correctly with minimum props 1`] = `
+<div
+  animationStates={Object {}}
+  delaySeconds={0}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
+    Object {
+      "display": "block",
+    }
+  }
+  reverseDelaySeconds={0}
+  startAnimation={false}
+  startStyle={Object {}}
+  tag="div"
+>
+  test
+</div>
+`;
+
+exports[`AnimateWrapper should render correctly with render props 1`] = `
+<div
+  animationStates={Object {}}
+  delaySeconds={0}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
+    Object {
+      "display": "block",
+    }
+  }
+  render={[Function]}
+  reverseDelaySeconds={0}
+  startAnimation={false}
+  startStyle={Object {}}
+  tag="div"
+>
+  what
+</div>
+`;
+
+exports[`AnimateWrapper should render custome tag correctly 1`] = `
+<li
+  animationStates={Object {}}
+  delaySeconds={0}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
+    Object {
+      "display": "block",
+    }
+  }
+  reverseDelaySeconds={0}
+  startAnimation={false}
+  startStyle={Object {}}
+  tag="li"
+/>
+`;

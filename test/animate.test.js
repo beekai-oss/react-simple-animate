@@ -16,13 +16,13 @@ const props = {
   endStyle: { display: 'block' },
 };
 
-describe('Animate', () => {
+describe('AnimateWrapper', () => {
   it('should render correctly with minimum props', () => {
     const tree = renderer.create(<AnimateWrapper {...props}>test</AnimateWrapper>);
     expect(tree).toMatchSnapshot();
   });
 
-  it('should render correctly with minimum props', () => {
+  it('should render correctly by start animation with minimum props', () => {
     const tree = renderer.create(<AnimateWrapper {...{ ...props, startAnimation: true }}>test</AnimateWrapper>);
     expect(tree).toMatchSnapshot();
   });
@@ -44,34 +44,79 @@ describe('Animate', () => {
     expect(tree.state('startAnimation')).toEqual(true);
   });
 
-  describe('When animation complete style has been set', () => {
-    it.skip('should update the style', () => {
-      const onCompleteStyle = {
-        display: 'block',
-      };
-      const tree = shallow(
-        <Animate
-          {...{
-            ...props,
-            startAnimation: false,
-            onCompleteStyle,
-          }}
-        >
-          test
-        </Animate>,
-      );
-
-      tree.setProps({
-        willComplete: true,
-      });
-
-      jest.runAllTimers();
-      expect(tree.find('div').props().style).toEqual({
-        ...onCompleteStyle,
-        transition: null,
-      });
-    });
+  it('should update startAnimation if animation states contains the sequence index id', () => {
+    const tree = shallow(
+      <Animate
+        {...{
+          ...props,
+          sequenceIndex: 1,
+          animationStates: { 1: { startAnimation: true } },
+          startAnimation: true,
+          endStyle,
+        }}
+      >
+        test
+      </Animate>,
+    );
+    expect(tree.state('startAnimation')).toEqual(true);
   });
+
+  it('should update startAnimation if animation states contains the sequence id', () => {
+    const tree = shallow(
+      <Animate
+        {...{
+          ...props,
+          sequenceId: 'test',
+          animationStates: { test: { startAnimation: true } },
+          startAnimation: true,
+          endStyle,
+        }}
+      >
+        test
+      </Animate>,
+    );
+    expect(tree.state('startAnimation')).toEqual(true);
+  });
+
+  it.only('should reset willComplete when animation start play', () => {
+    const tree = shallow(
+      <Animate {...{ ...props, startAnimation: false, onCompleteStyle: {}, endStyle }}>test</Animate>,
+    );
+    expect(tree.state('willComplete')).toEqual(false);
+    tree.setProps({ startAnimation: true });
+    expect(tree.state('willComplete')).toEqual(false);
+    jest.runAllTimers();
+    expect(tree.state('willComplete')).toEqual(true);
+  });
+
+  // describe('When animation complete style has been set', () => {
+  //   it.skip('should update the style', () => {
+  //     const onCompleteStyle = {
+  //       display: 'block',
+  //     };
+  //     const tree = shallow(
+  //       <Animate
+  //         {...{
+  //           ...props,
+  //           startAnimation: false,
+  //           onCompleteStyle,
+  //         }}
+  //       >
+  //         test
+  //       </Animate>,
+  //     );
+  //
+  //     tree.setProps({
+  //       willComplete: true,
+  //     });
+  //
+  //     jest.runAllTimers();
+  //     expect(tree.find('div').props().style).toEqual({
+  //       ...onCompleteStyle,
+  //       transition: null,
+  //     });
+  //   });
+  // });
   //
   // describe('when animation about to end', () => {
   //   it('should update the style', () => {

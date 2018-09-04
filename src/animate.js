@@ -71,7 +71,7 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, startAnimation, sequenceId, sequenceIndex } = nextProps;
+    const { animationStates, startAnimation, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
     const id = sequenceId || sequenceIndex;
     let currentStartAnimation = startAnimation;
 
@@ -81,8 +81,10 @@ export class Animate extends React.PureComponent<Props, State> {
     }
 
     return {
-      willComplete: !(prevState.willComplete && startAnimation && !prevState.startAnimation),
-      startAnimation: currentStartAnimation,
+      ...(onCompleteStyle && prevState.willComplete
+        ? { willComplete: !(startAnimation && !prevState.startAnimation && prevState.willComplete) }
+        : null),
+      ...(currentStartAnimation !== prevState.startAnimation ? { startAnimation: currentStartAnimation } : null),
     };
   }
 

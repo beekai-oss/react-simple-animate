@@ -27,10 +27,10 @@ export type Props = {
   className?: string,
   render?: Object => any,
   unMount?: boolean,
-  refCallback?: (React.Component<*>) => {},
+  refCallback?: any => {},
   sequenceId?: string,
   sequenceIndex?: number,
-  register?: (any) => void,
+  register?: any => void,
   forceUpdate?: boolean,
   animationStates?: AnimationStateType,
 } & AnimationType;
@@ -136,10 +136,10 @@ export class Animate extends React.PureComponent<Props, State> {
   render() {
     const { tag = 'div', children, render } = this.props;
     const { shouldUnMount } = this.state;
-    const props = propsGenerator(this.props, this.state);
 
     if (shouldUnMount) return null;
 
+    const props = propsGenerator(this.props, this.state);
     return render ? render(props) : React.createElement(tag, props, children);
   }
 }

@@ -5,7 +5,7 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 
 type Sequence = AnimationType & {
   sequenceId?: string,
-  sequenceIndex?: string,
+  sequenceIndex?: number,
 };
 
 type Sequences = Array<Sequence>;

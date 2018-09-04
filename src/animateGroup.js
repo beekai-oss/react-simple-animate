@@ -14,7 +14,7 @@ type Props = {
   children: Element<*>,
 };
 type State = {
-  animationStates: { [string]: AnimationType },
+  animationStates?: { [string | number]: AnimationType },
 };
 
 export const AnimateContext = React.createContext({

@@ -18,6 +18,8 @@ export type AnimationType = {
   children?: React.Component<*>,
 };
 
+export type AnimationStateType = { [string | number]: AnimationType };
+
 export type Props = {
   easeType?: string,
   tag?: string,
@@ -28,9 +30,9 @@ export type Props = {
   refCallback?: (React.Component<*>) => {},
   sequenceId?: string,
   sequenceIndex?: number,
-  register?: Function,
+  register?: (any) => void,
   forceUpdate?: boolean,
-  animationStates?: { [string | number]: AnimationType },
+  animationStates?: AnimationStateType,
 } & AnimationType;
 
 export type State = {
@@ -144,6 +146,6 @@ export class Animate extends React.PureComponent<Props, State> {
 
 export default (props: Props) => (
   <AnimateContext.Consumer>
-    {({ animationStates = undefined, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
+    {({ animationStates = {}, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
   </AnimateContext.Consumer>
 );

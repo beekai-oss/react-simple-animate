@@ -1,6 +1,6 @@
 // @flow
 import type { State, Props } from '../animate';
-import mapAnimationSequenceOverProps from './mapAnimationSequenceOverProps';
+import mapSequenceOverProps from './mapSequenceOverProps';
 
 export default function propsGenerator(props: Props, { willComplete }: State): Object {
   const {
@@ -15,13 +15,12 @@ export default function propsGenerator(props: Props, { willComplete }: State): O
     refCallback,
     reverseDurationSeconds = 0,
     reverseDelaySeconds = 0,
-  } = mapAnimationSequenceOverProps(props);
+  } = mapSequenceOverProps(props);
   const { animationStates, sequenceId, sequenceIndex } = props;
-
+  const id = sequenceId || sequenceIndex;
   let style = startStyle;
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
 
-  const id = sequenceId || sequenceIndex;
   if (willComplete && onCompleteStyle && startAnimation) {
     style = onCompleteStyle;
     transition = null;
@@ -34,10 +33,8 @@ export default function propsGenerator(props: Props, { willComplete }: State): O
   return {
     className,
     style: {
-      ...{
-        ...style,
-        transition,
-      },
+      ...style,
+      transition,
     },
     // $FlowIgnoreLine
     ...(refCallback

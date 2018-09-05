@@ -44,22 +44,6 @@ export type State = {
 export class Animate extends React.PureComponent<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
-  static defaultProps = {
-    startStyle: {},
-    onCompleteStyle: undefined,
-    durationSeconds: 0.3,
-    delaySeconds: 0,
-    reverseDurationSeconds: undefined,
-    reverseDelaySeconds: 0,
-    easeType: 'linear',
-    tag: 'div',
-    onComplete: undefined,
-    className: undefined,
-    innerRef: undefined,
-    sequenceId: undefined,
-    sequenceIndex: undefined,
-  };
-
   state: State = {
     willComplete: false,
     startAnimation: false,

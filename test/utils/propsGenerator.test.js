@@ -20,12 +20,12 @@ describe('propsGenerator', () => {
 
   const startStyleWithTransition = {
     ...props.startStyle,
-    transition: 'all 0s ease 0s',
+    transition: 'all 0.3s ease 0s',
   };
 
   const endStyleWithTransition = {
     ...props.endStyle,
-    transition: 'all 0s ease 0s',
+    transition: 'all 0.3s ease 0s',
   };
 
   it('should generate startStyle', () => {
@@ -50,7 +50,7 @@ describe('propsGenerator', () => {
   it('should render start style when delay second is set and animation about to start', () => {
     expect(propsGenerator({ ...props, startAnimation: true, delaySeconds: 0.3 }, state).style).toEqual({
       ...endStyleWithTransition,
-      transition: 'all 0s ease 0.3s',
+      transition: 'all 0.3s ease 0.3s',
     });
   });
 

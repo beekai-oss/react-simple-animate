@@ -67,7 +67,8 @@ export class Animate extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    this.props.register && this.props.register(this.props);
+    const { register } = this.props;
+    register && register(this.props);
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -89,13 +90,15 @@ export class Animate extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { durationSeconds, register, unMount } = this.props;
+    const { durationSeconds, unMount } = this.props;
 
     this.onComplete();
-    register && register(this.props);
 
     if (!prevProps.unMount && unMount) {
-      this.unMountTimeout = setTimeout(() => this.setState({ shouldUnMount: false }), durationSeconds);
+      this.unMountTimeout = setTimeout(
+        () => this.setState({ shouldUnMount: true }),
+        parseFloat(durationSeconds) * 1000,
+      );
     }
   }
 
@@ -120,7 +123,7 @@ export class Animate extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (startAnimation || (animationStates && id && animationStates[id].startAnimation))
+      (startAnimation || (id && animationStates && animationStates[id].startAnimation))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {

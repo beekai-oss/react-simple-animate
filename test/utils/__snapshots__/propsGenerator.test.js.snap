@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`propsGenerator should call refCallback if it been set 1`] = `
+Object {
+  "className": undefined,
+  "ref": [Function],
+  "style": Object {
+    "transition": "all 0s  0s",
+  },
+}
+`;
+
+exports[`propsGenerator should set up refCallback if it is part of the prop 1`] = `
+Object {
+  "className": undefined,
+  "ref": [Function],
+  "style": Object {
+    "transition": "all 0s  0s",
+  },
+}
+`;

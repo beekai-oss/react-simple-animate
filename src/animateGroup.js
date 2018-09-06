@@ -40,11 +40,6 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     this.props.sequences && this.calculateSequences();
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { sequences, startAnimation } = this.props;
-    if (startAnimation !== prevProps.startAnimation && sequences) this.calculateSequences();
-  }
-
   componentWillUnmount() {
     // $FlowIgnoreLine
     Object.values(this.timers).forEach(timer => clearTimeout(timer));
@@ -89,7 +84,8 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   register = (props: Sequence) => {
-    const id = props.sequenceId || props.sequenceIndex;
+    const { sequenceIndex, sequenceId } = props;
+    const id = sequenceId || sequenceIndex;
     if (!id) return;
 
     this.animations[id] = {

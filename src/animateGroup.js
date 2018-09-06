@@ -58,7 +58,13 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
       (previous, current, currentIndex) => {
         const { sequenceId, ...restAttributes } = current;
         const id = sequenceId || currentIndex;
-        const totalDuration = calculateTotalDuration(id, this.animations, restAttributes, previous);
+        const totalDuration = calculateTotalDuration(
+          {
+            ...this.animations[id],
+            restAttributes,
+          },
+          previous,
+        );
 
         this.timers[id] = setTimeout(() => {
           this.setState(previousState => {

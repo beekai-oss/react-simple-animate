@@ -1,7 +1,7 @@
 import React from 'react';
-import AnimateWrapper, { Animate } from '../src/animate';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
+import AnimateWrapper, { Animate } from '../src/animate';
 
 jest.mock('../src/utils/propsGenerator', () => props => props);
 jest.useFakeTimers();

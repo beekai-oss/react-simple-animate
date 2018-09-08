@@ -1,7 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import AnimateGroup from '../src/animateGroup';
 import { shallow } from 'enzyme';
+import AnimateGroup from '../src/animateGroup';
+
+jest.mock('../src/utils/calculateTotalDuration', () => () => 1);
 
 describe('AnimateGroup', () => {
   it('should render correctly', () => {
@@ -11,6 +13,72 @@ describe('AnimateGroup', () => {
 
   it('should register animation with id or index', () => {
     const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
-    tree.instance().register({});
+    tree.instance().register({
+      sequenceIndex: 0,
+    });
+    tree.instance().register({
+      sequenceIndex: 2,
+    });
+
+    expect(tree.instance().animations).toEqual({
+      0: { sequenceIndex: 0 },
+      2: { sequenceIndex: 2 },
+    });
+
+    tree.instance().register({
+      sequenceId: 'test',
+    });
+    tree.instance().register({
+      sequenceId: 'test1',
+    });
+
+    expect(tree.instance().animations).toEqual({
+      0: { sequenceIndex: 0 },
+      2: { sequenceIndex: 2 },
+      test: { sequenceId: 'test' },
+      test1: { sequenceId: 'test1' },
+    });
+  });
+
+  it('should not called calculateSequences when component did mount and startAnimation is false', () => {
+    const calculateSequences = jest.fn();
+    const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
+    tree.instance().calculateSequences = calculateSequences;
+    tree.instance().componentDidMount();
+    expect(calculateSequences).not.toBeCalled();
+  });
+
+  it('should called calculateSequences when component did mount and startAnimation is true', () => {
+    const calculateSequences = jest.fn();
+    const tree = shallow(<AnimateGroup startAnimation>Test</AnimateGroup>);
+    tree.instance().calculateSequences = calculateSequences;
+    tree.instance().componentDidMount();
+    expect(calculateSequences).toBeCalled();
+  });
+
+  it('should called calculateSequences when component update from startAnimation false to true', () => {
+    const calculateSequences = jest.fn();
+    const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
+    tree.instance().calculateSequences = calculateSequences;
+    tree.setProps({
+      startAnimation: true,
+    });
+    expect(calculateSequences).toBeCalled();
+  });
+
+  describe.only('calculateSequences', () => {
+    it('should accumulate the duration', () => {
+      const tree = shallow(<AnimateGroup sequences={[{}, {}]}>Test</AnimateGroup>);
+      expect(tree.instance().calculateSequences()).toEqual(2);
+    });
+
+    it('should accumulate the duration without sequences', () => {
+      const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
+      tree.instance().animations = {
+        test: 'test',
+        test1: 'test1',
+      };
+      expect(tree.instance().calculateSequences()).toEqual(2);
+    });
   });
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`propsGenerator should set up refCallback if it is part of the prop 1`] = `
+exports[`attributesGenerator should set up refCallback if it is part of the prop 1`] = `
 Object {
   "className": undefined,
   "ref": [Function],

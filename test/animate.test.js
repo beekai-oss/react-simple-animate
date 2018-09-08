@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import AnimateWrapper, { AnimateChild } from '../src/animate';
 
-jest.mock('../src/utils/propsGenerator', () => props => props);
+jest.mock('../src/utils/attributesGenerator', () => props => props);
 jest.useFakeTimers();
 
 const endStyle = { display: 'block' };

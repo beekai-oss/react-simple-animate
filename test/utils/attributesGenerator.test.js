@@ -1,8 +1,8 @@
-import propsGenerator from '../../src/utils/propsGenerator';
+import attributesGenerator from '../../src/utils/attributesGenerator';
 
 jest.mock('../../src/utils/mapSequenceOverProps', () => props => props);
 
-describe('propsGenerator', () => {
+describe('attributesGenerator', () => {
   const state = {
     willComplete: false,
   };
@@ -29,18 +29,18 @@ describe('propsGenerator', () => {
   };
 
   it('should generate startStyle', () => {
-    expect(propsGenerator(props, state).style).toEqual(startStyleWithTransition);
+    expect(attributesGenerator(props, state).style).toEqual(startStyleWithTransition);
   });
 
   describe('when animation is set to true', () => {
     it('should generate endStyle', () => {
-      expect(propsGenerator({ ...props, startAnimation: true }, state).style).toEqual(endStyleWithTransition);
+      expect(attributesGenerator({ ...props, startAnimation: true }, state).style).toEqual(endStyleWithTransition);
     });
   });
 
   describe('when animation reverseDelaySeconds has been set', () => {
     it('should render the end style', () => {
-      expect(propsGenerator({ ...props, startAnimation: false, reverseDelaySeconds: 0.3 }, state).style).toEqual({
+      expect(attributesGenerator({ ...props, startAnimation: false, reverseDelaySeconds: 0.3 }, state).style).toEqual({
         ...startStyleWithTransition,
         transition: 'all 0.3s ease 0.3s',
       });
@@ -48,7 +48,7 @@ describe('propsGenerator', () => {
   });
 
   it('should render start style when delay second is set and animation about to start', () => {
-    expect(propsGenerator({ ...props, startAnimation: true, delaySeconds: 0.3 }, state).style).toEqual({
+    expect(attributesGenerator({ ...props, startAnimation: true, delaySeconds: 0.3 }, state).style).toEqual({
       ...endStyleWithTransition,
       transition: 'all 0.3s ease 0.3s',
     });
@@ -56,7 +56,7 @@ describe('propsGenerator', () => {
 
   it('should apply onComplete style', () => {
     expect(
-      propsGenerator(
+      attributesGenerator(
         { ...props, startAnimation: true, delaySeconds: 0.3, onCompleteStyle: { display: 'inline' } },
         { willComplete: true },
       ).style,
@@ -68,7 +68,7 @@ describe('propsGenerator', () => {
 
   it('should apply end style when animationStates is set with startAnimation', () => {
     expect(
-      propsGenerator(
+      attributesGenerator(
         {
           ...props,
           animationStates: { test: { startAnimation: true } },
@@ -79,7 +79,7 @@ describe('propsGenerator', () => {
     ).toEqual(endStyleWithTransition);
 
     expect(
-      propsGenerator(
+      attributesGenerator(
         {
           ...props,
           animationStates: { 1: { startAnimation: true } },
@@ -94,7 +94,7 @@ describe('propsGenerator', () => {
     const refCallback = jest.fn();
 
     expect(
-      propsGenerator(
+      attributesGenerator(
         {
           refCallback,
         },

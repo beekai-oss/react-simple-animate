@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import propsGenerator from './utils/propsGenerator';
+import propsGenerator from './utils/attributesGenerator';
 import { AnimateContext } from './animateGroup';
 
 export type Style = { [string]: string | number };

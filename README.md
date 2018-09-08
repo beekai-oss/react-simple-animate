@@ -97,7 +97,7 @@ Screenshot of the example app below
 
 ## Advance Example
 
-Set up animation sequence with id😘
+Set up animation sequence with `sequenceId` 😘
 
     import react from 'react';
     import { Animate, AnimateGroup } from 'react-simple-animate';

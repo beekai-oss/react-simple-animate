@@ -18,9 +18,7 @@ Features:
 
 ## Install
 
-    $ yarn add react-simple-animate
-    or
-    $ npm install react-simple-animate -S
+    $ yarn add react-simple-animate || npm install react-simple-animate
 
 ## Example
 
@@ -28,9 +26,7 @@ Features:
 
 Navigate into `example` folder and install
 
-    $ yarn && yarn start
-    or
-    $ npm install && npm run start
+    $ yarn && yarn start || npm install && npm run start
 
 Screenshot of the example app below
 

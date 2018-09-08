@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import AnimateWrapper, { Animate } from '../src/animate';
+import AnimateWrapper, { AnimateChild } from '../src/animate';
 
 jest.mock('../src/utils/propsGenerator', () => props => props);
 jest.useFakeTimers();
@@ -36,13 +36,13 @@ describe('AnimateWrapper', () => {
 
 describe('Animate', () => {
   it('should update startAnimation state after played', () => {
-    const tree = shallow(<Animate {...{ ...props, startAnimation: true, endStyle }}>test</Animate>);
+    const tree = shallow(<AnimateChild {...{ ...props, startAnimation: true, endStyle }}>test</AnimateChild>);
     expect(tree.state('startAnimation')).toEqual(true);
   });
 
   it('should update startAnimation if animation states contains the sequence index id', () => {
     const tree = shallow(
-      <Animate
+      <AnimateChild
         {...{
           ...props,
           sequenceIndex: 1,
@@ -52,14 +52,14 @@ describe('Animate', () => {
         }}
       >
         test
-      </Animate>,
+      </AnimateChild>,
     );
     expect(tree.state('startAnimation')).toEqual(true);
   });
 
   it('should update startAnimation if animation states contains the sequence id', () => {
     const tree = shallow(
-      <Animate
+      <AnimateChild
         {...{
           ...props,
           sequenceId: 'test',
@@ -69,14 +69,14 @@ describe('Animate', () => {
         }}
       >
         test
-      </Animate>,
+      </AnimateChild>,
     );
     expect(tree.state('startAnimation')).toEqual(true);
   });
 
   it('should reset willComplete when animation start play', () => {
     const tree = shallow(
-      <Animate {...{ ...props, startAnimation: false, onCompleteStyle: {}, endStyle }}>test</Animate>,
+      <AnimateChild {...{ ...props, startAnimation: false, onCompleteStyle: {}, endStyle }}>test</AnimateChild>,
     );
     expect(tree.state('willComplete')).toEqual(false);
     tree.setProps({ startAnimation: true });
@@ -86,7 +86,7 @@ describe('Animate', () => {
   });
 
   it('should set shouldUnMount to true when prop have been set to unmount', () => {
-    const tree = shallow(<Animate {...{ ...props, startAnimation: false }} />);
+    const tree = shallow(<AnimateChild {...{ ...props, startAnimation: false }} />);
     tree.setProps({
       unMount: true,
     });
@@ -96,7 +96,7 @@ describe('Animate', () => {
 
   it('should call on complete function when animation is completed', () => {
     const onComplete = jest.fn();
-    const tree = shallow(<Animate {...{ ...props, startAnimation: false, onComplete }} />);
+    const tree = shallow(<AnimateChild {...{ ...props, startAnimation: false, onComplete }} />);
     tree.setProps({
       startAnimation: true,
     });

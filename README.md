@@ -79,9 +79,9 @@ Screenshot of the example app below
 | `reverseDurationSeconds` | number   |          | How long the reverse/toggle animation takes in seconds.                                |
 | `reverseDelaySeconds`    | number   |          | How much delay should apply when reverse/toggle animation.                             |
 | `onComplete`             | function |          | Call back function after animation complete.                                           |
-| `overlaySeconds`         | number   |          | <AnimateGroup />: When animation need to play ahead and overlay on top of the previous |
-| `sequenceIndex`          | number   |          | <AnimateGroup />: Animation will be trigger from 0 to n number                         |
-| `sequenceId`             | string   |          | <AnimateGroup />: Unique id to associate with AnimationGroup sequences                 |
+| `overlaySeconds`         | number   |          | AnimateGroup: When animation need to play ahead and overlay on top of the previous |
+| `sequenceIndex`          | number   |          | AnimateGroup: Animation will be trigger from 0 to n number                         |
+| `sequenceId`             | string   |          | AnimateGroup: Unique id to associate with AnimationGroup sequences                 |
 | `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
 | `className`              | string   |          | To specify a CSS class.                                                                |
 

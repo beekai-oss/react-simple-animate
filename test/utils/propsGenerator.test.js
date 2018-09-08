@@ -42,7 +42,7 @@ describe('propsGenerator', () => {
     it('should render the end style', () => {
       expect(propsGenerator({ ...props, startAnimation: false, reverseDelaySeconds: 0.3 }, state).style).toEqual({
         ...startStyleWithTransition,
-        transition: 'all 0s ease 0.3s',
+        transition: 'all 0.3s ease 0.3s',
       });
     });
   });

@@ -35,7 +35,7 @@ export default function propsGenerator(props: Props, { willComplete, shouldMount
     ) {
       style = endStyle;
     } else if (!startAnimation && (reverseDurationSeconds || reverseDelaySeconds)) {
-      transition = `all ${reverseDurationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
+      transition = `all ${durationSeconds || reverseDurationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
     }
   }
 

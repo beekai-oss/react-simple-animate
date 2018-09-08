@@ -104,19 +104,17 @@ Set up animation sequence with `sequenceId` 😘
         endStyle: { opacity: 1 }
     };
 
-    export default () => {
-        return (
-            <AnimateGroup startAnimation sequences={[
-                { sequenceId: 'header', ...props } // play first
-                { sequenceId: 'content', ...props, overlaySeconds: 0.1 } // play during header animation and overlay by 0.1s
-                { sequenceId: 'footer', ...props, delaySeconds: 0.4 } // play after content with 0.4s seconds delay
-            ]}>
-                <Animate sequenceId="header" />
-                <Animate sequenceId="content" />
-                <Animate sequenceId="footer" />
-            </AnimateGroup>
-        );
-    };
+    export default () =>
+        <AnimateGroup startAnimation sequences={[
+            { sequenceId: 'header', ...props } // play first
+            { sequenceId: 'content', ...props, overlaySeconds: 0.1 } // play during header animation and overlay by 0.1s
+            { sequenceId: 'footer', ...props, delaySeconds: 0.4 } // play after content with 0.4s seconds delay
+        ]}>
+            <Animate sequenceId="header" />
+            <Animate sequenceId="content" />
+            <Animate sequenceId="footer" />
+        </AnimateGroup>
+    );
 
 ## Reference
 

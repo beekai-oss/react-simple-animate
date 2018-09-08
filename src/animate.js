@@ -41,7 +41,7 @@ export type State = {
   shouldUnMount: boolean,
 };
 
-export class Animate extends React.PureComponent<Props, State> {
+export class AnimateChild extends React.PureComponent<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
   state: State = {
@@ -135,6 +135,6 @@ export class Animate extends React.PureComponent<Props, State> {
 
 export default (props: Props) => (
   <AnimateContext.Consumer>
-    {({ animationStates = {}, register = undefined }) => <Animate {...{ ...props, animationStates, register }} />}
+    {({ animationStates = {}, register = undefined }) => <AnimateChild {...{ ...props, animationStates, register }} />}
   </AnimateContext.Consumer>
 );

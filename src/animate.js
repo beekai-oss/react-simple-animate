@@ -32,7 +32,7 @@ export type Props = {
   sequenceIndex?: number,
   register?: any => void,
   forceUpdate?: boolean,
-  animationStates?: AnimationStateType,
+  animationStates: AnimationStateType | {},
 } & AnimationType;
 
 export type State = {

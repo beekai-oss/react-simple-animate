@@ -8,7 +8,7 @@ import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
 import AddIcon from 'material-ui-icons/Add';
 import RemoveIcon from 'material-ui-icons/Remove';
-import Animate from 'react-simple-animate';
+import { Animate } from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import tryParseJson from './tryParseJson';
 import './Demo.css';
@@ -37,7 +37,7 @@ export default class Demo extends React.Component {
     easeType: 'linear',
     reverseDelaySeconds: 0,
     durationSeconds: '0.3',
-    showCode: false,
+    showCode: true,
     easyMode: false,
     count: 1,
     keys: [],
@@ -48,9 +48,13 @@ export default class Demo extends React.Component {
     this.setState(previousState => {
       const { keys, count } = previousState;
       const keysCopy = [...keys];
+      const id = new Date().getTime();
 
       if (count > keys.length) {
-        keysCopy.push(new Date().getTime());
+        keysCopy.push({
+          id,
+          ...(keys.length > 0 ? { mount: true } : null),
+        });
       } else if (count <= keys.length) {
         keysCopy.pop();
       }
@@ -105,9 +109,12 @@ export default class Demo extends React.Component {
   clickHandler(item) {
     this.setState(previousState => {
       const { keys } = previousState;
+      const index = keys.findIndex(key => key.id === item.id);
+      const copy = [...keys];
+      copy[index].unMount = true;
 
       return {
-        keys: keys.filter(key => key !== item),
+        keys: copy,
       };
     });
   }

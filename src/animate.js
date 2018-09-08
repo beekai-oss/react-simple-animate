@@ -27,6 +27,7 @@ export type Props = {
   className?: string,
   render?: Object => any,
   unMount?: boolean,
+  mount?: boolean,
   refCallback?: any => {},
   sequenceId?: string,
   sequenceIndex?: number,
@@ -39,6 +40,7 @@ export type State = {
   willComplete: boolean,
   startAnimation: boolean,
   shouldUnMount: boolean,
+  shouldMount: boolean,
 };
 
 export class AnimateChild extends React.PureComponent<Props, State> {
@@ -48,11 +50,16 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     willComplete: false,
     startAnimation: false,
     shouldUnMount: false,
+    shouldMount: false,
   };
 
   componentDidMount() {
-    const { register } = this.props;
+    const { register, mount } = this.props;
     register && register(this.props);
+
+    if (mount && !this.state.shouldMount) {
+      this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }), 100);
+    }
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -89,6 +96,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   componentWillUnmount() {
     clearTimeout(this.completeTimeout);
     clearTimeout(this.unMountTimeout);
+    clearTimeout(this.mountTimeout);
   }
 
   onComplete(): void {
@@ -107,7 +115,8 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (startAnimation || (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].startAnimation))
+      (startAnimation ||
+        (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].startAnimation))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {
@@ -121,6 +130,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
   completeTimeout: TimeoutID;
   unMountTimeout: TimeoutID;
+  mountTimeout: TimeoutID;
 
   render() {
     const { tag = 'div', children, render } = this.props;

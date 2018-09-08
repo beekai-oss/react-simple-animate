@@ -1,4 +1,4 @@
-import Animate from 'react-simple-animate';
+import { Animate } from 'react-simple-animate';
 import Highlight from 'react-syntax-highlight';
 import React from 'react';
 import './DemoCode.css';
@@ -22,7 +22,6 @@ export default function DemoCode({
     endStyle={${endStyle}}
     ${durationSeconds !== '0.3' ? `durationSeconds="${durationSeconds}"` : ''}
     ${easeType !== 'linear' ? `easeType="${easeType}"` : ''}
-    ${count > 1 ? 'animateOnAddRemove' : ''}
     ${delaySeconds ? `delaySeconds=${delaySeconds}` : ''}
     ${reverseDelaySeconds ? `reverseDelaySeconds={${reverseDelaySeconds}}` : ''}
     ${onCompleteStyle ? `onCompleteStyle={${onCompleteStyle}}` : ''}

@@ -58,7 +58,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     register && register(this.props);
 
     if (mount && !this.state.shouldMount) {
-      this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }), 100);
+      this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }));
     }
   }
 

@@ -48,9 +48,9 @@ Screenshot of the example app below
         endStyle={ opacity: 1 }
     };
 
-    export default function SexyComponent() {
+    export default () => {
         return (
-            // This example demonstrate animate **individual** element.
+            // This example demonstrate animate individual element.
             <Animate {...props}>
                 <h1>React simple animate</h1>
             </Animate>
@@ -60,9 +60,11 @@ Screenshot of the example app below
                 <Animate {...props} sequenceIndex={0} />
                 <p>Next animation below: </p>
                 <Animate {...props} sequenceIndex={1} />
+                <p>Final animation below: </p>
+                <Animate {...props} sequenceIndex={2} />
             </AnimateGroup>
         );
-    }
+    };
 
 ## Animate API
 
@@ -93,7 +95,7 @@ Screenshot of the example app below
 | :--------------- | :-------------- | :------: | :------------------------------------------------------------------------------------------------- |
 | `startAnimation` | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                       |
 | `children`       | node            |    ✓     | Components(<Animate />) to be animated. (children can contains other components and html elements. |
-| `sequences`      | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animation sequenceId.    |
+| `sequences`      | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.    |
 
 ## Advance Example
 
@@ -102,18 +104,18 @@ Set up animation sequence with `sequenceId` 😘
     import react from 'react';
     import { Animate, AnimateGroup } from 'react-simple-animate';
 
-    const animation = {
-        startStyle: { opacity: 0 }
-        endStyle={ opacity: 1 }
+    const props = {
+        startStyle: { opacity: 0 },
+        endStyle: { opacity: 1 }
     };
 
     export default () => {
         return (
-            <AnimateGroup startAnimation sequences=[
-                { sequenceId: 'header', ...animation } // play first
-                { sequenceId: 'content', ...animation, overlaySeconds: 0.1 } // play during header animation and overlay by 0.1s
-                { sequenceId: 'footer', ...animation, delaySeconds: 0.4 } // play after content with 0.4s seconds delay
-            ]>
+            <AnimateGroup startAnimation sequences={[
+                { sequenceId: 'header', ...props } // play first
+                { sequenceId: 'content', ...props, overlaySeconds: 0.1 } // play during header animation and overlay by 0.1s
+                { sequenceId: 'footer', ...props, delaySeconds: 0.4 } // play after content with 0.4s seconds delay
+            ]}>
                 <Animate sequenceId="header" />
                 <Animate sequenceId="content" />
                 <Animate sequenceId="footer" />

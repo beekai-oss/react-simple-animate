@@ -7,7 +7,6 @@ import Grid from 'material-ui/Grid';
 import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
 import AddIcon from 'material-ui-icons/Add';
-import RemoveIcon from 'material-ui-icons/Remove';
 import { Animate } from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import tryParseJson from './tryParseJson';
@@ -55,8 +54,6 @@ export default class Demo extends React.Component {
           id,
           ...(keys.length > 0 ? { mount: true } : null),
         });
-      } else if (count <= keys.length) {
-        keysCopy.pop();
       }
 
       return {
@@ -130,27 +127,6 @@ export default class Demo extends React.Component {
               label="🤘 Easy Mode"
               control={<Switch aria-label="pro" onChange={this.handleSwitchChange('easyMode')} />}
             />
-
-            <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
-              <Button
-                style={{
-                  marginRight: '20px',
-                }}
-                variant="fab"
-                onClick={() => {
-                  this.setState(previousState => {
-                    return {
-                      count: --previousState.count,
-                    };
-                  });
-                  this.setKeys();
-                }}
-                color="secondary"
-                aria-label="add"
-              >
-                <RemoveIcon />
-              </Button>
-            </Animate>
 
             <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
               <Button

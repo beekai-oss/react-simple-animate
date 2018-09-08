@@ -12,7 +12,7 @@
 Features:
 
 * Simple animation from inline style A to style B
-* easily chain up animation sequences (New)
+* Chain up animation sequences (New)
 * Support add and remove child
 * Make animation toggle easy
 * Tiny size without other dependency
@@ -84,8 +84,8 @@ Screenshot of the example app below
 | `overlaySeconds`         | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous   |
 | `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
 | `className`              | string   |          | To specify a CSS class.                                                                |
-| `mount`                  | boolean  |          | will mount component then apply animation (note startAnimation prop is not required)   |
-| `unMount`                | boolean  |          | will apply animation to start style and then delete the element                        |
+| `mount`                  | boolean  |          | Will mount component then apply animation (note startAnimation prop is not required)   |
+| `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
 
 ## AnimateGroup API
 

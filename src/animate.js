@@ -107,7 +107,7 @@ export class Animate extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (startAnimation || (id && animationStates && animationStates[id].startAnimation))
+      (startAnimation || (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].startAnimation))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {

@@ -24,7 +24,10 @@ export default function propsGenerator(props: Props, { willComplete }: State): O
   if (willComplete && onCompleteStyle && startAnimation) {
     style = onCompleteStyle;
     transition = '';
-  } else if (startAnimation || (animationStates && id && animationStates[id] && animationStates[id].startAnimation)) {
+  } else if (
+    startAnimation ||
+    (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].startAnimation)
+  ) {
     style = endStyle;
   } else if (!startAnimation && (reverseDurationSeconds || reverseDelaySeconds)) {
     transition = `all ${reverseDurationSeconds}s ${easeType} ${reverseDelaySeconds}s`;

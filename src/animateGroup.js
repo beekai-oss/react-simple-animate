@@ -48,7 +48,17 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     Object.values(this.timers).forEach((timer: any) => clearTimeout(timer));
   }
 
-  setUpTimers = ({ totalDuration, id, restAttributes, startAnimation }) => {
+  setupAnimationTimers = ({
+    totalDuration,
+    id,
+    restAttributes,
+    startAnimation,
+  }: {
+    totalDuration: number,
+    id: string,
+    restAttributes: AnimationType,
+    startAnimation: boolean,
+  }) => {
     this.timers[id] = setTimeout(() => {
       this.setState(previousState => {
         const stateCopy = { ...previousState.animationStates };
@@ -68,7 +78,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   calculateSequences = () => {
     const { sequences, startAnimation } = this.props;
-    const sequencesToAnimate = sequences.length ? sequences : Object.values(this.animations);
+    const sequencesToAnimate: any = sequences.length ? sequences : Object.values(this.animations);
 
     return (startAnimation ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
       (previous, current, currentIndex) => {
@@ -81,7 +91,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
             restAttributes,
           });
 
-        this.setUpTimers({
+        this.setupAnimationTimers({
           id,
           totalDuration,
           restAttributes,
@@ -104,7 +114,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   timers: { [string | number]: TimeoutID } = {};
-  animations = {};
+  animations: { [string | number]: AnimationType } = {};
 
   render() {
     return (

@@ -5,6 +5,8 @@ import AnimateGroup from '../src/animateGroup';
 
 jest.mock('../src/utils/calculateTotalDuration', () => () => 1);
 
+jest.useFakeTimers();
+
 describe('AnimateGroup', () => {
   it('should render correctly', () => {
     const tree = renderer.create(<AnimateGroup>Test</AnimateGroup>);
@@ -66,13 +68,13 @@ describe('AnimateGroup', () => {
     expect(calculateSequences).toBeCalled();
   });
 
-  describe.only('calculateSequences', () => {
+  describe('calculateSequences', () => {
     it('should accumulate the duration', () => {
       const tree = shallow(<AnimateGroup sequences={[{}, {}]}>Test</AnimateGroup>);
       expect(tree.instance().calculateSequences()).toEqual(2);
     });
 
-    it('should accumulate the duration without sequences', () => {
+    it('should accumulate the duration without sequences instead with animations', () => {
       const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
       tree.instance().animations = {
         test: 'test',
@@ -80,5 +82,55 @@ describe('AnimateGroup', () => {
       };
       expect(tree.instance().calculateSequences()).toEqual(2);
     });
+
+    it('should register timers according to the order of animation sequences', () => {
+      const tree = shallow(<AnimateGroup startAnimation>Test</AnimateGroup>);
+      tree.instance().animations = {
+        1: {
+          test: 'test1',
+          startAnimation: false,
+        },
+        0: {
+          test: 'test0',
+          startAnimation: false,
+        },
+        234: {
+          test: 'test234',
+          startAnimation: false,
+        },
+        2: {
+          test: 'test2',
+          startAnimation: false,
+        },
+      };
+      tree.instance().calculateSequences();
+      jest.runAllTimers();
+      expect(tree.state('animationStates')).toMatchSnapshot();
+    });
+  });
+
+  it('should register timers according to the reverse order of animation sequences', () => {
+    const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
+    tree.instance().animations = {
+      1: {
+        test: 'test1',
+        startAnimation: false,
+      },
+      0: {
+        test: 'test0',
+        startAnimation: false,
+      },
+      234: {
+        test: 'test234',
+        startAnimation: false,
+      },
+      2: {
+        test: 'test2',
+        startAnimation: false,
+      },
+    };
+    tree.instance().calculateSequences();
+    jest.runAllTimers();
+    expect(tree.state('animationStates')).toMatchSnapshot();
   });
 });

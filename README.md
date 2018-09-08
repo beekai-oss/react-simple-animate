@@ -24,11 +24,11 @@ Features:
 
 [Check out the interactive demo.](https://react-simple-animate.herokuapp.com) 😍
 
+<a target="_blank" href="https://react-simple-animate.herokuapp.com"><img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/screenShot.png" alt="Screenshots" width="400"/></a>
+
 Navigate into `example` folder and install
 
     $ yarn && yarn start || npm install && npm run start
-
-<a target="_blank" href="https://react-simple-animate.herokuapp.com"><img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/screenShot.png" alt="Screenshots" width="400"/></a>
 
 ## Quick start
 

@@ -14,7 +14,6 @@ Features:
 * Simple animation from inline style A to style B
 * Chain up animation sequences (New)
 * Support add and remove child
-* Make animation toggle easy
 * Tiny size without other dependency
 
 ## Install

@@ -4,7 +4,7 @@ import type { AnimationType, AnimationStateType } from './animate';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 
 type Sequence = AnimationType & {
-  sequenceId?: string,
+  sequenceId?: string | number,
   sequenceIndex?: number,
 };
 
@@ -105,10 +105,9 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   register = (props: Sequence) => {
     const { sequenceIndex, sequenceId } = props;
-    const id = sequenceId || sequenceIndex;
-    if (id < 0 || id === '') return;
+    if (sequenceId === undefined || sequenceIndex === undefined || sequenceIndex < 0) return;
 
-    this.animations[id] = {
+    this.animations[sequenceId || sequenceIndex] = {
       ...props,
     };
   };

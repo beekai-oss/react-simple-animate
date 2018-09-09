@@ -24,7 +24,7 @@ const svg = (
 export default function DemoObject({
   delaySeconds,
   reverseDelaySeconds,
-  startAnimation,
+  play,
   easeType,
   startReverseAnimate,
   onCompleteStyle,
@@ -38,7 +38,7 @@ export default function DemoObject({
   return (
     <div className="DemoObject-container">
       <Animate
-        startAnimation={count > 1}
+        play={count > 1}
         startStyle={{ startStyle: 0, maxHeight: 0, overflow: 'hidden' }}
         endStyle={{ startStyle: 1, maxHeight: '100px', overflow: 'hidden' }}
       >
@@ -49,7 +49,7 @@ export default function DemoObject({
       {keys.map((item, i) => (
         <Animate
           {...{
-            ...(i === 0 ? { startAnimation } : null),
+            ...(i === 0 ? { play } : null),
             delaySeconds,
             easeType,
             startReverseAnimate,

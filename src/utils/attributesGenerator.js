@@ -6,7 +6,7 @@ export default function attributesGenerator(props: Props, { willComplete, should
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {
-    startAnimation,
+    play,
     startStyle,
     endStyle,
     onCompleteStyle,
@@ -25,19 +25,19 @@ export default function attributesGenerator(props: Props, { willComplete, should
   const willMountOrUnMount = unMount || (mount && !shouldMount);
 
   if (!willMountOrUnMount) {
-    if (willComplete && onCompleteStyle && startAnimation) {
+    if (willComplete && onCompleteStyle && play) {
       style = onCompleteStyle;
       transition = '';
     } else if (
       mount ||
-      startAnimation ||
+      play ||
       ((id || id === 0) &&
         Object.keys(animationStates).length &&
         animationStates[id] &&
-        animationStates[id].startAnimation)
+        animationStates[id].play)
     ) {
       style = endStyle;
-    } else if (!startAnimation && (reverseDurationSeconds || reverseDelaySeconds)) {
+    } else if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
       transition = `all ${durationSeconds || reverseDurationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
     }
   }

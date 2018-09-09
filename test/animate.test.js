@@ -8,7 +8,7 @@ jest.useFakeTimers();
 
 const endStyle = { display: 'block' };
 const props = {
-  startAnimation: false,
+  play: false,
   endStyle,
 };
 
@@ -19,7 +19,7 @@ describe('AnimateWrapper', () => {
   });
 
   it('should render correctly by start animation with minimum props', () => {
-    const tree = renderer.create(<AnimateWrapper {...{ ...props, startAnimation: true }}>test</AnimateWrapper>);
+    const tree = renderer.create(<AnimateWrapper {...{ ...props, play: true }}>test</AnimateWrapper>);
     expect(tree).toMatchSnapshot();
   });
 
@@ -35,58 +35,58 @@ describe('AnimateWrapper', () => {
 });
 
 describe('Animate', () => {
-  it('should update startAnimation state after played', () => {
-    const tree = shallow(<AnimateChild {...{ ...props, startAnimation: true, endStyle }}>test</AnimateChild>);
-    expect(tree.state('startAnimation')).toEqual(true);
+  it('should update play state after played', () => {
+    const tree = shallow(<AnimateChild {...{ ...props, play: true, endStyle }}>test</AnimateChild>);
+    expect(tree.state('play')).toEqual(true);
   });
 
-  it('should update startAnimation if animation states contains the sequence index id', () => {
+  it('should update play if animation states contains the sequence index id', () => {
     const tree = shallow(
       <AnimateChild
         {...{
           ...props,
           sequenceIndex: 1,
-          animationStates: { 1: { startAnimation: true } },
-          startAnimation: true,
+          animationStates: { 1: { play: true } },
+          play: true,
           endStyle,
         }}
       >
         test
       </AnimateChild>,
     );
-    expect(tree.state('startAnimation')).toEqual(true);
+    expect(tree.state('play')).toEqual(true);
   });
 
-  it('should update startAnimation if animation states contains the sequence id', () => {
+  it('should update play if animation states contains the sequence id', () => {
     const tree = shallow(
       <AnimateChild
         {...{
           ...props,
           sequenceId: 'test',
-          animationStates: { test: { startAnimation: true } },
-          startAnimation: true,
+          animationStates: { test: { play: true } },
+          play: true,
           endStyle,
         }}
       >
         test
       </AnimateChild>,
     );
-    expect(tree.state('startAnimation')).toEqual(true);
+    expect(tree.state('play')).toEqual(true);
   });
 
   it('should reset willComplete when animation start play', () => {
     const tree = shallow(
-      <AnimateChild {...{ ...props, startAnimation: false, onCompleteStyle: {}, endStyle }}>test</AnimateChild>,
+      <AnimateChild {...{ ...props, play: false, onCompleteStyle: {}, endStyle }}>test</AnimateChild>,
     );
     expect(tree.state('willComplete')).toEqual(false);
-    tree.setProps({ startAnimation: true });
+    tree.setProps({ play: true });
     expect(tree.state('willComplete')).toEqual(false);
     jest.runAllTimers();
     expect(tree.state('willComplete')).toEqual(true);
   });
 
   it('should set shouldUnMount to true when prop have been set to unmount', () => {
-    const tree = shallow(<AnimateChild {...{ ...props, startAnimation: false }} />);
+    const tree = shallow(<AnimateChild {...{ ...props, play: false }} />);
     tree.setProps({
       unMount: true,
     });
@@ -96,9 +96,9 @@ describe('Animate', () => {
 
   it('should call on complete function when animation is completed', () => {
     const onComplete = jest.fn();
-    const tree = shallow(<AnimateChild {...{ ...props, startAnimation: false, onComplete }} />);
+    const tree = shallow(<AnimateChild {...{ ...props, play: false, onComplete }} />);
     tree.setProps({
-      startAnimation: true,
+      play: true,
     });
     jest.runAllTimers();
     expect(tree.state('willComplete')).toBeTruthy();

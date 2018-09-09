@@ -42,7 +42,7 @@ describe('AnimateGroup', () => {
     // });
   });
 
-  it('should not called calculateSequences when component did mount and startAnimation is false', () => {
+  it('should not called calculateSequences when component did mount and play is false', () => {
     const calculateSequences = jest.fn();
     const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
     tree.instance().calculateSequences = calculateSequences;
@@ -50,20 +50,20 @@ describe('AnimateGroup', () => {
     expect(calculateSequences).not.toBeCalled();
   });
 
-  it('should called calculateSequences when component did mount and startAnimation is true', () => {
+  it('should called calculateSequences when component did mount and play is true', () => {
     const calculateSequences = jest.fn();
-    const tree = shallow(<AnimateGroup startAnimation>Test</AnimateGroup>);
+    const tree = shallow(<AnimateGroup play>Test</AnimateGroup>);
     tree.instance().calculateSequences = calculateSequences;
     tree.instance().componentDidMount();
     expect(calculateSequences).toBeCalled();
   });
 
-  it('should called calculateSequences when component update from startAnimation false to true', () => {
+  it('should called calculateSequences when component update from play false to true', () => {
     const calculateSequences = jest.fn();
     const tree = shallow(<AnimateGroup>Test</AnimateGroup>);
     tree.instance().calculateSequences = calculateSequences;
     tree.setProps({
-      startAnimation: true,
+      play: true,
     });
     expect(calculateSequences).toBeCalled();
   });
@@ -84,23 +84,23 @@ describe('AnimateGroup', () => {
     });
 
     it('should register timers according to the order of animation sequences', () => {
-      const tree = shallow(<AnimateGroup startAnimation>Test</AnimateGroup>);
+      const tree = shallow(<AnimateGroup play>Test</AnimateGroup>);
       tree.instance().animations = {
         1: {
           test: 'test1',
-          startAnimation: false,
+          play: false,
         },
         0: {
           test: 'test0',
-          startAnimation: false,
+          play: false,
         },
         234: {
           test: 'test234',
-          startAnimation: false,
+          play: false,
         },
         2: {
           test: 'test2',
-          startAnimation: false,
+          play: false,
         },
       };
       tree.instance().calculateSequences();
@@ -114,19 +114,19 @@ describe('AnimateGroup', () => {
     tree.instance().animations = {
       1: {
         test: 'test1',
-        startAnimation: false,
+        play: false,
       },
       0: {
         test: 'test0',
-        startAnimation: false,
+        play: false,
       },
       234: {
         test: 'test234',
-        startAnimation: false,
+        play: false,
       },
       2: {
         test: 'test2',
-        startAnimation: false,
+        play: false,
       },
     };
     tree.instance().calculateSequences();

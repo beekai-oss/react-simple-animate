@@ -36,7 +36,7 @@ Navigate into `example` folder and install
     import { Animate, AnimateGroup } from 'react-simple-animate';
 
     const props = {
-        startAnimation: true,
+        play: true,
         startStyle: { opacity: 0 }
         endStyle={ opacity: 1 }
     };
@@ -49,7 +49,7 @@ Navigate into `example` folder and install
             </Animate>
 
             // This example demonstrate animate group of animation with sequenceIndex.
-            <AnimateGroup startAnimation>
+            <AnimateGroup play>
                 <Animate {...props} sequenceIndex={0} />
                 <p>Next animation below: </p>
                 <Animate {...props} sequenceIndex={1} />
@@ -63,7 +63,7 @@ Navigate into `example` folder and install
 
 | Prop                     | Type     | Required | Description                                                                            |
 | :----------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
-| `startAnimation`         | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
+| `play`                   | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
 | `children`               | node     |          | Child component to be animated.                                                        |
 | `render`                 | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
 | `startStyle`             | string   |          | Component initial inline style.                                                        |
@@ -79,16 +79,16 @@ Navigate into `example` folder and install
 | `overlaySeconds`         | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous   |
 | `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
 | `className`              | string   |          | To specify a CSS class.                                                                |
-| `mount`                  | boolean  |          | Will mount component then apply animation (note startAnimation prop is not required)   |
+| `mount`                  | boolean  |          | Will mount component then apply animation (note play prop is not required)             |
 | `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
 
 ## AnimateGroup API
 
-| Prop             | Type            | Required | Description                                                                                        |
-| :--------------- | :-------------- | :------: | :------------------------------------------------------------------------------------------------- |
-| `startAnimation` | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                       |
-| `children`       | node            |    ✓     | Components(<Animate />) to be animated. (children can contains other components and html elements. |
-| `sequences`      | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.    |
+| Prop        | Type            | Required | Description                                                                                        |
+| :---------- | :-------------- | :------: | :------------------------------------------------------------------------------------------------- |
+| `play`      | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                       |
+| `children`  | node            |    ✓     | Components(<Animate />) to be animated. (children can contains other components and html elements. |
+| `sequences` | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.    |
 
 ## Advance Example
 
@@ -103,7 +103,7 @@ Set up animation sequence with `sequenceId` 😘
     };
 
     export default () =>
-        <AnimateGroup startAnimation sequences={[
+        <AnimateGroup play sequences={[
             { sequenceId: 'header', ...props } // play first
             { sequenceId: 'content', ...props, overlaySeconds: 0.1 } // play during header animation and overlay by 0.1s
             { sequenceId: 'footer', ...props, delaySeconds: 0.4 } // play after content with 0.4s seconds delay

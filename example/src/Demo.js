@@ -31,7 +31,7 @@ export default class Demo extends React.Component {
       opacity: 1,
     }),
     delaySeconds: 0,
-    startAnimation: false,
+    play: false,
     onCompleteStyle: '',
     easeType: 'linear',
     reverseDelaySeconds: 0,
@@ -69,7 +69,7 @@ export default class Demo extends React.Component {
       this.setState({
         startStyle: JSON.stringify(result.startStyle),
         endStyle: JSON.stringify(result.endStyle),
-        startAnimation: false,
+        play: false,
       });
     }
   };
@@ -77,7 +77,7 @@ export default class Demo extends React.Component {
   handleSwitchChange = name => (event, checked) => {
     this.setState({
       [name]: checked,
-      startAnimation: false,
+      play: false,
     });
   };
 
@@ -117,7 +117,7 @@ export default class Demo extends React.Component {
   }
 
   render() {
-    const { startAnimation, easyMode } = this.state;
+    const { play, easyMode } = this.state;
 
     return (
       <section className="demo-section">
@@ -128,7 +128,7 @@ export default class Demo extends React.Component {
               control={<Switch aria-label="pro" onChange={this.handleSwitchChange('easyMode')} />}
             />
 
-            <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
+            <Animate play={play} tag="span" {...{ startStyle, endStyle }}>
               <Button
                 variant="fab"
                 onClick={() => {
@@ -149,7 +149,7 @@ export default class Demo extends React.Component {
 
           <Grid item xs={6} md={4}>
             {easyMode && (
-              <Animate startAnimation {...{ startStyle, endStyle }}>
+              <Animate play {...{ startStyle, endStyle }}>
                 <div className="demo-simple">
                   <label htmlFor="animationStyle">Animation style: </label>
                   <select id="animationStyle" onChange={this.changeAnimateStyle}>
@@ -166,7 +166,7 @@ export default class Demo extends React.Component {
             )}
 
             {!easyMode && (
-              <Animate startAnimation {...{ startStyle, endStyle, delaySeconds }}>
+              <Animate play {...{ startStyle, endStyle, delaySeconds }}>
                 {fields.map((field, i) => {
                   let helperText = '';
 
@@ -216,12 +216,12 @@ export default class Demo extends React.Component {
               onClick={() => {
                 this.setState(prevState => {
                   return {
-                    startAnimation: !prevState.startAnimation,
+                    play: !prevState.play,
                   };
                 });
               }}
             >
-              {startAnimation ? 'Reverse Animate' : 'Start Animate'}
+              {play ? 'Reverse Animate' : 'Start Animate'}
             </Button>
 
             <Button

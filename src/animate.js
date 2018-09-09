@@ -6,7 +6,7 @@ import { AnimateContext } from './animateGroup';
 export type Style = { [string]: string | number };
 
 export type AnimationType = {
-  startAnimation: boolean,
+  play: boolean,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,
@@ -38,7 +38,7 @@ export type Props = {
 
 export type State = {
   willComplete: boolean,
-  startAnimation: boolean,
+  play: boolean,
   shouldUnMount: boolean,
   shouldMount: boolean,
 };
@@ -53,7 +53,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
   state: State = {
     willComplete: false,
-    startAnimation: false,
+    play: false,
     shouldUnMount: false,
     shouldMount: false,
   };
@@ -68,20 +68,20 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, startAnimation, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
+    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
     const id = sequenceId || sequenceIndex;
-    let currentStartAnimation = startAnimation;
+    let currentplay = play;
 
     if (id && animationStates && animationStates[id]) {
       const state = animationStates[id];
-      currentStartAnimation = state.startAnimation;
+      currentplay = state.play;
     }
 
     return {
       ...(onCompleteStyle && prevState.willComplete
-        ? { willComplete: !(startAnimation && !prevState.startAnimation && prevState.willComplete) }
+        ? { willComplete: !(play && !prevState.play && prevState.willComplete) }
         : null),
-      ...(currentStartAnimation !== prevState.startAnimation ? { startAnimation: currentStartAnimation } : null),
+      ...(currentplay !== prevState.play ? { play: currentplay } : null),
     };
   }
 
@@ -107,7 +107,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   onComplete(): void {
     const {
       delaySeconds,
-      startAnimation,
+      play,
       onCompleteStyle,
       durationSeconds,
       onComplete,
@@ -120,8 +120,8 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (startAnimation ||
-        (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].startAnimation))
+      (play ||
+        (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].play))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {

@@ -15,7 +15,7 @@ describe('attributesGenerator', () => {
       display: 'block',
     },
     easeType: 'ease',
-    startAnimation: false,
+    play: false,
   };
 
   const startStyleWithTransition = {
@@ -34,13 +34,13 @@ describe('attributesGenerator', () => {
 
   describe('when animation is set to true', () => {
     it('should generate endStyle', () => {
-      expect(attributesGenerator({ ...props, startAnimation: true }, state).style).toEqual(endStyleWithTransition);
+      expect(attributesGenerator({ ...props, play: true }, state).style).toEqual(endStyleWithTransition);
     });
   });
 
   describe('when animation reverseDelaySeconds has been set', () => {
     it('should render the end style', () => {
-      expect(attributesGenerator({ ...props, startAnimation: false, reverseDelaySeconds: 0.3 }, state).style).toEqual({
+      expect(attributesGenerator({ ...props, play: false, reverseDelaySeconds: 0.3 }, state).style).toEqual({
         ...startStyleWithTransition,
         transition: 'all 0.3s ease 0.3s',
       });
@@ -48,7 +48,7 @@ describe('attributesGenerator', () => {
   });
 
   it('should render start style when delay second is set and animation about to start', () => {
-    expect(attributesGenerator({ ...props, startAnimation: true, delaySeconds: 0.3 }, state).style).toEqual({
+    expect(attributesGenerator({ ...props, play: true, delaySeconds: 0.3 }, state).style).toEqual({
       ...endStyleWithTransition,
       transition: 'all 0.3s ease 0.3s',
     });
@@ -57,7 +57,7 @@ describe('attributesGenerator', () => {
   it('should apply onComplete style', () => {
     expect(
       attributesGenerator(
-        { ...props, startAnimation: true, delaySeconds: 0.3, onCompleteStyle: { display: 'inline' } },
+        { ...props, play: true, delaySeconds: 0.3, onCompleteStyle: { display: 'inline' } },
         { willComplete: true },
       ).style,
     ).toEqual({
@@ -66,12 +66,12 @@ describe('attributesGenerator', () => {
     });
   });
 
-  it('should apply end style when animationStates is set with startAnimation', () => {
+  it('should apply end style when animationStates is set with play', () => {
     expect(
       attributesGenerator(
         {
           ...props,
-          animationStates: { test: { startAnimation: true } },
+          animationStates: { test: { play: true } },
           sequenceId: 'test',
         },
         state,
@@ -82,7 +82,7 @@ describe('attributesGenerator', () => {
       attributesGenerator(
         {
           ...props,
-          animationStates: { 1: { startAnimation: true } },
+          animationStates: { 1: { play: true } },
           sequenceIndex: 1,
         },
         state,

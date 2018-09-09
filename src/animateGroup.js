@@ -11,7 +11,7 @@ type Sequence = AnimationType & {
 type Sequences = Array<Sequence>;
 
 type Props = {
-  startAnimation: boolean,
+  play: boolean,
   sequences: Sequences,
   children: Element<*>,
 };
@@ -37,11 +37,11 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    this.props.startAnimation && this.calculateSequences();
+    this.props.play && this.calculateSequences();
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAnimation !== prevProps.startAnimation) this.calculateSequences();
+    if (this.props.play !== prevProps.play) this.calculateSequences();
   }
 
   componentWillUnmount() {
@@ -52,12 +52,12 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     totalDuration,
     id,
     restAttributes,
-    startAnimation,
+    play,
   }: {
     totalDuration: number,
     id: string,
     restAttributes: AnimationType,
-    startAnimation: boolean,
+    play: boolean,
   }) => {
     this.timers[id] = setTimeout(() => {
       this.setState(previousState => {
@@ -67,7 +67,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
         Object.entries(restAttributes).forEach(([key, value]) => {
           stateCopy[id][key] = value;
         });
-        stateCopy[id].startAnimation = startAnimation;
+        stateCopy[id].play = play;
 
         return {
           animationStates: stateCopy,
@@ -77,10 +77,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   calculateSequences = () => {
-    const { sequences, startAnimation } = this.props;
+    const { sequences, play } = this.props;
     const sequencesToAnimate: any = sequences.length ? sequences : Object.values(this.animations);
 
-    return (startAnimation ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
+    return (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
       (previous, current, currentIndex) => {
         const { sequenceId, ...restAttributes } = current;
         const id = sequenceId || currentIndex;
@@ -95,7 +95,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
           id,
           totalDuration,
           restAttributes,
-          startAnimation,
+          play,
         });
         return totalDuration;
       },

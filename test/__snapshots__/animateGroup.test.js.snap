@@ -3,19 +3,19 @@
 exports[`AnimateGroup calculateSequences should register timers according to the order of animation sequences 1`] = `
 Object {
   "0": Object {
-    "startAnimation": true,
+    "play": true,
     "test": "test0",
   },
   "1": Object {
-    "startAnimation": true,
+    "play": true,
     "test": "test1",
   },
   "2": Object {
-    "startAnimation": true,
+    "play": true,
     "test": "test2",
   },
   "3": Object {
-    "startAnimation": true,
+    "play": true,
     "test": "test234",
   },
 }
@@ -24,19 +24,19 @@ Object {
 exports[`AnimateGroup should register timers according to the reverse order of animation sequences 1`] = `
 Object {
   "0": Object {
-    "startAnimation": undefined,
+    "play": undefined,
     "test": "test234",
   },
   "1": Object {
-    "startAnimation": undefined,
+    "play": undefined,
     "test": "test2",
   },
   "2": Object {
-    "startAnimation": undefined,
+    "play": undefined,
     "test": "test1",
   },
   "3": Object {
-    "startAnimation": undefined,
+    "play": undefined,
     "test": "test0",
   },
 }

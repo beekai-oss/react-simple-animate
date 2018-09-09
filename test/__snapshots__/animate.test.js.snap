@@ -1,126 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Animate should render correctly 1`] = `
+exports[`AnimateWrapper should render correctly by start animation with minimum props 1`] = `
 <div
-  className="test"
-  style={
+  animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
     Object {
-      "transition": "1s all linear",
+      "display": "block",
     }
   }
+  forwardedRef={null}
+  play={true}
 >
   test
 </div>
 `;
 
-exports[`Animate should render correctly for children 1`] = `
+exports[`AnimateWrapper should render correctly with minimum props 1`] = `
 <div
-  className="test"
-  style={
+  animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
     Object {
-      "transition": "1s all linear",
+      "display": "block",
     }
   }
+  forwardedRef={null}
+  play={false}
 >
-  <div>
-    test
-    1
-  </div>
-  <div>
-    test
-    2
-  </div>
+  test
 </div>
 `;
 
-exports[`Animate should render correctly with render props 1`] = `
+exports[`AnimateWrapper should render correctly with render props 1`] = `
 <div
-  className="test"
-  style={
+  animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
     Object {
-      "transition": "1s all linear",
+      "display": "block",
     }
   }
+  forwardedRef={null}
+  play={false}
+  render={[Function]}
 >
   what
 </div>
 `;
 
-exports[`Animate should render custome tag correctly 1`] = `
-<l
-  className="test"
-  style={
+exports[`AnimateWrapper should render custome tag correctly 1`] = `
+<li
+  animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
+  endStyle={
     Object {
-      "transition": "1s all linear",
+      "display": "block",
     }
   }
+  forwardedRef={null}
+  play={false}
+  tag="li"
 />
-`;
-
-exports[`Animate when animate on add or remove enabled should render correctly for Animate children 1`] = `
-<div
-  className="test"
-  style={
-    Object {
-      "transition": "1s all linear",
-    }
-  }
->
-  <div
-    style={
-      Object {
-        "transition": "1s all linear",
-      }
-    }
-  >
-    <div>
-      test
-      1
-    </div>
-  </div>
-  <div
-    style={
-      Object {
-        "transition": "1s all linear",
-      }
-    }
-  >
-    <div>
-      test
-      2
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Animate when animate on add or remove enabled should render correctly for children 1`] = `
-<div
-  className="test"
-  style={
-    Object {
-      "transition": "1s all linear",
-    }
-  }
->
-  <div
-    style={
-      Object {
-        "transition": "1s all linear",
-      }
-    }
-  >
-    test
-    1
-  </div>
-  <div
-    style={
-      Object {
-        "transition": "1s all linear",
-      }
-    }
-  >
-    test
-    2
-  </div>
-</div>
 `;

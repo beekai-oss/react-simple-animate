@@ -7,8 +7,7 @@ import Grid from 'material-ui/Grid';
 import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
 import AddIcon from 'material-ui-icons/Add';
-import RemoveIcon from 'material-ui-icons/Remove';
-import Animate from 'react-simple-animate';
+import { Animate } from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import tryParseJson from './tryParseJson';
 import './Demo.css';
@@ -32,12 +31,12 @@ export default class Demo extends React.Component {
       opacity: 1,
     }),
     delaySeconds: 0,
-    startAnimation: false,
+    play: false,
     onCompleteStyle: '',
     easeType: 'linear',
     reverseDelaySeconds: 0,
     durationSeconds: '0.3',
-    showCode: false,
+    showCode: true,
     easyMode: false,
     count: 1,
     keys: [],
@@ -48,11 +47,13 @@ export default class Demo extends React.Component {
     this.setState(previousState => {
       const { keys, count } = previousState;
       const keysCopy = [...keys];
+      const id = new Date().getTime();
 
       if (count > keys.length) {
-        keysCopy.push(new Date().getTime());
-      } else if (count <= keys.length) {
-        keysCopy.pop();
+        keysCopy.push({
+          id,
+          ...(keys.length > 0 ? { mount: true } : null),
+        });
       }
 
       return {
@@ -68,7 +69,7 @@ export default class Demo extends React.Component {
       this.setState({
         startStyle: JSON.stringify(result.startStyle),
         endStyle: JSON.stringify(result.endStyle),
-        startAnimation: false,
+        play: false,
       });
     }
   };
@@ -76,7 +77,7 @@ export default class Demo extends React.Component {
   handleSwitchChange = name => (event, checked) => {
     this.setState({
       [name]: checked,
-      startAnimation: false,
+      play: false,
     });
   };
 
@@ -105,15 +106,18 @@ export default class Demo extends React.Component {
   clickHandler(item) {
     this.setState(previousState => {
       const { keys } = previousState;
+      const index = keys.findIndex(key => key.id === item.id);
+      const copy = [...keys];
+      copy[index].unMount = true;
 
       return {
-        keys: keys.filter(key => key !== item),
+        keys: copy,
       };
     });
   }
 
   render() {
-    const { startAnimation, easyMode } = this.state;
+    const { play, easyMode } = this.state;
 
     return (
       <section className="demo-section">
@@ -124,28 +128,7 @@ export default class Demo extends React.Component {
               control={<Switch aria-label="pro" onChange={this.handleSwitchChange('easyMode')} />}
             />
 
-            <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
-              <Button
-                style={{
-                  marginRight: '20px',
-                }}
-                variant="fab"
-                onClick={() => {
-                  this.setState(previousState => {
-                    return {
-                      count: --previousState.count,
-                    };
-                  });
-                  this.setKeys();
-                }}
-                color="secondary"
-                aria-label="add"
-              >
-                <RemoveIcon />
-              </Button>
-            </Animate>
-
-            <Animate startAnimation={startAnimation} tag="span" {...{ startStyle, endStyle }}>
+            <Animate play={play} tag="span" {...{ startStyle, endStyle }}>
               <Button
                 variant="fab"
                 onClick={() => {
@@ -166,7 +149,7 @@ export default class Demo extends React.Component {
 
           <Grid item xs={6} md={4}>
             {easyMode && (
-              <Animate startAnimation {...{ startStyle, endStyle }}>
+              <Animate play {...{ startStyle, endStyle }}>
                 <div className="demo-simple">
                   <label htmlFor="animationStyle">Animation style: </label>
                   <select id="animationStyle" onChange={this.changeAnimateStyle}>
@@ -183,7 +166,7 @@ export default class Demo extends React.Component {
             )}
 
             {!easyMode && (
-              <Animate startAnimation {...{ startStyle, endStyle, delaySeconds }}>
+              <Animate play {...{ startStyle, endStyle, delaySeconds }}>
                 {fields.map((field, i) => {
                   let helperText = '';
 
@@ -233,12 +216,12 @@ export default class Demo extends React.Component {
               onClick={() => {
                 this.setState(prevState => {
                   return {
-                    startAnimation: !prevState.startAnimation,
+                    play: !prevState.play,
                   };
                 });
               }}
             >
-              {startAnimation ? 'Reverse Animate' : 'Start Animate'}
+              {play ? 'Reverse Animate' : 'Start Animate'}
             </Button>
 
             <Button

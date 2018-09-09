@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimateGroup calculateSequences should register timers according to the order of animation sequences 1`] = `
+Object {
+  "0": Object {
+    "play": true,
+    "test": "test0",
+  },
+  "1": Object {
+    "play": true,
+    "test": "test1",
+  },
+  "2": Object {
+    "play": true,
+    "test": "test2",
+  },
+  "3": Object {
+    "play": true,
+    "test": "test234",
+  },
+}
+`;
+
+exports[`AnimateGroup should register timers according to the reverse order of animation sequences 1`] = `
+Object {
+  "0": Object {
+    "play": undefined,
+    "test": "test234",
+  },
+  "1": Object {
+    "play": undefined,
+    "test": "test2",
+  },
+  "2": Object {
+    "play": undefined,
+    "test": "test1",
+  },
+  "3": Object {
+    "play": undefined,
+    "test": "test0",
+  },
+}
+`;
+
+exports[`AnimateGroup should render correctly 1`] = `"Test"`;

@@ -12,80 +12,104 @@
 Features:
 
 * Simple animation from inline style A to style B
-* Support add and remove child (New)
-* Make animation toggle easy
-* In-built delay animation mechanism
+* Chain up animation sequences (New)
+* Support add and remove child
 * Tiny size without other dependency
 
 ## Install
 
-    $ yarn add react-simple-animate
-    or
-    $ npm install react-simple-animate -S
+    $ yarn add react-simple-animate || npm install react-simple-animate
 
 ## Example
 
-[Check out the interactive demo.](https://react-simple-animate.herokuapp.com/) 😍
+[Check out the interactive demo.](https://react-simple-animate.herokuapp.com) 😍
+
+<a target="_blank" href="https://react-simple-animate.herokuapp.com"><img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/screenShot.png" alt="Screenshots" width="400"/></a>
 
 Navigate into `example` folder and install
 
-    $ yarn && yarn start
-    or
-    $ npm install && npm run start
-
-Screenshot of the example app below
-
-<img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/screenShot.png" alt="Screenshots" width="400"/>
+    $ yarn && yarn start || npm install && npm run start
 
 ## Quick start
 
-The following example demonstrate animate **individual** or **array of components**. React simple animate will take
-cares component **will mount** and **unmount**.
-
     import react from 'react';
-    import Animate from 'react-simple-animate';
-    import YourComponent from './YourComponent';
+    import { Animate, AnimateGroup } from 'react-simple-animate';
 
     const props = {
-        startAnimation: true,
         startStyle: { opacity: 0 }
         endStyle={ opacity: 1 }
     };
 
-    export default function SexyComponent(props) {
-        return <div>
-            // Animate individual component or components
-            <Animate {...props}>
+    export default () => {
+        return (
+            // This example demonstrate animate individual element.
+            <Animate play {...props}>
                 <h1>React simple animate</h1>
-                <YourComponent>
             </Animate>
 
-            // Animate components with add/remove, style will inherit from parent Animate props
-            <Animate animateOnAddRemove>
-                {props.componentsArray.map((key) => <Animate {...props}>
-                    <YourComponent key={key}>
-                </Animate>}
-            </Animate>
-        </div>;
-    }
+            // This example demonstrate animate group of animation with sequenceIndex.
+            <AnimateGroup play>
+                <Animate {...props} sequenceIndex={0} />
+                <p>Next animation below: </p>
+                <Animate {...props} sequenceIndex={1} />
+                <p>Final animation below: </p>
+                <Animate {...props} sequenceIndex={2} />
+            </AnimateGroup>
+        );
+    };
 
-## API
+## Animate API
 
-| Prop                  | Type     | Required | Description                                                                            |
-| :-------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
-| `startAnimation`      | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
-| `children`            | node     |          | Child component to be animated.                                                        |
-| `render`              | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
-| `startStyle`          | string   |          | Component initial inline style.                                                        |
-| `endStyle`            | string   |    ✓     | Component transition to inline style.                                                  |
-| `animateOnAddRemove`  | boolean  |          | Enable animation on component add and remove.                                          |
-| `onCompleteStyle`     | string   |          | Style to be applied after the animation is completed.                                  |
-| `durationSeconds`     | number   |          | How long the animation takes in seconds.                                               |
-| `delaySeconds`        | number   |          | How much delay should apply before animation starts.                                   |
-| `reverseDelaySeconds` | number   |          | How much delay should apply when reverse/toggle animation.                             |
-| `onComplete`          | function |          | Call back function after animation complete.                                           |
-| `easeType`            | string   |          | Easing type refer to http://easings.net/                                               |
-| `className`           | string   |          | To specify a CSS class.                                                                |
+| Prop                     | Type     | Required | Description                                                                            |
+| :----------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
+| `play`                   | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
+| `render`                 | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
+| `startStyle`             | string   |          | Component initial inline style.                                                        |
+| `endStyle`               | string   |    ✓     | Component transition to inline style.                                                  |
+| `onCompleteStyle`        | string   |          | Style to be applied after the animation is completed.                                  |
+| `durationSeconds`        | number   |          | How long the animation takes in seconds.                                               |
+| `delaySeconds`           | number   |          | How much delay should apply before animation starts.                                   |
+| `reverseDurationSeconds` | number   |          | How long the reverse/toggle animation takes in seconds.                                |
+| `reverseDelaySeconds`    | number   |          | How much delay should apply when reverse/toggle animation.                             |
+| `onComplete`             | function |          | Call back function after animation complete.                                           |
+| `sequenceIndex`          | number   |          | `AnimateGroup`: Animate will be trigger from 0 to n number                             |
+| `sequenceId`             | string   |          | `AnimateGroup`: Unique id to associate with AnimationGroup sequences                   |
+| `overlaySeconds`         | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous   |
+| `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
+| `className`              | string   |          | To specify a CSS class.                                                                |
+| `mount`                  | boolean  |          | Will mount component then apply animation (note play prop is not required)             |
+| `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
+
+## AnimateGroup API
+
+| Prop        | Type            | Required | Description                                                                                        |
+| :---------- | :-------------- | :------: | :------------------------------------------------------------------------------------------------- |
+| `play`      | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                       |
+| `sequences` | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.    |
+
+## Advance Example
+
+Set up animation sequence with `sequenceId` 😘
+
+    import react from 'react';
+    import { Animate, AnimateGroup } from 'react-simple-animate';
+
+    const props = {
+        startStyle: { opacity: 0 },
+        endStyle: { opacity: 1 }
+    };
+
+    export default () =>
+        <AnimateGroup play sequences={[
+            { sequenceId: 'header', ...props } // play first
+            { sequenceId: 'content', ...props, overlaySeconds: 0.1 } // play during header animation and overlay by 0.1s
+            { sequenceId: 'footer', ...props, delaySeconds: 0.4 } // play after content with 0.4s seconds delay
+        ]}>
+            <Animate sequenceId="header" />
+            <Animate sequenceId="content" />
+            <Animate sequenceId="footer" />
+        </AnimateGroup>
+    );
 
 ## Reference
 

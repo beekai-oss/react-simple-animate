@@ -28,7 +28,6 @@ export type Props = {
   render?: Object => any,
   unMount?: boolean,
   mount?: boolean,
-  refCallback?: any => {},
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,

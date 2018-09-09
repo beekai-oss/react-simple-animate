@@ -14,7 +14,6 @@ export default function propsGenerator(props: Props, { willComplete, shouldMount
     delaySeconds = 0,
     easeType = 'linear',
     className,
-    refCallback,
     reverseDurationSeconds = 0,
     reverseDelaySeconds = 0,
     unMount,
@@ -45,13 +44,5 @@ export default function propsGenerator(props: Props, { willComplete, shouldMount
       ...style,
       transition,
     },
-    // $FlowIgnoreLine
-    ...(refCallback
-      ? {
-          ref: r => {
-            refCallback(r);
-          },
-        }
-      : null),
   };
 }

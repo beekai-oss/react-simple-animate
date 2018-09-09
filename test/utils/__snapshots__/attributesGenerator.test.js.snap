@@ -3,7 +3,6 @@
 exports[`attributesGenerator should set up refCallback if it is part of the prop 1`] = `
 Object {
   "className": undefined,
-  "ref": [Function],
   "style": Object {
     "transition": "all 0.3s linear 0s",
   },

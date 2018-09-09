@@ -36,7 +36,6 @@ Navigate into `example` folder and install
     import { Animate, AnimateGroup } from 'react-simple-animate';
 
     const props = {
-        play: true,
         startStyle: { opacity: 0 }
         endStyle={ opacity: 1 }
     };
@@ -44,7 +43,7 @@ Navigate into `example` folder and install
     export default () => {
         return (
             // This example demonstrate animate individual element.
-            <Animate {...props}>
+            <Animate play {...props}>
                 <h1>React simple animate</h1>
             </Animate>
 

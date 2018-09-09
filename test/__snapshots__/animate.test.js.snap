@@ -8,6 +8,7 @@ exports[`AnimateWrapper should render correctly by start animation with minimum 
       "display": "block",
     }
   }
+  forwardedRef={null}
   startAnimation={true}
 >
   test
@@ -22,6 +23,7 @@ exports[`AnimateWrapper should render correctly with minimum props 1`] = `
       "display": "block",
     }
   }
+  forwardedRef={null}
   startAnimation={false}
 >
   test
@@ -36,6 +38,7 @@ exports[`AnimateWrapper should render correctly with render props 1`] = `
       "display": "block",
     }
   }
+  forwardedRef={null}
   render={[Function]}
   startAnimation={false}
 >
@@ -51,6 +54,7 @@ exports[`AnimateWrapper should render custome tag correctly 1`] = `
       "display": "block",
     }
   }
+  forwardedRef={null}
   startAnimation={false}
   tag="li"
 />

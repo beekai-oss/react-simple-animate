@@ -63,7 +63,6 @@ Navigate into `example` folder and install
 | Prop                     | Type     | Required | Description                                                                            |
 | :----------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
 | `play`                   | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
-| `children`               | node     |          | Child component to be animated.                                                        |
 | `render`                 | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
 | `startStyle`             | string   |          | Component initial inline style.                                                        |
 | `endStyle`               | string   |    ✓     | Component transition to inline style.                                                  |
@@ -86,7 +85,6 @@ Navigate into `example` folder and install
 | Prop        | Type            | Required | Description                                                                                        |
 | :---------- | :-------------- | :------: | :------------------------------------------------------------------------------------------------- |
 | `play`      | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                       |
-| `children`  | node            |    ✓     | Components(<Animate />) to be animated. (children can contains other components and html elements. |
 | `sequences` | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.    |
 
 ## Advance Example

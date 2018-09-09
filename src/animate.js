@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import propsGenerator from './utils/attributesGenerator';
+import attributesGenerator from './utils/attributesGenerator';
 import { AnimateContext } from './animateGroup';
 
 export type Style = { [string]: string | number };
@@ -16,6 +16,7 @@ export type AnimationType = {
   reverseDurationSeconds?: number,
   delaySeconds?: number,
   children?: React.Component<*>,
+  forwardedRef: any,
 };
 
 export type AnimationStateType = { [string | number]: AnimationType };
@@ -137,13 +138,16 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
     if (shouldUnMount) return null;
 
-    const props = propsGenerator(this.props, this.state);
+    const props = attributesGenerator(this.props, this.state);
     return render ? render(props) : React.createElement(tag, props, children);
   }
 }
 
-export default (props: Props) => (
+// $FlowIgnoreLine: flow complain about React.forwardRef disable for now
+export default React.forwardRef((props: Props, ref) => (
   <AnimateContext.Consumer>
-    {({ animationStates = {}, register = undefined }) => <AnimateChild {...{ ...props, animationStates, register }} />}
+    {({ animationStates = {}, register = undefined }) => (
+      <AnimateChild {...{ ...props, animationStates, register }} forwardedRef={ref} />
+    )}
   </AnimateContext.Consumer>
-);
+));

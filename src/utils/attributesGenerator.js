@@ -2,7 +2,7 @@
 import type { State, Props } from '../animate';
 import mapSequenceOverProps from './mapSequenceOverProps';
 
-export default function propsGenerator(props: Props, { willComplete, shouldMount }: State): Object {
+export default function attributesGenerator(props: Props, { willComplete, shouldMount }: State): Object {
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {
@@ -18,6 +18,7 @@ export default function propsGenerator(props: Props, { willComplete, shouldMount
     reverseDelaySeconds = 0,
     unMount,
     mount,
+    forwardedRef,
   } = mapSequenceOverProps(props, id);
   let style = startStyle;
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
@@ -44,5 +45,6 @@ export default function propsGenerator(props: Props, { willComplete, shouldMount
       ...style,
       transition,
     },
+    ref: forwardedRef,
   };
 }

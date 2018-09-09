@@ -105,9 +105,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   register = (props: Sequence) => {
     const { sequenceIndex, sequenceId } = props;
-    if (sequenceId === undefined || sequenceIndex === undefined || sequenceIndex < 0) return;
+    const id = sequenceId || sequenceIndex;
+    if (id === undefined || (sequenceIndex && sequenceIndex < 0) || (sequenceId && sequenceId === '')) return;
 
-    this.animations[sequenceId || sequenceIndex] = {
+    this.animations[id] = {
       ...props,
     };
   };

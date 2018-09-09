@@ -31,7 +31,10 @@ export default function attributesGenerator(props: Props, { willComplete, should
     } else if (
       mount ||
       startAnimation ||
-      (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].startAnimation)
+      ((id || id === 0) &&
+        Object.keys(animationStates).length &&
+        animationStates[id] &&
+        animationStates[id].startAnimation)
     ) {
       style = endStyle;
     } else if (!startAnimation && (reverseDurationSeconds || reverseDelaySeconds)) {

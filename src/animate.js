@@ -46,6 +46,11 @@ export type State = {
 export class AnimateChild extends React.PureComponent<Props, State> {
   static displayName = 'ReactSimpleAnimate';
 
+  static defaultProps = {
+    durationSeconds: 0.3,
+    easeType: 'linear',
+  };
+
   state: State = {
     willComplete: false,
     startAnimation: false,

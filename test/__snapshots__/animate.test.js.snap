@@ -3,6 +3,8 @@
 exports[`AnimateWrapper should render correctly by start animation with minimum props 1`] = `
 <div
   animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
   endStyle={
     Object {
       "display": "block",
@@ -18,6 +20,8 @@ exports[`AnimateWrapper should render correctly by start animation with minimum 
 exports[`AnimateWrapper should render correctly with minimum props 1`] = `
 <div
   animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
   endStyle={
     Object {
       "display": "block",
@@ -33,6 +37,8 @@ exports[`AnimateWrapper should render correctly with minimum props 1`] = `
 exports[`AnimateWrapper should render correctly with render props 1`] = `
 <div
   animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
   endStyle={
     Object {
       "display": "block",
@@ -49,6 +55,8 @@ exports[`AnimateWrapper should render correctly with render props 1`] = `
 exports[`AnimateWrapper should render custome tag correctly 1`] = `
 <li
   animationStates={Object {}}
+  durationSeconds={0.3}
+  easeType="linear"
   endStyle={
     Object {
       "display": "block",

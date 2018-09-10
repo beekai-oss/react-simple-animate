@@ -37,7 +37,7 @@ Navigate into `example` folder and install
 
     const props = {
         startStyle: { opacity: 0 }
-        endStyle={ opacity: 1 }
+        endStyle: { opacity: 1 }
     };
 
     export default () => {

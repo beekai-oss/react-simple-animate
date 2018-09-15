@@ -48,6 +48,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
   static defaultProps = {
     durationSeconds: 0.3,
+    delaySeconds: 0,
     easeType: 'linear',
   };
 

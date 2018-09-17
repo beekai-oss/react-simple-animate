@@ -38,7 +38,7 @@ export default function attributesGenerator(props: Props, { willComplete, should
     ) {
       style = endStyle;
     } else if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
-      transition = `all ${durationSeconds || reverseDurationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
+      transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
     }
   }
 

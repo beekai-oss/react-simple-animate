@@ -92,6 +92,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
         previous +
         calculateTotalDuration({
           ...this.animations[id],
+          play,
           restAttributes,
         });
 

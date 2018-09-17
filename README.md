@@ -77,15 +77,16 @@ Navigate into `example` folder and install
 | `overlaySeconds`         | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous   |
 | `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
 | `className`              | string   |          | To specify a CSS class.                                                                |
-| `mount`                  | boolean  |          | Will mount component then apply animation             |
+| `mount`                  | boolean  |          | Will mount component then apply animation                                              |
 | `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
 
 ## AnimateGroup API
 
-| Prop        | Type            | Required | Description                                                                                        |
-| :---------- | :-------------- | :------: | :------------------------------------------------------------------------------------------------- |
-| `play`      | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                       |
-| `sequences` | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.    |
+| Prop               | Type            | Required | Description                                                                                                      |
+| :----------------- | :-------------- | :------: | :--------------------------------------------------------------------------------------------------------------- |
+| `play`             | boolean         |    ✓     | Defaults to false. Set to true to start the group animation.                                                     |
+| `sequences`        | Array<{Object}> |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.                  |
+| `reverseSequences` | Array<{Object}> |          | Array with animation props on reverse order, it can contain `sequenceId` to reference with Animate `sequenceId`. |
 
 ## Advance Example
 

@@ -13,6 +13,7 @@ type Sequences = Array<Sequence>;
 type Props = {
   play: boolean,
   sequences: Sequences,
+  reverseSequences: Sequences,
   children: Element<*>,
 };
 
@@ -30,6 +31,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   static defaultProps = {
     sequences: [],
+    reverseSequences: [],
   };
 
   state = {
@@ -77,30 +79,30 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   };
 
   calculateSequences = () => {
-    const { sequences, play } = this.props;
+    const { sequences, reverseSequences, play } = this.props;
     const sequencesToAnimate: any = sequences.length ? sequences : Object.values(this.animations);
+    const reverseSequencesToAnimate: any = reverseSequences.length
+      ? reverseSequences
+      : [...sequencesToAnimate].reverse();
 
-    return (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
-      (previous, current, currentIndex) => {
-        const { sequenceId, ...restAttributes } = current;
-        const id = sequenceId || currentIndex;
-        const totalDuration =
-          previous +
-          calculateTotalDuration({
-            ...this.animations[id],
-            restAttributes,
-          });
-
-        this.setupAnimationTimers({
-          id,
-          totalDuration,
+    return (play ? sequencesToAnimate : reverseSequencesToAnimate).reduce((previous, current, currentIndex) => {
+      const { sequenceId, ...restAttributes } = current;
+      const id = sequenceId || currentIndex;
+      const totalDuration =
+        previous +
+        calculateTotalDuration({
+          ...this.animations[id],
           restAttributes,
-          play,
         });
-        return totalDuration;
-      },
-      0,
-    );
+
+      this.setupAnimationTimers({
+        id,
+        totalDuration,
+        restAttributes,
+        play,
+      });
+      return totalDuration;
+    }, 0);
   };
 
   register = (props: Sequence) => {

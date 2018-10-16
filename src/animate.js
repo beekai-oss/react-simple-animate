@@ -60,11 +60,20 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { register, mount } = this.props;
+    const { register, mount, play, delaySeconds = 0 } = this.props;
     register && register(this.props);
 
     if (mount && !this.state.shouldMount) {
       this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }));
+    }
+
+    if (play) {
+      this.isMountWithPlay = true;
+
+      setTimeout(() => {
+        this.isMountWithPlay = false;
+        this.forceUpdate();
+      }, delaySeconds * 1000);
     }
   }
 
@@ -121,8 +130,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (play ||
-        (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].play))
+      (play || (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].play))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {
@@ -137,6 +145,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   completeTimeout: TimeoutID;
   unMountTimeout: TimeoutID;
   mountTimeout: TimeoutID;
+  isMountWithPlay: boolean = false;
 
   render() {
     const { tag = 'div', children, render } = this.props;
@@ -144,7 +153,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
     if (shouldUnMount) return null;
 
-    const props = attributesGenerator(this.props, this.state);
+    const props = attributesGenerator(this.props, this.state, this.isMountWithPlay);
     return render ? render(props) : React.createElement(tag, props, children);
   }
 }

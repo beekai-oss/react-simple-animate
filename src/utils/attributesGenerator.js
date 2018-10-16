@@ -2,7 +2,7 @@
 import type { State, Props } from '../animate';
 import mapSequenceOverProps from './mapSequenceOverProps';
 
-export default function attributesGenerator(props: Props, { willComplete, shouldMount }: State): Object {
+export default function attributesGenerator(props: Props, { willComplete, shouldMount }: State, isMountWithPlay: boolean): Object {
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {
@@ -24,7 +24,7 @@ export default function attributesGenerator(props: Props, { willComplete, should
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
   const willMountOrUnMount = unMount || (mount && !shouldMount);
 
-  if (!willMountOrUnMount) {
+  if (!willMountOrUnMount && !isMountWithPlay) {
     if (willComplete && onCompleteStyle && play) {
       style = onCompleteStyle;
       transition = '';

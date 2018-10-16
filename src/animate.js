@@ -52,6 +52,19 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     easeType: 'linear',
   };
 
+  constructor(props: Props) {
+    super(props);
+
+    if (props.play) {
+      this.isMountWithPlay = true;
+
+      setTimeout(() => {
+        this.isMountWithPlay = false;
+        this.forceUpdate();
+      }, (props.delaySeconds || 0) * 1000);
+    }
+  }
+
   state: State = {
     willComplete: false,
     play: false,
@@ -60,20 +73,11 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { register, mount, play, delaySeconds = 0 } = this.props;
+    const { register, mount } = this.props;
     register && register(this.props);
 
     if (mount && !this.state.shouldMount) {
       this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }));
-    }
-
-    if (play) {
-      this.isMountWithPlay = true;
-
-      setTimeout(() => {
-        this.isMountWithPlay = false;
-        this.forceUpdate();
-      }, delaySeconds * 1000);
     }
   }
 

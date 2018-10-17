@@ -86,8 +86,8 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
       : [...sequencesToAnimate].reverse();
 
     return (play ? sequencesToAnimate : reverseSequencesToAnimate).reduce((previous, current, currentIndex) => {
-      const { sequenceId, ...restAttributes } = current;
-      const id = sequenceId || currentIndex;
+      const { sequenceId, sequenceIndex, ...restAttributes } = current;
+      const id = sequenceId === undefined && sequenceIndex === undefined ? currentIndex : sequenceId || sequenceIndex;
       const totalDuration =
         previous +
         calculateTotalDuration({
@@ -98,7 +98,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
       this.setupAnimationTimers({
         id,
-        totalDuration,
+        totalDuration: currentIndex === 0 ? 0 : previous,
         restAttributes,
         play,
       });

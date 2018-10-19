@@ -49,7 +49,7 @@ export default function DemoObject({
       {keys.map((item, i) => (
         <Animate
           {...{
-            ...(i === 0 ? { play } : null),
+            play,
             delaySeconds,
             easeType,
             startReverseAnimate,

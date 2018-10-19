@@ -82,7 +82,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
+    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle, mount } = nextProps;
     const id = sequenceId || sequenceIndex;
     let currentplay = play;
 
@@ -96,6 +96,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
         ? { willComplete: !(play && !prevState.play && prevState.willComplete) }
         : null),
       ...(currentplay !== prevState.play ? { play: currentplay } : null),
+      ...(mount ? { shouldMount: currentplay } : null),
     };
   }
 

@@ -24,7 +24,9 @@ export default function attributesGenerator(props: Props, { willComplete, should
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
   const willMountOrUnMount = unMount || (mount && !shouldMount);
 
-  if (!willMountOrUnMount && !isMountWithPlay) {
+  if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
+    transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
+  } else if (!willMountOrUnMount && !isMountWithPlay) {
     if (willComplete && onCompleteStyle && play) {
       style = onCompleteStyle;
       transition = '';
@@ -37,8 +39,6 @@ export default function attributesGenerator(props: Props, { willComplete, should
         animationStates[id].play)
     ) {
       style = endStyle;
-    } else if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
-      transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
     }
   }
 

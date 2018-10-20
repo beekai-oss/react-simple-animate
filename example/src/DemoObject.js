@@ -46,7 +46,7 @@ export default function DemoObject({
           Tap or click to remove the logo
         </Typography>
       </Animate>
-      {keys.map((item, i) => (
+      {keys.map((item) => (
         <Animate
           {...{
             play,

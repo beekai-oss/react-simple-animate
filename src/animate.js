@@ -17,7 +17,6 @@ export type AnimationType = {
   delaySeconds?: number,
   children?: React.Component<*>,
   forwardedRef: any,
-  keyframes: Array<string>,
 };
 
 export type AnimationStateType = { [string | number]: AnimationType };
@@ -33,7 +32,6 @@ export type Props = {
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
-  forceUpdate?: boolean,
   animationStates: AnimationStateType | {},
 } & AnimationType;
 
@@ -74,47 +72,12 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { register, mount, keyframes } = this.props;
+    const { register, mount } = this.props;
     register && register(this.props);
 
     if (mount && !this.state.shouldMount) {
       this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }));
     }
-
-    if (!keyframes && keyframes.length > 1) return;
-
-    this.className = Math.random()
-      .toString(36)
-      .substr(2, 9);
-
-    const animationName = Math.random()
-      .toString(36)
-      .substr(2, 9);
-
-    const styleTag = document.querySelector('select[data-rsi]');
-
-    if (!styleTag) {
-      document.head.appendChild(document.createElement('style[data-rsi]'));
-    }
-
-    const index = styleTag.sheet.length;
-    const animationLength = keyframes.length;
-
-    const style = `${keyframes.reduce(
-      (previous, keyframe, currentIndex) => {
-        return `
-        ${previous}
-        ${animationLength === 2 ? currentIndex * 100 : (100 / (animationLength - 1)) * currentIndex}% {
-          ${keyframe}
-        }
-      `;
-      },
-      `.${this.className} {
-        animation: ${animationName};
-      }
-      @keyframes ${animationName} {`,
-    )}}`;
-    styleTag.insertRule(style, index);
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {

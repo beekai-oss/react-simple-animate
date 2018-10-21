@@ -1,5 +1,5 @@
 // @flow
-import Keyframes from '../animateKeyframes';
+import type { Keyframes } from '../animateKeyframes';
 
 export default function createStyle({ keyframes, animationName }: { keyframes: Keyframes, animationName: string }) {
   const animationLength = keyframes.length;

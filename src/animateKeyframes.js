@@ -2,6 +2,7 @@
 import React from 'react';
 import createTag from './style/createTag';
 import { AnimateContext } from './animateGroup';
+import type { AnimationStateType } from './animate';
 
 type Props = {
   keyframes: Array<string>,
@@ -9,15 +10,20 @@ type Props = {
   durationSeconds?: number,
   render?: Object => any,
   play: boolean,
-  playState?: boolean,
+  playState?: string,
   delaySeconds?: number,
   direction?: string,
-  iterations?: string | number,
   fillMode?: string,
-  iterationCount?: number,
+  iterationCount?: string | number,
+  animationStates: AnimationStateType,
+  children?: any,
+  sequenceId: string,
+  sequenceIndex: number,
 };
 
-type State = {};
+type State = {
+  play: boolean,
+};
 
 export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -25,11 +31,11 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     delaySeconds: 0,
     easeType: 'linear',
     render: undefined,
-    iterations: 1,
     playState: 'running',
     direction: 'normal',
     fillMode: 'none',
     iterationCount: 1,
+    children: undefined,
   };
 
   componentDidMount() {
@@ -63,28 +69,32 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
 
   index: number;
 
-  styleTag: {};
+  styleTag: {
+    sheet: {
+      deleteRule: number => void,
+    },
+  };
 
   render() {
     const {
       children,
       play,
       render,
-      playState,
-      delaySeconds,
-      direction,
-      durationSeconds,
-      easeType,
-      iterations,
-      fillMode,
+      durationSeconds = 0.3,
+      delaySeconds = 0,
+      easeType = 'linear',
+      playState = 'running',
+      direction = 'normal',
+      fillMode = 'none',
+      iterationCount = 1,
     } = this.props;
     const style = play
       ? {
-          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterations} ${direction} ${fillMode} ${playState} ${
+          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
             this.animationName
           }`,
         }
-      : null;
+      : {};
 
     return render ? render(style) : <div style={style}>{children}</div>;
   }

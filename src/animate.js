@@ -19,7 +19,7 @@ export type AnimationType = {
   forwardedRef: any,
 };
 
-export type AnimationStateType = { [string | number]: AnimationType };
+export type AnimationStateType = { [string | number]: AnimationType } | {};
 
 export type Props = {
   easeType?: string,
@@ -32,7 +32,7 @@ export type Props = {
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
-  animationStates: AnimationStateType | {},
+  animationStates: AnimationStateType,
 } & AnimationType;
 
 export type State = {

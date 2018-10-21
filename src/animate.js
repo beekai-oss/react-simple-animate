@@ -83,19 +83,19 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle, mount } = nextProps;
     const id = sequenceId || sequenceIndex;
-    let currentplay = play;
+    let currentPlay = play;
 
     if (id && animationStates && animationStates[id]) {
       const state = animationStates[id];
-      currentplay = state.play;
+      currentPlay = state.play;
     }
 
     return {
       ...(onCompleteStyle && prevState.willComplete
         ? { willComplete: !(play && !prevState.play && prevState.willComplete) }
         : null),
-      ...(currentplay !== prevState.play ? { play: currentplay } : null),
-      ...(mount ? { shouldMount: currentplay } : null),
+      ...(currentPlay !== prevState.play ? { play: currentPlay } : null),
+      ...(mount ? { shouldMount: currentPlay } : null),
     };
   }
 
@@ -150,7 +150,6 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   unMountTimeout: TimeoutID;
   mountTimeout: TimeoutID;
   isMountWithPlay: boolean = false;
-  className: string;
 
   render() {
     const { tag = 'div', children, render } = this.props;

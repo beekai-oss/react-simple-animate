@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animate } from 'react-simple-animate';
+import { Animate, AnimateKeyframes } from './src';
 import Typography from 'material-ui/Typography';
 import './DemoObject.css';
 
@@ -46,7 +46,8 @@ export default function DemoObject({
           Tap or click to remove the logo
         </Typography>
       </Animate>
-      {keys.map((item) => (
+      <AnimateKeyframes play iterations="infinite" keyframes={['opacity: 0', 'opacity: 1']}>test</AnimateKeyframes>
+      {keys.map(item => (
         <Animate
           {...{
             play,

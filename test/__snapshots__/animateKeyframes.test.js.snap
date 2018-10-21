@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimateKeyframesChild should render correctly 1`] = `<div />`;
+
+exports[`AnimateKeyframesChild should render correctly when play set true 1`] = `
+<div
+  style={
+    Object {
+      "animation": "0.3s linear 0s 1 normal none running undefined",
+    }
+  }
+/>
+`;

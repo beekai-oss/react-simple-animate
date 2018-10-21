@@ -12,8 +12,8 @@ type Sequences = Array<Sequence>;
 
 type Props = {
   play: boolean,
-  sequences: Sequences,
-  reverseSequences: Sequences,
+  sequences?: Sequences,
+  reverseSequences?: Sequences,
   children: Element<*>,
 };
 
@@ -37,6 +37,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   state = {
     animationStates: {},
   };
+
+  timers: { [string | number]: TimeoutID } = {};
+
+  animations: { [string | number]: AnimationType } = {};
 
   componentDidMount() {
     this.props.play && this.calculateSequences();
@@ -80,8 +84,8 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   calculateSequences = () => {
     const { sequences, reverseSequences, play } = this.props;
-    const sequencesToAnimate: any = sequences.length ? sequences : Object.values(this.animations);
-    const reverseSequencesToAnimate: any = reverseSequences.length
+    const sequencesToAnimate: any = Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
+    const reverseSequencesToAnimate: any = Array.isArray(reverseSequences) && reverseSequences.length
       ? reverseSequences
       : [...sequencesToAnimate].reverse();
 
@@ -115,9 +119,6 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
       ...props,
     };
   };
-
-  timers: { [string | number]: TimeoutID } = {};
-  animations: { [string | number]: AnimationType } = {};
 
   render() {
     return (

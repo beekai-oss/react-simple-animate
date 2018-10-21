@@ -19,7 +19,7 @@ export type AnimationType = {
   forwardedRef: any,
 };
 
-export type AnimationStateType = { [string | number]: AnimationType };
+export type AnimationStateType = { [string | number]: AnimationType } | {};
 
 export type Props = {
   easeType?: string,
@@ -32,8 +32,7 @@ export type Props = {
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
-  forceUpdate?: boolean,
-  animationStates: AnimationStateType | {},
+  animationStates: AnimationStateType,
 } & AnimationType;
 
 export type State = {
@@ -50,7 +49,11 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
+    sequenceId: undefined,
+    sequenceIndex: undefined,
   };
+
+  isMountWithPlay: boolean = false;
 
   constructor(props: Props) {
     super(props);
@@ -84,19 +87,19 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle, mount } = nextProps;
     const id = sequenceId || sequenceIndex;
-    let currentplay = play;
+    let currentPlay = play;
 
-    if (id && animationStates && animationStates[id]) {
+    if (id !== undefined && animationStates && animationStates[id]) {
       const state = animationStates[id];
-      currentplay = state.play;
+      currentPlay = state.play;
     }
 
     return {
       ...(onCompleteStyle && prevState.willComplete
         ? { willComplete: !(play && !prevState.play && prevState.willComplete) }
         : null),
-      ...(currentplay !== prevState.play ? { play: currentplay } : null),
-      ...(mount ? { shouldMount: currentplay } : null),
+      ...(currentPlay !== prevState.play ? { play: currentPlay } : null),
+      ...(mount ? { shouldMount: currentPlay } : null),
     };
   }
 
@@ -148,9 +151,10 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   }
 
   completeTimeout: TimeoutID;
+
   unMountTimeout: TimeoutID;
+
   mountTimeout: TimeoutID;
-  isMountWithPlay: boolean = false;
 
   render() {
     const { tag = 'div', children, render } = this.props;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Animate } from 'react-simple-animate';
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {

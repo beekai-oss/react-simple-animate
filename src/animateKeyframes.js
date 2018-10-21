@@ -19,7 +19,7 @@ type Props = {
 
 type State = {};
 
-export class AnimateKeyframes extends React.PureComponent<Props, State> {
+export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   static defaultProps = {
     durationSeconds: 0.3,
     delaySeconds: 0,
@@ -92,7 +92,7 @@ export class AnimateKeyframes extends React.PureComponent<Props, State> {
 export default React.forwardRef((props: Props, ref) => (
   <AnimateContext.Consumer>
     {({ animationStates = {}, register = undefined }) => (
-      <AnimateKeyframes {...{ ...props, animationStates, register }} forwardedRef={ref} />
+      <AnimateKeyframesChild {...{ ...props, animationStates, register }} forwardedRef={ref} />
     )}
   </AnimateContext.Consumer>
 ));

@@ -24,7 +24,7 @@ export default function createTag(keyframes) {
       index,
     );
   } catch (e) {
-    console.error('react simple animate, error found during insert style:', e);
+    console.error('react simple animate, error found during insert style:', e); // eslint-disable-line no-console
   }
 
   return {

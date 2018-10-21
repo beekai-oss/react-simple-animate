@@ -4,8 +4,10 @@ import createTag from './style/createTag';
 import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
 
+export type Keyframes = Array<string> | Array<{ [string]: string }>;
+
 type Props = {
-  keyframes: Array<string>,
+  keyframes: Keyframes,
   easeType?: string,
   durationSeconds?: number,
   render?: Object => any,
@@ -69,11 +71,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
 
   index: number;
 
-  styleTag: {
-    sheet: {
-      deleteRule: number => void,
-    },
-  };
+  styleTag: any;
 
   render() {
     const {

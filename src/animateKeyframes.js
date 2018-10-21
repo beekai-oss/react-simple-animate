@@ -40,6 +40,10 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     children: undefined,
   };
 
+  state = {
+    play: false,
+  };
+
   componentDidMount() {
     const { styleTag, index, animationName } = createTag(this.props.keyframes);
 

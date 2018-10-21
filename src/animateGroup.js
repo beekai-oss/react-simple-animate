@@ -84,7 +84,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   calculateSequences = () => {
     const { sequences, reverseSequences, play } = this.props;
-    const sequencesToAnimate: any = sequences.length ? sequences : Object.values(this.animations);
+    const sequencesToAnimate: any = Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
     const reverseSequencesToAnimate: any = reverseSequences.length
       ? reverseSequences
       : [...sequencesToAnimate].reverse();

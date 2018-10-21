@@ -12,7 +12,7 @@
 Features:
 
 - Simple animation from inline style A to style B
-- Support animation keyframes (New)
+- Support react animate keyframes (New)
 - Chain up animation sequences (New)
 - Support add and remove child
 - Tiny size without other dependency

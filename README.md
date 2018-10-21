@@ -11,10 +11,10 @@
 
 Features:
 
-* Simple animation from inline style A to style B
-* Chain up animation sequences (New)
-* Support add and remove child
-* Tiny size without other dependency
+- Simple animation from inline style A to style B
+- Chain up animation sequences (New)
+- Support add and remove child
+- Tiny size without other dependency
 
 ## Install
 
@@ -79,6 +79,24 @@ Navigate into `example` folder and install
 | `className`              | string   |          | To specify a CSS class.                                                                |
 | `mount`                  | boolean  |          | Will mount component then apply animation                                              |
 | `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
+
+## AnimateKeyframes API
+
+| Prop              | Type     | Required | Description                                                                                                                                  |
+| :---------------- | :------- | :------: | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `play`            | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                                                                       |
+| `keyframes`       | Array    |    ✓     | Array of styles or Array of Object, object key as the keyframe start % eg. ['opacity:0'] or [{0:'opacity:0', 100:'opacity:0'}]               |
+| `render`          | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />`                                                       |
+| `durationSeconds` | number   |          | How long the animation takes in seconds.                                                                                                     |
+| `delaySeconds`    | number   |          | How much delay should apply before animation starts.                                                                                         |
+| `easeType`        | string   |          | Easing type refer to http://easings.net/                                                                                                     |
+| `direction`       | number   |          | Number of times an animation cycle should be played - https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count             |
+| `iterationCount`  | string   |          | animation applies styles to its target before and after its execution - https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode |
+| `animationStates` | string   |          | An animation is running or paused - https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state                                    |
+| `fillMode`        | string   |          | animation applies styles to target before and after execution - https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode         |
+| `sequenceIndex`   | number   |          | `AnimateGroup`: Animate will be trigger from 0 to n number                                                                                   |
+| `sequenceId`      | string   |          | `AnimateGroup`: Unique id to associate with AnimationGroup sequences                                                                         |
+| `overlaySeconds`  | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous                                                         |
 
 ## AnimateGroup API
 

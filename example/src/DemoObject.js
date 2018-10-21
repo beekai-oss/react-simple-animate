@@ -46,7 +46,34 @@ export default function DemoObject({
           Tap or click to remove the logo
         </Typography>
       </Animate>
-      <AnimateKeyframes play iterations="infinite" keyframes={['opacity: 0', 'opacity: 1']}>test</AnimateKeyframes>
+      <AnimateKeyframes play durationSeconds={1} iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
+        test
+      </AnimateKeyframes>
+
+      <AnimateKeyframes
+        play
+        durationSeconds={1}
+        iterationCount="infinite"
+        keyframes={[`background: red; opacity: 0`, 'background: black']}
+      >
+        test
+      </AnimateKeyframes>
+
+      <AnimateKeyframes
+        play
+        durationSeconds={1}
+        iterationCount="infinite"
+        keyframes={[
+          {
+            0: `
+          background: red;
+          opacity: 0`,
+          },
+          { 70: `background: black` },
+        ]}
+      >
+        test
+      </AnimateKeyframes>
       {keys.map(item => (
         <Animate
           {...{

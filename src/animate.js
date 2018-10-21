@@ -49,6 +49,8 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
+    sequenceId: undefined,
+    sequenceIndex: undefined,
   };
 
   isMountWithPlay: boolean = false;
@@ -87,7 +89,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
 
-    if (id && animationStates && animationStates[id]) {
+    if (id !== undefined && animationStates && animationStates[id]) {
       const state = animationStates[id];
       currentPlay = state.play;
     }

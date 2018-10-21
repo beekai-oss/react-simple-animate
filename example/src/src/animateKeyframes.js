@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 import createTag from './style/createTag';
+import createRandomName from './utils/createRandomName';
 import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
-import createRandomName from '../../../src/utils/createRandomName';
 
 export type Keyframes = Array<Object>;
 
@@ -11,7 +11,7 @@ type Props = {
   keyframes: Keyframes,
   easeType?: string,
   durationSeconds?: number,
-  render?: Object => any,
+  render?: (?Object) => any,
   play: boolean,
   playState?: string,
   delaySeconds?: number,
@@ -20,8 +20,8 @@ type Props = {
   iterationCount?: string | number,
   animationStates: AnimationStateType,
   children?: any,
-  sequenceId: string,
-  sequenceIndex: number,
+  sequenceId?: string,
+  sequenceIndex?: number,
 };
 
 type State = {
@@ -39,6 +39,8 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     fillMode: 'none',
     iterationCount: 1,
     children: undefined,
+    sequenceId: undefined,
+    sequenceIndex: undefined,
   };
 
   state = {
@@ -46,11 +48,14 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
+    const { register, keyframes } = this.props;
     this.animationName = createRandomName();
-    const { styleTag, index } = createTag(this.props.keyframes);
+    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
 
-    this.index = index;
+    register && register(this.props);
+
     this.styleTag = styleTag;
+    this.index = index;
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -58,7 +63,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
 
-    if (id && animationStates && animationStates[id]) {
+    if (id !== undefined && animationStates && animationStates[id]) {
       const state = animationStates[id];
       currentPlay = state.play;
     }
@@ -91,15 +96,15 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
       fillMode = 'none',
       iterationCount = 1,
     } = this.props;
-    const style = play
+    const style = play || this.state.play
       ? {
           animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
             this.animationName
           }`,
         }
-      : {};
+      : null;
 
-    return render ? render(style) : <div style={style}>{children}</div>;
+    return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;
   }
 }
 

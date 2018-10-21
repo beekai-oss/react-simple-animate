@@ -13,7 +13,7 @@ export default function createTag({ keyframes, animationName }: { keyframes: Key
   }
 
   // $FlowIgnoreLine
-  const index = styleTag?.sheet?.cssRules?.length || 0;
+  const index = styleTag.sheet.cssRules.length || 0;
 
   try {
     // $FlowIgnoreLine

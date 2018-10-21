@@ -20,6 +20,7 @@ type Props = {
   iterationCount?: string | number,
   animationStates: AnimationStateType,
   children?: any,
+  register?: any => void,
   sequenceId?: string,
   sequenceIndex?: number,
 };
@@ -41,6 +42,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     children: undefined,
     sequenceId: undefined,
     sequenceIndex: undefined,
+    register: undefined,
   };
 
   state = {
@@ -48,8 +50,11 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
+    const { register, keyframes } = this.props;
     this.animationName = createRandomName();
-    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes: this.props.keyframes });
+    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
+
+    register && register(this.props);
 
     this.styleTag = styleTag;
     this.index = index;
@@ -60,7 +65,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
 
-    if (id && animationStates && animationStates[id]) {
+    if (id !== undefined && animationStates && animationStates[id]) {
       const state = animationStates[id];
       currentPlay = state.play;
     }
@@ -93,7 +98,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
       fillMode = 'none',
       iterationCount = 1,
     } = this.props;
-    const style = play
+    const style = play || this.state.play
       ? {
           animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
             this.animationName

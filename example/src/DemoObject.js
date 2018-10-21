@@ -1,6 +1,6 @@
 import React from 'react';
-import { Animate, AnimateKeyframes } from './src';
 import Typography from '@material-ui/core/Typography';
+import { Animate, AnimateKeyframes, AnimateGroup } from './src';
 import './DemoObject.css';
 
 function parseJsonWithCatch(value) {
@@ -46,34 +46,39 @@ export default function DemoObject({
           Tap or click to remove the logo
         </Typography>
       </Animate>
-      <AnimateKeyframes play durationSeconds={1} iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
-        test
-      </AnimateKeyframes>
-
-      <AnimateKeyframes
-        play
-        durationSeconds={1}
-        iterationCount="infinite"
-        keyframes={[`background: red; opacity: 0`, 'background: black']}
-      >
-        test
-      </AnimateKeyframes>
-
-      <AnimateKeyframes
-        play
-        durationSeconds={1}
-        iterationCount="infinite"
-        keyframes={[
-          {
-            0: `
-          background: red;
-          opacity: 0`,
-          },
-          { 70: `background: black` },
-        ]}
-      >
-        test
-      </AnimateKeyframes>
+      <AnimateGroup play>
+        <AnimateKeyframes
+          sequenceIndex={0}
+          durationSeconds={1}
+          iterationCount="infinite"
+          keyframes={['opacity: 0', 'opacity: 1']}
+        >
+          test
+        </AnimateKeyframes>
+        <AnimateKeyframes
+          sequenceIndex={1}
+          durationSeconds={1}
+          iterationCount="infinite"
+          keyframes={[`background: red; opacity: 0`, 'background: black']}
+        >
+          test
+        </AnimateKeyframes>
+        <AnimateKeyframes
+          sequenceIndex={2}
+          durationSeconds={1}
+          iterationCount="infinite"
+          keyframes={[
+            {
+              0: `
+            background: red;
+            opacity: 0`,
+            },
+            { 70: `background: black` },
+          ]}
+        >
+          test
+        </AnimateKeyframes>
+      </AnimateGroup>
       {keys.map(item => (
         <Animate
           {...{

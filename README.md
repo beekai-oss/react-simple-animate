@@ -89,8 +89,8 @@ Navigate into `example` folder and install
 | Prop              | Type     | Required | Description                                                                                                                                                     |
 | :---------------- | :------- | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `play`            | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                                                                                          |
-| `keyframes`       | Array    |    ✓     | Array of styles or Array of Object, object key as the keyframe start % eg. `['opacity:0']` or `[{0:'opacity:0', 100:'opacity:0'}]`                              |
 | `render`          | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />`                                                                          |
+| `keyframes`       | Array    |    ✓     | Array of styles or Array of Object, object key as the keyframe start % eg. `['opacity:0']` or `[{0:'opacity:0', 100:'opacity:0'}]`                              |
 | `durationSeconds` | number   |          | How long the animation takes in seconds.                                                                                                                        |
 | `delaySeconds`    | number   |          | How much delay should apply before animation starts.                                                                                                            |
 | `easeType`        | string   |          | Easing type refer to http://easings.net/                                                                                                                        |

@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import createStyle from './style/createStyle';
-import createRandomName from './utils/createRandomName';
+import createTag from './style/createTag';
 import { AnimateContext } from './animateGroup';
 
 type Props = {
@@ -20,8 +19,6 @@ type Props = {
 
 type State = {};
 
-const styleTagName = 'style[data-id-rsi]';
-
 export class AnimateKeyframes extends React.PureComponent<Props, State> {
   static defaultProps = {
     durationSeconds: 0.3,
@@ -36,26 +33,11 @@ export class AnimateKeyframes extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { keyframes, durationSeconds, easeType } = this.props;
+    const { styleTag, index, animationName } = createTag(this.props.keyframes);
 
-    this.animationName = createRandomName();
-    this.styleTag = document.querySelector(styleTagName);
-    if (!this.styleTag) {
-      this.styleTag = document.createElement('style');
-      this.styleTag.setAttribute('data-id', 'rsi');
-      document.head.appendChild(this.styleTag);
-    }
-    this.index = this.styleTag.sheet.cssRules.length;
-
-    this.styleTag.sheet.insertRule(
-      createStyle({
-        keyframes,
-        durationSeconds,
-        easeType,
-        animationName: this.animationName,
-      }),
-      this.index,
-    );
+    this.styleTag = styleTag;
+    this.animationName = animationName;
+    this.index = index;
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {

@@ -1,18 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`createStyle should create correct style 1`] = `
-".bill { animation: test 0.3; }
-    @keyframes test {
-        0% {
-          opacity: 0
-        }
-        33.33% {
-          opacity: 1
-        }
-        66.66% {
-          opacity: 2
-        }
-        99.99% {
-          opacity: 3
-        }}"
+"@keyframes test {
+        0% {opacity: 0}
+        33.33% {opacity: 1}
+        66.66% {opacity: 2}
+        99.99% {opacity: 3}}"
 `;

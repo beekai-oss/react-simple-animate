@@ -10,7 +10,10 @@
     "indent": 0,
     "arrow-parens": 0,
     "jsx-a11y/href-no-hash": "off",
-    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }]
+    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "react/destructuring-assignment": 0,
+    "object-curly-newline": 0,
+    "operator-linebreak": 0
   },
   "env": {
     "browser": true,

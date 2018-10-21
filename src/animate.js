@@ -51,6 +51,8 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     easeType: 'linear',
   };
 
+  isMountWithPlay: boolean = false;
+
   constructor(props: Props) {
     super(props);
 
@@ -147,9 +149,10 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   }
 
   completeTimeout: TimeoutID;
+
   unMountTimeout: TimeoutID;
+
   mountTimeout: TimeoutID;
-  isMountWithPlay: boolean = false;
 
   render() {
     const { tag = 'div', children, render } = this.props;

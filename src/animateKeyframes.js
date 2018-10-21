@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import createTag from './style/createTag';
 import { AnimateContext } from './animateGroup';
@@ -59,7 +60,9 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   }
 
   animationName: string;
+
   index: number;
+
   styleTag: {};
 
   render() {

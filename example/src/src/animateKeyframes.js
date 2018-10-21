@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 import createTag from './style/createTag';
-import createRandomName from './utils/createRandomName';
 import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
+import createRandomName from '../../../src/utils/createRandomName';
 
 export type Keyframes = Array<Object>;
 
@@ -11,7 +11,7 @@ type Props = {
   keyframes: Keyframes,
   easeType?: string,
   durationSeconds?: number,
-  render?: (?Object) => any,
+  render?: Object => any,
   play: boolean,
   playState?: string,
   delaySeconds?: number,
@@ -20,8 +20,8 @@ type Props = {
   iterationCount?: string | number,
   animationStates: AnimationStateType,
   children?: any,
-  sequenceId?: string,
-  sequenceIndex?: number,
+  sequenceId: string,
+  sequenceIndex: number,
 };
 
 type State = {
@@ -39,8 +39,6 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     fillMode: 'none',
     iterationCount: 1,
     children: undefined,
-    sequenceId: undefined,
-    sequenceIndex: undefined,
   };
 
   state = {
@@ -49,10 +47,10 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.animationName = createRandomName();
-    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes: this.props.keyframes });
+    const { styleTag, index } = createTag(this.props.keyframes);
 
-    this.styleTag = styleTag;
     this.index = index;
+    this.styleTag = styleTag;
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -99,9 +97,9 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
             this.animationName
           }`,
         }
-      : null;
+      : {};
 
-    return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;
+    return render ? render(style) : <div style={style}>{children}</div>;
   }
 }
 

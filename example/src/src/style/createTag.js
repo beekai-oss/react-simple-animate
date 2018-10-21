@@ -1,8 +1,10 @@
 // @flow
 import createStyle from './createStyle';
+import createRandomName from '../utils/createRandomName';
 import type { Keyframes } from '../animateKeyframes';
 
-export default function createTag({ keyframes, animationName }: { keyframes: Keyframes, animationName: string }) {
+export default function createTag(keyframes: Keyframes) {
+  const animationName = createRandomName();
   let styleTag = document.querySelector('style[data-id-rsi]');
 
   if (!styleTag) {
@@ -13,10 +15,9 @@ export default function createTag({ keyframes, animationName }: { keyframes: Key
   }
 
   // $FlowIgnoreLine
-  const index = styleTag?.sheet?.cssRules?.length || 0;
+  const index = styleTag.sheet.cssRules.length || 0;
 
   try {
-    // $FlowIgnoreLine
     styleTag.sheet.insertRule(
       createStyle({
         keyframes,
@@ -25,11 +26,12 @@ export default function createTag({ keyframes, animationName }: { keyframes: Key
       index,
     );
   } catch (e) {
-    console.error('react simple animate, error found during insert style ', e); // eslint-disable-line no-console
+    console.error('react simple animate, error found during insert style:', e); // eslint-disable-line no-console
   }
 
   return {
     styleTag,
     index,
+    animationName,
   };
 }

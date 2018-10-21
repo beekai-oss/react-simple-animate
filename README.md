@@ -47,6 +47,10 @@ Navigate into `example` folder and install
                 <h1>React simple animate</h1>
             </Animate>
 
+            <AnimateKeyframes play iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
+                <h1>React simple animate with keyframes</h1>
+            </Animate>
+
             // This example demonstrate animate group of animation with sequenceIndex.
             <AnimateGroup play>
                 <Animate {...props} sequenceIndex={0} />

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import createTag from './style/createTag';
 import { AnimateContext } from './animateGroup';

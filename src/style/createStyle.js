@@ -1,4 +1,3 @@
-// @flow
 export default function createStyle({ keyframes, animationName }) {
   const animationLength = keyframes.length;
 

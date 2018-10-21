@@ -1,5 +1,3 @@
-// @flow
-
 import createStyle from './createStyle';
 import createRandomName from '../utils/createRandomName';
 

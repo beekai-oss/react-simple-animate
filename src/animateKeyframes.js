@@ -4,7 +4,7 @@ import createTag from './style/createTag';
 import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
 
-export type Keyframes = Array<string> | Array<{ [string]: string }>;
+export type Keyframes = Array<Object>;
 
 type Props = {
   keyframes: Keyframes,

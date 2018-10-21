@@ -1,12 +1,12 @@
-import Switch from 'material-ui/Switch';
-import { FormControlLabel } from 'material-ui/Form';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import React from 'react';
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import DemoCode from './DemoCode';
 import DemoObject from './DemoObject';
-import AddIcon from 'material-ui-icons/Add';
+import AddIcon from '@material-ui/icons/Add';
 import { Animate } from 'react-simple-animate';
 import { fields, selectOptions } from './DemoData';
 import tryParseJson from './tryParseJson';
@@ -211,7 +211,7 @@ export default class Demo extends React.Component {
               style={{
                 marginRight: '20px',
               }}
-              variant="raised"
+              variant="contained"
               color="primary"
               onClick={() => {
                 this.setState(prevState => {
@@ -225,7 +225,7 @@ export default class Demo extends React.Component {
             </Button>
 
             <Button
-              variant="raised"
+              variant="contained"
               color="secondary"
               onClick={() => {
                 this.setState(prevState => {

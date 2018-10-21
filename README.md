@@ -81,7 +81,6 @@ Navigate into `example` folder and install
 | `sequenceId`             | string   |          | `AnimateGroup`: Unique id to associate with AnimationGroup sequences                   |
 | `overlaySeconds`         | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous   |
 | `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
-| `className`              | string   |          | To specify a CSS class.                                                                |
 | `mount`                  | boolean  |          | Will mount component then apply animation                                              |
 | `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
 

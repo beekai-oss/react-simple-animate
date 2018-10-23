@@ -34,7 +34,7 @@ Navigate into `example` folder and install
 ## Quick start
 
     import react from 'react';
-    import { Animate, AnimateGroup } from 'react-simple-animate';
+    import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';
 
     const props = {
         startStyle: { opacity: 0 }

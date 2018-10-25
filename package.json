@@ -5,6 +5,12 @@
   "main": "lib/index.js",
   "keywords": [
     "react",
+    "animation",
+    "transition-animation",
+    "animate-css",
+    "animation-controller",
+    "animation-sequence",
+    "keyframes-animation",
     "animate"
   ],
   "scripts": {

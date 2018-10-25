@@ -61,7 +61,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     if (props.play) {
       this.isMountWithPlay = true;
 
-      setTimeout(() => {
+      this.initialPlayTimer = setTimeout(() => {
         this.isMountWithPlay = false;
         this.forceUpdate();
       }, (props.delaySeconds || 0) * 1000);
@@ -120,6 +120,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     clearTimeout(this.completeTimeout);
     clearTimeout(this.unMountTimeout);
     clearTimeout(this.mountTimeout);
+    clearTimeout(this.initialPlayTimer);
   }
 
   onComplete(): void {
@@ -155,6 +156,8 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   unMountTimeout: TimeoutID;
 
   mountTimeout: TimeoutID;
+
+  initialPlayTimer: TimeoutID;
 
   render() {
     const { tag = 'div', children, render } = this.props;

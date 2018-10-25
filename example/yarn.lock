@@ -8007,10 +8007,10 @@ react-scripts@^2.0.5:
   optionalDependencies:
     fsevents "1.2.4"
 
-react-simple-animate@2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-2.0.7.tgz#9740b7da971ce5c34a5ca7bd1541f2d1b701ba7c"
-  integrity sha512-gBQVintItkI0TlgUW2jFkaTo1n9rN01i+ryQBIe+qAaEmWQeRHKIdkftrDJNYXAFrefE2OuzNr8AZr9EAF5Xpw==
+react-simple-animate@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-2.1.2.tgz#5a020f84e2fe4eeef69da4b118594a85e8ab41c8"
+  integrity sha512-80oqPMOSs2tVng2WbVTLGbMEy5ACE9zl25cnvp0QzSssvTiU2HqfMB03DXZoLhMts+5yb4VXh/RNdEN8O8zC/w==
 
 react-syntax-highlight@^15.3.1:
   version "15.3.1"

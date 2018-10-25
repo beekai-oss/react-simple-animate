@@ -10,3 +10,4 @@ yarn.lock
 CONTRIBUTING.md
 .eslintrc
 jestConfig.json
+.idea/

@@ -6,7 +6,7 @@ exports[`AnimateKeyframesChild should render correctly when play set true 1`] = 
 <div
   style={
     Object {
-      "animation": "0.3s linear 0s 1 normal none running undefined",
+      "animation": "0.3s linear 0s 1 normal none running RSI-4dtcsgvdy",
     }
   }
 />

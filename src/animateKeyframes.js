@@ -45,11 +45,9 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     register: undefined,
   };
 
-  state = {
-    play: false,
-  };
+  constructor(props: Props) {
+    super(props);
 
-  componentDidMount() {
     const { register, keyframes } = this.props;
     this.animationName = createRandomName();
     const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
@@ -59,6 +57,10 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     this.styleTag = styleTag;
     this.index = index;
   }
+
+  state = {
+    play: false,
+  };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { animationStates, play, sequenceId, sequenceIndex } = nextProps;

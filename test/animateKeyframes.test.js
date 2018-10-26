@@ -3,6 +3,7 @@ import React from 'react';
 import { AnimateKeyframesChild } from '../src/animateKeyframes';
 
 jest.mock('../src/style/createTag', () => () => 'createTag');
+jest.mock('../src/utils/createRandomName', () => () => 'RSI-4dtcsgvdy');
 
 describe('AnimateKeyframesChild', () => {
   const props = {

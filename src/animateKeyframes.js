@@ -49,13 +49,15 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     super(props);
 
     const { register, keyframes } = this.props;
-    this.animationName = createRandomName();
-    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
-
     register && register(this.props);
 
-    this.styleTag = styleTag;
-    this.index = index;
+    if (typeof window !== 'undefined') {
+      this.animationName = createRandomName();
+      const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
+
+      this.styleTag = styleTag;
+      this.index = index;
+    }
   }
 
   state = {
@@ -100,13 +102,14 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
       fillMode = 'none',
       iterationCount = 1,
     } = this.props;
-    const style = play || this.state.play
-      ? {
-          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-            this.animationName
-          }`,
-        }
-      : null;
+    const style =
+      play || this.state.play
+        ? {
+            animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+              this.animationName
+            }`,
+          }
+        : null;
 
     return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;
   }

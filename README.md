@@ -97,7 +97,7 @@ Navigate into `example` folder and install
 | `easeType`        | string   |          | Easing type refer to http://easings.net/                                                                                                                        |
 | `direction`       | number   |          | Number of times an animation cycle should be played - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">Link</a>             |
 | `iterationCount`  | string   |          | animation applies styles to its target before and after its execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a> |
-| `animationStates` | string   |          | An animation is running or paused - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">Link</a>                                    |
+| `playState`       | string   |          | An animation is running or paused - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">Link</a>                                    |
 | `fillMode`        | string   |          | animation applies styles to target before and after execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a>         |
 | `sequenceIndex`   | number   |          | `AnimateGroup`: Animate will be trigger from 0 to n number                                                                                                      |
 | `sequenceId`      | string   |          | `AnimateGroup`: Unique id to associate with AnimationGroup sequences                                                                                            |

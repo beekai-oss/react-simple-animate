@@ -45,20 +45,18 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     register: undefined,
   };
 
-  constructor(props: Props) {
-    super(props);
-
-    this.createStyleAndTag();
-  }
-
   state = {
     play: false,
   };
 
   componentDidMount() {
-    const { register } = this.props;
+    const { register, play } = this.props;
     this.createStyleAndTag();
     register && register(this.props);
+
+    if (play) {
+      this.forceUpdate();
+    }
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -81,15 +79,13 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   }
 
   createStyleAndTag = () => {
-    if (typeof window !== 'undefined' && (!this.styleTag || !this.animationName)) {
-      const { keyframes } = this.props;
+    const { keyframes } = this.props;
 
-      this.animationName = createRandomName();
-      const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
+    this.animationName = createRandomName();
+    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
 
-      this.styleTag = styleTag;
-      this.index = index;
-    }
+    this.styleTag = styleTag;
+    this.index = index;
   };
 
   animationName: string;

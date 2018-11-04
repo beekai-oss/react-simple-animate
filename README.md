@@ -97,7 +97,3 @@ Features:
 | `play`             | boolean |    ✓     | Defaults to false. Set to true to start the group animation.                                                     |
 | `sequences`        | Array   |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.                  |
 | `reverseSequences` | Array   |          | Array with animation props on reverse order, it can contain `sequenceId` to reference with Animate `sequenceId`. |
-
-## Reference
-
-https://medium.com/jsdownunder/react-ui-animation-made-simple-c2ff98056659

@@ -50,7 +50,7 @@ Features:
 ## [Docs](https://react-simple-animate.now.sh/)
 
 - [**Getting started**](https://react-simple-animate.now.sh/basics)
-- [<Animate />](https://react-simple-animate.now.sh/animate)
-- [<AnimateKeyframes />](https://react-simple-animate.now.sh/animate-keyframes)
-- [<AnimateGroup />](https://react-simple-animate.now.sh/animate-group)
+- [Animate](https://react-simple-animate.now.sh/animate)
+- [AnimateKeyframes](https://react-simple-animate.now.sh/animate-keyframes)
+- [AnimateGroup](https://react-simple-animate.now.sh/animate-group)
 - [Advanced](https://react-simple-animate.now.sh/advanced)

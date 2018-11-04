@@ -14,6 +14,14 @@ Features:
 
     $ yarn add react-simple-animate || npm install react-simple-animate
 
+## [Docs](https://react-simple-animate.now.sh/)
+
+- [Getting started](https://react-simple-animate.now.sh/basics)
+- [Animate](https://react-simple-animate.now.sh/animate)
+- [AnimateKeyframes](https://react-simple-animate.now.sh/animate-keyframes)
+- [AnimateGroup](https://react-simple-animate.now.sh/animate-group)
+- [Advanced](https://react-simple-animate.now.sh/advanced)
+
 ## Quick start
 
     import react from 'react';
@@ -46,11 +54,3 @@ Features:
             </AnimateGroup>
         );
     };
-
-## [Docs](https://react-simple-animate.now.sh/)
-
-- [**Getting started**](https://react-simple-animate.now.sh/basics)
-- [Animate](https://react-simple-animate.now.sh/animate)
-- [AnimateKeyframes](https://react-simple-animate.now.sh/animate-keyframes)
-- [AnimateGroup](https://react-simple-animate.now.sh/animate-group)
-- [Advanced](https://react-simple-animate.now.sh/advanced)

@@ -2,6 +2,7 @@
     <a href="https://react-simple-animate.now.sh/"><img width="675" src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/logo.png" alt="React Simple Animate Logo - UI Animation Made Simple" /></a>
 </p>
 
+# [React Simple Animate](https://react-simple-animate.now.sh) &middot;
 [![npm version](https://img.shields.io/npm/v/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
 [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
 [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
@@ -20,8 +21,6 @@ Features:
 ## Install
 
     $ yarn add react-simple-animate || npm install react-simple-animate
-
-## [Documentation](https://react-simple-animate.now.sh)
 
 ## Quick start
 

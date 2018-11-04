@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="675" src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/logo.png" alt="React Simple Animate Logo - UI Animation Made Simple" />
+    <a href="https://react-simple-animate.now.sh/"><img width="675" src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/logo.png" alt="React Simple Animate Logo - UI Animation Made Simple" /></a>
 </p>
 
 [![npm version](https://img.shields.io/npm/v/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate)
@@ -21,15 +21,7 @@ Features:
 
     $ yarn add react-simple-animate || npm install react-simple-animate
 
-## Example
-
-[Check out the interactive demo.](https://react-simple-animate.herokuapp.com) 😍
-
-<a target="_blank" href="https://react-simple-animate.herokuapp.com"><img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/example/screenShot.png" alt="Screenshots" width="400"/></a>
-
-Navigate into `example` folder and install
-
-    $ yarn && yarn start || npm install && npm run start
+## [Documentation](https://react-simple-animate.now.sh)
 
 ## Quick start
 
@@ -95,8 +87,8 @@ Navigate into `example` folder and install
 | `durationSeconds` | number   |          | How long the animation takes in seconds.                                                                                                                        |
 | `delaySeconds`    | number   |          | How much delay should apply before animation starts.                                                                                                            |
 | `easeType`        | string   |          | Easing type refer to http://easings.net/                                                                                                                        |
-| `iterationCount`       | number   |          | Number of times an animation cycle should be played - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">Link</a>             |
-| `direction`  | string   |          | animation applies styles to its target before and after its execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a> |
+| `iterationCount`  | number   |          | Number of times an animation cycle should be played - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">Link</a>             |
+| `direction`       | string   |          | animation applies styles to its target before and after its execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a> |
 | `playState`       | string   |          | An animation is running or paused - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">Link</a>                                    |
 | `fillMode`        | string   |          | animation applies styles to target before and after execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a>         |
 | `sequenceIndex`   | number   |          | `AnimateGroup`: Animate will be trigger from 0 to n number                                                                                                      |

@@ -47,49 +47,10 @@ Features:
         );
     };
 
-## Animate API
+## [Docs](https://react-simple-animate.now.sh/)
 
-| Prop                     | Type     | Required | Description                                                                            |
-| :----------------------- | :------- | :------: | :------------------------------------------------------------------------------------- |
-| `play`                   | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                 |
-| `render`                 | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />` |
-| `startStyle`             | string   |          | Component initial inline style.                                                        |
-| `endStyle`               | string   |    ✓     | Component transition to inline style.                                                  |
-| `onCompleteStyle`        | string   |          | Style to be applied after the animation is completed.                                  |
-| `durationSeconds`        | number   |          | How long the animation takes in seconds.                                               |
-| `delaySeconds`           | number   |          | How much delay should apply before animation starts.                                   |
-| `reverseDurationSeconds` | number   |          | How long the reverse/toggle animation takes in seconds.                                |
-| `reverseDelaySeconds`    | number   |          | How much delay should apply when reverse/toggle animation.                             |
-| `onComplete`             | function |          | Call back function after animation complete.                                           |
-| `sequenceIndex`          | number   |          | `AnimateGroup`: Animate will be trigger from 0 to n number                             |
-| `sequenceId`             | string   |          | `AnimateGroup`: Unique id to associate with AnimationGroup sequences                   |
-| `overlaySeconds`         | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous   |
-| `easeType`               | string   |          | Easing type refer to http://easings.net/                                               |
-| `mount`                  | boolean  |          | Will mount component then apply animation                                              |
-| `unMount`                | boolean  |          | Will apply animation to start style and then delete the element                        |
-
-## AnimateKeyframes API
-
-| Prop              | Type     | Required | Description                                                                                                                                                     |
-| :---------------- | :------- | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `play`            | boolean  |    ✓     | Defaults to false. Set to true to start the animation.                                                                                                          |
-| `render`          | Function |          | Element animation attributes as argument eg. `(attributes) => <div {...attributes} />`                                                                          |
-| `keyframes`       | Array    |    ✓     | Array of styles or Array of Object, object key as the keyframe start % eg. `['opacity:0']` or `[{0:'opacity:0', 100:'opacity:0'}]`                              |
-| `durationSeconds` | number   |          | How long the animation takes in seconds.                                                                                                                        |
-| `delaySeconds`    | number   |          | How much delay should apply before animation starts.                                                                                                            |
-| `easeType`        | string   |          | Easing type refer to http://easings.net/                                                                                                                        |
-| `iterationCount`  | number   |          | Number of times an animation cycle should be played - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">Link</a>             |
-| `direction`       | string   |          | animation applies styles to its target before and after its execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a> |
-| `playState`       | string   |          | An animation is running or paused - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">Link</a>                                    |
-| `fillMode`        | string   |          | animation applies styles to target before and after execution - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">Link</a>         |
-| `sequenceIndex`   | number   |          | `AnimateGroup`: Animate will be trigger from 0 to n number                                                                                                      |
-| `sequenceId`      | string   |          | `AnimateGroup`: Unique id to associate with AnimationGroup sequences                                                                                            |
-| `overlaySeconds`  | number   |          | `AnimateGroup`: When animation need to play ahead and overlay on top of the previous                                                                            |
-
-## AnimateGroup API
-
-| Prop               | Type    | Required | Description                                                                                                      |
-| :----------------- | :------ | :------: | :--------------------------------------------------------------------------------------------------------------- |
-| `play`             | boolean |    ✓     | Defaults to false. Set to true to start the group animation.                                                     |
-| `sequences`        | Array   |          | Array with animation props, it can contain `sequenceId` to reference with Animate `sequenceId`.                  |
-| `reverseSequences` | Array   |          | Array with animation props on reverse order, it can contain `sequenceId` to reference with Animate `sequenceId`. |
+- [**Getting started**](https://react-simple-animate.now.sh/basics)
+- [<Animate />](https://react-simple-animate.now.sh/animate)
+- [<AnimateKeyframes />](https://react-simple-animate.now.sh/animate-keyframes)
+- [<AnimateGroup />](https://react-simple-animate.now.sh/animate-group)
+- [Advanced](https://react-simple-animate.now.sh/advanced)

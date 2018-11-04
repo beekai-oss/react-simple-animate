@@ -3,8 +3,8 @@
 ## Features:
 
 - Simple animation from inline style A to style B
-- Support react animate keyframes (New)
-- Chain up animation sequences (New)
+- Support react animate keyframes
+- Chain up animation sequences
 - Support add and remove child
 - Tiny size without other dependency
 

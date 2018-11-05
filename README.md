@@ -5,9 +5,8 @@
 ## Features:
 
 - Simple animation from inline style A to style B
-- Support react animate keyframes
+- React animation with CSS keyframes
 - Chain up animation sequences
-- Support add and remove child
 - Tiny size without other dependency
 
 ## Install

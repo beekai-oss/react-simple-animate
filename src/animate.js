@@ -57,8 +57,9 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    const { play, mount } = props;
 
-    if (props.play) {
+    if (play && !mount) {
       this.isMountWithPlay = true;
 
       this.initialPlayTimer = setTimeout(() => {
@@ -85,7 +86,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle, mount } = nextProps;
+    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
 
@@ -99,7 +100,6 @@ export class AnimateChild extends React.PureComponent<Props, State> {
         ? { willComplete: !(play && !prevState.play && prevState.willComplete) }
         : null),
       ...(currentPlay !== prevState.play ? { play: currentPlay } : null),
-      ...(mount ? { shouldMount: currentPlay } : null),
     };
   }
 

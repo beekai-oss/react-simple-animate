@@ -85,15 +85,6 @@ describe('Animate', () => {
     expect(tree.state('willComplete')).toEqual(true);
   });
 
-  it('should set shouldUnMount to true when prop have been set to unmount', () => {
-    const tree = shallow(<AnimateChild {...{ ...props, play: false }} />);
-    tree.setProps({
-      unMount: true,
-    });
-    jest.runAllTimers();
-    expect(tree.state('shouldUnMount')).toBeTruthy();
-  });
-
   it('should call on complete function when animation is completed', () => {
     const onComplete = jest.fn();
     const tree = shallow(<AnimateChild {...{ ...props, play: false, onComplete }} />);

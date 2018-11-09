@@ -27,8 +27,6 @@ export type Props = {
   onComplete?: () => mixed,
   className?: string,
   render?: Object => any,
-  unMount?: boolean,
-  mount?: boolean,
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
@@ -38,8 +36,6 @@ export type Props = {
 export type State = {
   willComplete: boolean,
   play: boolean,
-  shouldUnMount: boolean,
-  shouldMount: boolean,
 };
 
 export class AnimateChild extends React.PureComponent<Props, State> {
@@ -57,9 +53,11 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    const { play, mount } = props;
 
-    if (play && !mount) {
+    const { play, register } = props;
+    register && register(this.props);
+
+    if (play) {
       this.isMountWithPlay = true;
 
       this.initialPlayTimer = setTimeout(() => {
@@ -72,18 +70,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   state: State = {
     willComplete: false,
     play: false,
-    shouldUnMount: false,
-    shouldMount: false,
   };
-
-  componentDidMount() {
-    const { register, mount } = this.props;
-    register && register(this.props);
-
-    if (mount && !this.state.shouldMount) {
-      this.mountTimeout = setTimeout(() => this.setState({ shouldMount: true }));
-    }
-  }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
@@ -103,27 +90,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { durationSeconds, unMount } = this.props;
-
-    this.onComplete();
-
-    if (!prevProps.unMount && unMount) {
-      this.unMountTimeout = setTimeout(
-        () => this.setState({ shouldUnMount: true }),
-        parseFloat(durationSeconds) * 1000,
-      );
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.completeTimeout);
-    clearTimeout(this.unMountTimeout);
-    clearTimeout(this.mountTimeout);
-    clearTimeout(this.initialPlayTimer);
-  }
-
-  onComplete(): void {
+  componentDidUpdate() {
     const {
       delaySeconds,
       play,
@@ -151,19 +118,20 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.completeTimeout);
+    clearTimeout(this.unMountTimeout);
+    clearTimeout(this.initialPlayTimer);
+  }
+
   completeTimeout: TimeoutID;
 
   unMountTimeout: TimeoutID;
-
-  mountTimeout: TimeoutID;
 
   initialPlayTimer: TimeoutID;
 
   render() {
     const { tag = 'div', children, render } = this.props;
-    const { shouldUnMount } = this.state;
-
-    if (shouldUnMount) return null;
 
     const props = attributesGenerator(this.props, this.state, this.isMountWithPlay);
     return render ? render(props) : React.createElement(tag, props, children);

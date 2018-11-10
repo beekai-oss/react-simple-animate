@@ -106,7 +106,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
       } ${this.animationName}`,
     };
 
-    return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;
+    return render ? render(style) : <div style={style}>{children}</div>;
   }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Animate } from 'react-simple-animate';
+import useAnimate from './src/useAnimateKeyframes';
 import Typography from '@material-ui/core/Typography';
 import './DemoObject.css';
 
@@ -35,8 +36,14 @@ export default function DemoObject({
   keys,
   clickHandler,
 }) {
+  const [{ play: playValue, style }, playMethod] = useAnimate({
+    keyframes: ['opacity: 0', 'opacity: 1'],
+  });
+
   return (
     <div className="DemoObject-container">
+      <div style={style}>test</div>
+      <button onClick={() => playMethod(!playValue)}>what</button>
       <Animate
         play={count > 1}
         startStyle={{ startStyle: 0, maxHeight: 0, overflow: 'hidden' }}
@@ -46,7 +53,7 @@ export default function DemoObject({
           Tap or click to remove the logo
         </Typography>
       </Animate>
-      {keys.map((item) => (
+      {keys.map(item => (
         <Animate
           {...{
             play,

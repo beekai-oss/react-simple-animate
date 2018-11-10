@@ -1,6 +1,6 @@
 {
   "name": "react-simple-animate",
-  "version": "2.2.0",
+  "version": "2.2.1-beta.2",
   "description": "react simple animate",
   "main": "lib/index.js",
   "keywords": [
@@ -68,8 +68,8 @@
     "flow-bin": "^0.83.0",
     "flow-typed": "^2.1.5",
     "jest": "^23.2.0",
-    "react": "16.5.2",
-    "react-dom": "16.5.2",
+    "react": "16.7.0-alpha.0",
+    "react-dom": "16.7.0-alpha.0",
     "react-test-renderer": "^16.5.2",
     "rimraf": "^2.6.1"
   },

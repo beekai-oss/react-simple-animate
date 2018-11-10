@@ -17,7 +17,7 @@ export default function useAnimateKeyframes(props) {
 
   const [animateProps, setPlay] = useState(props);
 
-  const setNameAndPlay = (playValue) => {
+  const playHook = playValue => {
     setPlay({
       ...props,
       play: playValue,
@@ -40,15 +40,19 @@ export default function useAnimateKeyframes(props) {
     };
   }, []);
 
-  const style = {
-    animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animateProps.animationName}`,
-  };
+  const style = animateProps.play
+    ? {
+        animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+          animateProps.animationName
+        }`,
+      }
+    : null;
 
   return [
     {
       style,
       play: animateProps.play,
     },
-    setNameAndPlay,
+    playHook,
   ];
 }

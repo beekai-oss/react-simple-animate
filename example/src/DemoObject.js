@@ -37,7 +37,7 @@ export default function DemoObject({
   clickHandler,
 }) {
   const [{ play: playValue, style }, playMethod] = useAnimate({
-    keyframes: ['opacity: 0', 'opacity: 1'],
+    keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
   });
 
   return (

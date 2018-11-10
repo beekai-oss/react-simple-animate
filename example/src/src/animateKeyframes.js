@@ -13,6 +13,7 @@ type Props = {
   durationSeconds?: number,
   render?: (?Object) => any,
   play: boolean,
+  playState?: string,
   delaySeconds?: number,
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse',
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both',
@@ -34,6 +35,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     delaySeconds: 0,
     easeType: 'linear',
     render: undefined,
+    playState: 'running',
     direction: 'normal',
     fillMode: 'none',
     iterationCount: 1,
@@ -48,9 +50,13 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { register } = this.props;
+    const { register, play } = this.props;
     this.createStyleAndTag();
     register && register(this.props);
+
+    if (play) {
+      this.forceUpdate();
+    }
   }
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -96,17 +102,21 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
       durationSeconds = 0.3,
       delaySeconds = 0,
       easeType = 'linear',
+      playState = 'running',
       direction = 'normal',
       fillMode = 'none',
       iterationCount = 1,
     } = this.props;
-    const style = {
-      animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${
-        play ? 'running' : 'paused'
-      } ${this.animationName}`,
-    };
+    const style =
+      play || this.state.play
+        ? {
+          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+            this.animationName
+            }`,
+        }
+        : null;
 
-    return render ? render(style) : <div style={style}>{children}</div>;
+    return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;
   }
 }
 

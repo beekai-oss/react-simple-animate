@@ -10,19 +10,30 @@ export default function useAnimateKeyframes(props) {
     direction = 'normal',
     fillMode = 'none',
     iterationCount = 1,
+    playState = 'running',
     keyframes,
+    animationName,
   } = props;
-  let animationName = '';
-  let localStyleTag;
-  let localIndex;
 
-  const [play, setPlay] = useState(props);
+  const [animateProps, setPlay] = useState(props);
+
+  const setNameAndPlay = (playValue) => {
+    setPlay({
+      ...props,
+      play: playValue,
+    });
+  };
 
   useEffect(() => {
-    animationName = createRandomName();
+    const name = createRandomName();
     const { styleTag, index } = createTag({ animationName, keyframes });
-    localStyleTag = styleTag;
-    localIndex = index;
+    const localStyleTag = styleTag;
+    const localIndex = index;
+
+    setPlay({
+      ...props,
+      animationName: name,
+    });
 
     return () => {
       localStyleTag.sheet.deleteRule(localIndex);
@@ -30,18 +41,14 @@ export default function useAnimateKeyframes(props) {
   }, []);
 
   const style = {
-    animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${
-      play ? 'running' : 'paused'
-    } ${animationName}`,
+    animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animateProps.animationName}`,
   };
-
-  console.log(style);
 
   return [
     {
       style,
-      play,
+      play: animateProps.play,
     },
-    setPlay,
+    setNameAndPlay,
   ];
 }

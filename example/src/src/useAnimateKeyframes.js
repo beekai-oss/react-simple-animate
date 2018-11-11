@@ -1,3 +1,4 @@
+// @flow
 import { useState, useEffect } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';

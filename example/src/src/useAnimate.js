@@ -1,3 +1,4 @@
+// @flow
 import { useState, useEffect } from 'react';
 import attributesGenerator from './utils/attributesGenerator';
 
@@ -13,7 +14,7 @@ export default function useAnimate(
   let completeTimeout;
   const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0.3 } = props;
   const [animateProps, setPlay] = useState(props);
-  const playHook = play => {
+  const playHook = (play: boolean) => {
     setPlay({
       ...props,
       play,

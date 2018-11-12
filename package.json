@@ -19,7 +19,7 @@
     "postrelease": "yarn publish && git push --follow-tags",
     "test": "jest --config ./jestConfig.json",
     "testw": "yarn test --config ./jestConfig.json -- --watchAll",
-    "build": "babel src/ -d lib/",
+    "build": "rollup -c",
     "lint": "eslint ./src",
     "prepublish": "yarn test && yarn flow && yarn lint && yarn run clean && yarn build",
     "flow": "flow"

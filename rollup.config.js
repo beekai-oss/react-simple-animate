@@ -16,7 +16,7 @@ export default {
   plugins,
   external: [ 'react' ],
   output: {
-    file: 'bundle.js',
+    file: 'lib/bundle.js',
     format: 'cjs'
   }
 };

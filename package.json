@@ -72,15 +72,14 @@
     "react": "16.5.2",
     "react-dom": "16.5.2",
     "react-test-renderer": "^16.5.2",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-flow": "^1.1.1"
   },
   "peerDependencies": {
     "react": ">= 15.6.1",
     "react-dom": ">= 15.6.1"
   },
-  "dependencies": {
-    "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-flow": "^1.1.1"
-  }
+  "dependencies": {}
 }

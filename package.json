@@ -1,6 +1,6 @@
 {
   "name": "react-simple-animate",
-  "version": "2.3.0-beta.3",
+  "version": "2.2.0",
   "description": "react simple animate",
   "main": "lib/index.js",
   "keywords": [
@@ -80,6 +80,5 @@
   "peerDependencies": {
     "react": ">= 15.6.1",
     "react-dom": ">= 15.6.1"
-  },
-  "dependencies": {}
+  }
 }

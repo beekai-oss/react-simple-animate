@@ -110,10 +110,10 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     const style =
       play || this.state.play
         ? {
-            animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-              this.animationName
+          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+            this.animationName
             }`,
-          }
+        }
         : null;
 
     return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;

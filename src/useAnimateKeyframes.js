@@ -1,42 +1,59 @@
+// @flow
 import { useState, useEffect } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
 
 export default function useAnimateKeyframes(props) {
   const {
-    play: propPlay,
-    durationSeconds,
+    durationSeconds = 0.3,
+    delaySeconds = 0,
+    easeType = 'linear',
+    direction = 'normal',
+    fillMode = 'none',
+    iterationCount = 1,
+    playState = 'running',
     keyframes,
-    easeType,
-    delaySeconds,
-    iterationCount,
-    direction,
-    fillMode,
-    playState: stylePlayState,
+    animationName,
   } = props;
-  let animationName = '';
-  let localStyleTag;
-  let localIndex;
 
-  const [{ playState }, setPlay] = useState(props);
+  const [animateProps, setPlay] = useState(props);
+
+  const playHook = playValue => {
+    setPlay({
+      ...props,
+      play: playValue,
+    });
+  };
 
   useEffect(() => {
-    animationName = createRandomName();
+    const name = createRandomName();
     const { styleTag, index } = createTag({ animationName, keyframes });
-    localStyleTag = styleTag;
-    localIndex = index;
+    const localStyleTag = styleTag;
+    const localIndex = index;
+
+    setPlay({
+      ...props,
+      animationName: name,
+    });
 
     return () => {
       localStyleTag.sheet.deleteRule(localIndex);
     };
   }, []);
 
-  const style =
-    propPlay || playState
-      ? {
-          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationName}`,
-        }
-      : null;
+  const style = animateProps.play
+    ? {
+        animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+          animateProps.animationName
+        }`,
+      }
+    : null;
 
-  return [style, setPlay];
+  return [
+    {
+      style,
+      play: animateProps.play,
+    },
+    playHook,
+  ];
 }

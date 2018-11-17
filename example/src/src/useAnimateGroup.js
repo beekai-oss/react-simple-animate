@@ -4,8 +4,9 @@ import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
 import attributesGenerator from './utils/attributesGenerator';
 
+let localAnimationNames = [];
+
 export default function useAnimateGroup(props) {
-  const animationNames = [];
   const localStyleTags = [];
   const localIndexes = [];
   let nextDelaySeconds = 0;
@@ -22,10 +23,10 @@ export default function useAnimateGroup(props) {
   const { play } = animateProps;
 
   useEffect(() => {
-    props.forEach(({ keyframes = false }) => {
+    props.forEach(({ keyframes = false }, i) => {
       if (keyframes) {
         const animationName = createRandomName();
-        animationNames.push(animationName);
+        localAnimationNames[i] = animationName;
         const { styleTag, index } = createTag({ animationName, keyframes });
         localStyleTags.push(styleTag);
         localIndexes.push(index);
@@ -36,6 +37,8 @@ export default function useAnimateGroup(props) {
       localStyleTags.forEach((localStyleTag, i) => {
         localStyleTag.sheet.deleteRule(localIndexes[i]);
       });
+
+      localAnimationNames = [];
     };
   }, []);
 
@@ -54,16 +57,15 @@ export default function useAnimateGroup(props) {
 
     nextDelaySeconds = durationSeconds + delaySeconds - overlaySeconds;
 
-    if (typeof keyframes === 'string') {
+    if (keyframes) {
       return play
         ? {
             animation: `${durationSeconds}s ${easeType} ${
               i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds
-            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationNames[i]}`,
+            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${localAnimationNames[i]}`,
           }
         : null;
     }
-    console.log(play);
 
     return attributesGenerator(
       { ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds }, play },
@@ -75,6 +77,7 @@ export default function useAnimateGroup(props) {
   return [
     {
       styles,
+      animationNames: localAnimationNames,
       play,
     },
     playHook,

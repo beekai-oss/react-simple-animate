@@ -37,14 +37,21 @@ export default function DemoObject({
   keys,
   clickHandler,
 }) {
-  const [{ play: playValue, style }, playMethod] = useAnimate({
-    keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
-  });
+  // const [{ play: playValue, style }, playMethod] = useAnimate({
+  //   keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
+  // });
 
-  const [styles, playMethod1] = useAnimateGroup([
+  const [{ styles, play: playValue }, playMethod1] = useAnimateGroup([
     {
       startStyle: { opacity: 0 },
       endStyle: { opacity: 1 },
+    },
+    {
+      startStyle: { opacity: 0 },
+      endStyle: { opacity: 1 },
+    },
+    {
+      keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
     },
   ]);
 
@@ -52,7 +59,12 @@ export default function DemoObject({
 
   return (
     <div className="DemoObject-container">
-      <div style={style}>test</div>
+      {/*<div style={style}>test</div>*/}
+      {styles.map((style, i) => (
+        <div key={i} style={style}>
+          test
+        </div>
+      ))}
       <button onClick={() => playMethod1(!playValue)}>what</button>
       <Animate
         play={count > 1}

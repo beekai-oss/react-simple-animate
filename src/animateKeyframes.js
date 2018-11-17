@@ -30,6 +30,8 @@ type State = {
 };
 
 export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
+  static displayName = 'AnimateKeyframes';
+  
   static defaultProps = {
     durationSeconds: 0.3,
     delaySeconds: 0,

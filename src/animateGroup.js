@@ -27,7 +27,7 @@ export const AnimateContext = React.createContext({
 });
 
 export default class AnimateGroup extends React.PureComponent<Props, State> {
-  static displayName = 'ReactSimpleAnimateGroup';
+  static displayName = 'AnimateGroup';
 
   static defaultProps = {
     sequences: [],

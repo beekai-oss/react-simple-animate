@@ -19,6 +19,7 @@
 - [Animate](https://react-simple-animate.now.sh/animate)
 - [AnimateKeyframes](https://react-simple-animate.now.sh/animate-keyframes)
 - [AnimateGroup](https://react-simple-animate.now.sh/animate-group)
+- [Custom Hooks](https://react-simple-animate.now.sh/hooks)
 - [Advanced](https://react-simple-animate.now.sh/advanced)
 
 ## Quick start

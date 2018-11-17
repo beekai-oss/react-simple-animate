@@ -1,6 +1,7 @@
 import React from 'react';
 import { Animate } from 'react-simple-animate';
 import useAnimate from './src/useAnimateKeyframes';
+import useAnimateGroup from './src/useAnimateGroup';
 import Typography from '@material-ui/core/Typography';
 import './DemoObject.css';
 
@@ -40,10 +41,19 @@ export default function DemoObject({
     keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
   });
 
+  const [styles, playMethod1] = useAnimateGroup([
+    {
+      startStyle: { opacity: 0 },
+      endStyle: { opacity: 1 },
+    },
+  ]);
+
+  console.log('styles', styles);
+
   return (
     <div className="DemoObject-container">
       <div style={style}>test</div>
-      <button onClick={() => playMethod(!playValue)}>what</button>
+      <button onClick={() => playMethod1(!playValue)}>what</button>
       <Animate
         play={count > 1}
         startStyle={{ startStyle: 0, maxHeight: 0, overflow: 'hidden' }}

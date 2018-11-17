@@ -14,7 +14,7 @@ export default function useAnimateKeyframes(props) {
     fillMode,
     playState: stylePlayState,
   } = props;
-  let animationName;
+  let animationName = '';
   let localStyleTag;
   let localIndex;
 
@@ -29,14 +29,12 @@ export default function useAnimateKeyframes(props) {
     return () => {
       localStyleTag.sheet.deleteRule(localIndex);
     };
-  });
+  }, []);
 
   const style =
     propPlay || playState
       ? {
-          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${
-            this.animationName
-          }`,
+          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationName}`,
         }
       : null;
 

@@ -133,7 +133,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   render() {
     const { tag = 'div', children, render } = this.props;
 
-    const props = attributesGenerator(this.props, this.state, this.isMountWithPlay);
+    const props = attributesGenerator(this.props, this.state.willComplete, this.isMountWithPlay);
     return render ? render(props) : React.createElement(tag, props, children);
   }
 }

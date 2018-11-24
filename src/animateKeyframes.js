@@ -7,7 +7,7 @@ import type { AnimationStateType } from './animate';
 
 export type Keyframes = Array<Object>;
 
-type Props = {
+export type AnimateKeyframes = {
   keyframes: Keyframes,
   easeType?: string,
   durationSeconds?: number,
@@ -29,9 +29,9 @@ type State = {
   play: boolean,
 };
 
-export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
+export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframes, State> {
   static displayName = 'AnimateKeyframes';
-  
+
   static defaultProps = {
     durationSeconds: 0.3,
     delaySeconds: 0,
@@ -61,7 +61,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     }
   }
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+  static getDerivedStateFromProps(nextProps: AnimateKeyframes, prevState: State) {
     const { animationStates, play, sequenceId, sequenceIndex } = nextProps;
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
@@ -123,7 +123,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
 }
 
 // $FlowIgnoreLine: flow complain about React.forwardRef disable for now
-export default React.forwardRef((props: Props, ref) => (
+export default React.forwardRef((props: AnimateKeyframes, ref) => (
   <AnimateContext.Consumer>
     {({ animationStates = {}, register = undefined }) => (
       <AnimateKeyframesChild {...{ ...props, animationStates, register }} forwardedRef={ref} />

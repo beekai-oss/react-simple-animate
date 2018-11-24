@@ -61,7 +61,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     play,
   }: {
     totalDuration: number,
-    id: string,
+    id: number | string,
     restAttributes: AnimationType,
     play: boolean,
   }) => {

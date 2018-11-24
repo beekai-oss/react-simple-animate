@@ -1,4 +1,5 @@
 // @flow
+// $FlowIgnoreLine
 import { useEffect, useState } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
@@ -69,7 +70,7 @@ export default function useAnimateGroup(props) {
 
     return attributesGenerator(
       { ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds }, play },
-      { willComplete: false },
+      false,
       false,
     ).style;
   });

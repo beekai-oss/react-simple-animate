@@ -1,9 +1,14 @@
 // @flow
+// $FlowIgnoreLine
 import { useState, useEffect } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
+// import type { AnimationType } from './animate';
+// import type { AnimateKeyframes } from './animateKeyframes';
 
-export default function useAnimateKeyframes(props) {
+// AnimationType | AnimateKeyframes
+
+export default function useAnimateKeyframes(props: any) {
   const {
     durationSeconds = 0.3,
     delaySeconds = 0,
@@ -18,7 +23,7 @@ export default function useAnimateKeyframes(props) {
 
   const [animateProps, setPlay] = useState(props);
 
-  const playHook = playValue => {
+  const playHook = (playValue: boolean) => {
     setPlay({
       ...props,
       play: playValue,

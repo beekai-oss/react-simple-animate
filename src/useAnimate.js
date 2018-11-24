@@ -1,9 +1,11 @@
 // @flow
+// $FlowIgnoreLine
 import { useState, useEffect } from 'react';
 import attributesGenerator from './utils/attributesGenerator';
+import type { AnimationType } from './animate';
 
 export default function useAnimate(
-  props = {
+  props: AnimationType = {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
@@ -42,7 +44,7 @@ export default function useAnimate(
 
   return [
     {
-      style: attributesGenerator({ ...props, play }, { willComplete }).style,
+      style: attributesGenerator({ ...props, play }, willComplete).style,
       play,
     },
     playHook,

@@ -21,7 +21,7 @@ type State = {
   animationStates?: AnimationStateType,
 };
 
-export const AnimateContext = React.createContext({
+export const AnimateContext: any = React.createContext({
   animationStates: {},
   register: undefined,
 });
@@ -84,10 +84,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   calculateSequences = () => {
     const { sequences, reverseSequences, play } = this.props;
-    const sequencesToAnimate: any = Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
-    const reverseSequencesToAnimate: any = Array.isArray(reverseSequences) && reverseSequences.length
-      ? reverseSequences
-      : [...sequencesToAnimate].reverse();
+    const sequencesToAnimate: any =
+      Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
+    const reverseSequencesToAnimate: any =
+      Array.isArray(reverseSequences) && reverseSequences.length ? reverseSequences : [...sequencesToAnimate].reverse();
 
     return (play ? sequencesToAnimate : reverseSequencesToAnimate).reduce((previous, current, currentIndex) => {
       const { sequenceId, sequenceIndex, ...restAttributes } = current;

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
 // import type { AnimationType } from './animate';
-// import type { AnimateKeyframes } from './animateKeyframes';
+// import type { AnimateKeyframesProps } from './animateKeyframes';
 
 // AnimationType | AnimateKeyframes
 

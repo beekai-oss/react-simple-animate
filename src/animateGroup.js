@@ -21,9 +21,12 @@ type State = {
   animationStates?: AnimationStateType,
 };
 
-export const AnimateContext: any = React.createContext({
+export const AnimateContext = React.createContext<{
+  animationStates?: AnimationStateType,
+  register: (any) => void,
+}>({
   animationStates: {},
-  register: undefined,
+  register: () => {},
 });
 
 export default class AnimateGroup extends React.PureComponent<Props, State> {

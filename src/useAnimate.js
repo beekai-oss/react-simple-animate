@@ -2,15 +2,15 @@
 // $FlowIgnoreLine
 import { useState, useEffect } from 'react';
 import attributesGenerator from './utils/attributesGenerator';
-import type { AnimationType } from './animate';
+import type { Props } from './animate';
 
 export default function useAnimate(
-  props: AnimationType = {
+  props: Props = {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
-    sequenceId: undefined,
-    sequenceIndex: undefined,
+    play: false,
+    endStyle: {},
   },
 ) {
   let completeTimeout;

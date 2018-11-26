@@ -33,7 +33,7 @@ export default function useAnimateKeyframes(props: any) {
   useEffect(() => {
     const name = createRandomName();
     const { styleTag, index } = createTag({ animationName, keyframes });
-    const localStyleTag = styleTag;
+    const localStyleTag: any = styleTag;
     const localIndex = index;
 
     setPlay({
@@ -42,6 +42,7 @@ export default function useAnimateKeyframes(props: any) {
     });
 
     return () => {
+      if (!localStyleTag.sheet.deleteRule) return;
       localStyleTag.sheet.deleteRule(localIndex);
     };
   }, []);

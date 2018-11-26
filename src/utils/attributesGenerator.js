@@ -2,11 +2,7 @@
 import type { Props } from '../animate';
 import mapSequenceOverProps from './mapSequenceOverProps';
 
-export default function attributesGenerator(
-  props: Props,
-  willComplete: boolean,
-  isMountWithPlay: boolean,
-): Object {
+export default function attributesGenerator(props: Props, willComplete: boolean, isMountWithPlay: boolean = false): Object {
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {
@@ -33,7 +29,11 @@ export default function attributesGenerator(
       transition = '';
     } else if (
       play ||
-      ((id || id === 0) && Object.keys(animationStates).length && animationStates[id] && animationStates[id].play)
+      ((id || id === 0) &&
+        animationStates &&
+        Object.keys(animationStates).length &&
+        animationStates[id] &&
+        animationStates[id].play)
     ) {
       style = endStyle;
     }

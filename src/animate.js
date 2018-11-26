@@ -16,10 +16,10 @@ export type AnimationType = {
   reverseDurationSeconds?: number,
   delaySeconds?: number,
   children?: React.Component<*>,
-  forwardedRef: any,
+  forwardedRef?: any,
 };
 
-export type AnimationStateType = { [string | number]: AnimationType } | {};
+export type AnimationStateType = { [string | number]: AnimationType };
 
 export type Props = {
   easeType?: string,
@@ -30,7 +30,7 @@ export type Props = {
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
-  animationStates: AnimationStateType,
+  animationStates?: AnimationStateType,
 } & AnimationType;
 
 export type State = {
@@ -47,6 +47,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     easeType: 'linear',
     sequenceId: undefined,
     sequenceIndex: undefined,
+    animationStates: undefined,
   };
 
   isMountWithPlay: boolean = false;
@@ -106,7 +107,12 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (play || (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].play))
+      (play ||
+        (id &&
+          animationStates &&
+          Object.keys(animationStates).length &&
+          animationStates[id] &&
+          animationStates[id].play))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {

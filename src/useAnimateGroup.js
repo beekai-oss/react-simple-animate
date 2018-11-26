@@ -7,14 +7,14 @@ import attributesGenerator from './utils/attributesGenerator';
 
 let localAnimationNames = [];
 
-export default function useAnimateGroup(props) {
+export default function useAnimateGroup(props: any) {
   const localStyleTags = [];
   const localIndexes = [];
   let nextDelaySeconds = 0;
 
   const [animateProps, setPlay] = useState(props);
 
-  const playHook = playValue => {
+  const playHook = (playValue: boolean) => {
     setPlay({
       ...props,
       play: playValue,
@@ -36,6 +36,7 @@ export default function useAnimateGroup(props) {
 
     return () => {
       localStyleTags.forEach((localStyleTag, i) => {
+        // $FlowIgnoreLine
         localStyleTag.sheet.deleteRule(localIndexes[i]);
       });
 

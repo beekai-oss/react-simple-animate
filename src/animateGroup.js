@@ -23,7 +23,7 @@ type State = {
 
 export const AnimateContext = React.createContext<{
   animationStates?: AnimationStateType,
-  register: (any) => void,
+  register: any => void,
 }>({
   animationStates: {},
   register: () => {},

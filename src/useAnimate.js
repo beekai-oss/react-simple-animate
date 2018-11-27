@@ -14,9 +14,9 @@ export default function useAnimate(
   },
 ) {
   let completeTimeout;
-  const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0.3 } = props;
+  const { onComplete, onCompleteStyle, delaySeconds, durationSeconds } = props;
   const [animateProps, setPlay] = useState(props);
-  const playHook = (play: boolean) => {
+  const playFunction = (play: boolean) => {
     setPlay({
       ...props,
       play,
@@ -47,6 +47,6 @@ export default function useAnimate(
       style: attributesGenerator({ ...props, play }, willComplete).style,
       play,
     },
-    playHook,
+    playFunction,
   ];
 }

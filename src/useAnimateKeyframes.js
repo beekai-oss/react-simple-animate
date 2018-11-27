@@ -3,12 +3,9 @@
 import { useState, useEffect } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
-// import type { AnimationType } from './animate';
-// import type { AnimateKeyframesProps } from './animateKeyframes';
+import type { AnimateKeyframesProps } from './animateKeyframes';
 
-// AnimationType | AnimateKeyframes
-
-export default function useAnimateKeyframes(props: any) {
+export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
   const {
     durationSeconds = 0.3,
     delaySeconds = 0,
@@ -18,12 +15,12 @@ export default function useAnimateKeyframes(props: any) {
     iterationCount = 1,
     playState = 'running',
     keyframes,
-    animationName,
   } = props;
 
   const [animateProps, setPlay] = useState(props);
+  const { play, animationName } = animateProps;
 
-  const playHook = (playValue: boolean) => {
+  const playFunction = (playValue: boolean) => {
     setPlay({
       ...props,
       play: playValue,
@@ -32,7 +29,7 @@ export default function useAnimateKeyframes(props: any) {
 
   useEffect(() => {
     const name = createRandomName();
-    const { styleTag, index } = createTag({ animationName, keyframes });
+    const { styleTag, index } = createTag({ animationName: name, keyframes });
     const localStyleTag: any = styleTag;
     const localIndex = index;
 
@@ -47,19 +44,17 @@ export default function useAnimateKeyframes(props: any) {
     };
   }, []);
 
-  const style = animateProps.play
+  const style = play
     ? {
-        animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-          animateProps.animationName
-        }`,
+        animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationName}`,
       }
     : null;
 
   return [
     {
       style,
-      play: animateProps.play,
+      play,
     },
-    playHook,
+    playFunction,
   ];
 }

@@ -4,19 +4,34 @@ import { useEffect, useState } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
 import attributesGenerator from './utils/attributesGenerator';
+import type { Keyframes } from './animateKeyframes';
+import type { Style } from './animate';
 
 let localAnimationNames = [];
 
-export default function useAnimateGroup(props: any) {
+export default function useAnimateGroup(
+  props: Array<{
+    keyframes?: Keyframes,
+    durationSeconds?: number,
+    easeType?: string,
+    delaySeconds?: number,
+    iterationCount?: string,
+    direction?: string,
+    fillMode?: string,
+    playState?: string,
+    overlaySeconds?: number,
+    endStyle?: Style,
+  }> = [],
+) {
   const localStyleTags = [];
   const localIndexes = [];
   let nextDelaySeconds = 0;
 
   const [animateProps, setPlay] = useState(props);
 
-  const playHook = (playValue: boolean) => {
+  const playFunction = (playValue: boolean) => {
     setPlay({
-      ...props,
+      props: [...props],
       play: playValue,
     });
   };
@@ -44,7 +59,9 @@ export default function useAnimateGroup(props: any) {
     };
   }, []);
 
-  const styles = props.map((prop, i) => {
+  const styles: Array<?{
+    [string]: string,
+  }> = props.map((prop, i) => {
     const {
       durationSeconds = 0.3,
       keyframes = false,
@@ -69,11 +86,10 @@ export default function useAnimateGroup(props: any) {
         : null;
     }
 
-    return attributesGenerator(
-      { ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds }, play },
-      false,
-      false,
-    ).style;
+    return attributesGenerator({
+      ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds },
+      play,
+    }).style;
   });
 
   return [
@@ -82,6 +98,6 @@ export default function useAnimateGroup(props: any) {
       animationNames: localAnimationNames,
       play,
     },
-    playHook,
+    playFunction,
   ];
 }

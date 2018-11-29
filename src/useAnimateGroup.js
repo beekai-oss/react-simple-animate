@@ -23,8 +23,6 @@ export default function useAnimateGroup(
     endStyle?: Style,
   }> = [],
 ) {
-  const localStyleTags = [];
-  const localIndexes = [];
   let nextDelaySeconds = 0;
 
   const [animateProps, setPlay] = useState(props);
@@ -39,6 +37,9 @@ export default function useAnimateGroup(
   const { play } = animateProps;
 
   useEffect(() => {
+    const localStyleTags = [];
+    const localIndexes = [];
+
     props.forEach(({ keyframes = false }, i) => {
       if (keyframes) {
         const animationName = createRandomName();

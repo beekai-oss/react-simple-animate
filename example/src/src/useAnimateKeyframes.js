@@ -1,0 +1,60 @@
+// @flow
+// $FlowIgnoreLine
+import { useState, useEffect } from 'react';
+import createRandomName from './utils/createRandomName';
+import createTag from './style/createTag';
+import type { AnimateKeyframesProps } from './animateKeyframes';
+
+export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
+  const {
+    durationSeconds = 0.3,
+    delaySeconds = 0,
+    easeType = 'linear',
+    direction = 'normal',
+    fillMode = 'none',
+    iterationCount = 1,
+    playState = 'running',
+    keyframes,
+  } = props;
+
+  const [animateProps, setPlay] = useState(props);
+  const { play, animationName } = animateProps;
+
+  const playFunction = (playValue: boolean) => {
+    setPlay({
+      ...props,
+      play: playValue,
+    });
+  };
+
+  useEffect(() => {
+    const name = createRandomName();
+    const { styleTag, index } = createTag({ animationName: name, keyframes });
+    const localStyleTag: any = styleTag;
+    const localIndex = index;
+
+    setPlay({
+      ...props,
+      animationName: name,
+    });
+
+    return () => {
+      if (!localStyleTag.sheet.deleteRule) return;
+      localStyleTag.sheet.deleteRule(localIndex);
+    };
+  }, []);
+
+  const style = play
+    ? {
+        animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationName}`,
+      }
+    : null;
+
+  return [
+    {
+      style,
+      play,
+    },
+    playFunction,
+  ];
+}

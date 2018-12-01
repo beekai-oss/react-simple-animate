@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Animate } from 'react-simple-animate';
-import useAnimate from './src/useAnimateKeyframes';
-import useAnimateGroup from './src/useAnimateGroup';
+import useAnimate from './src/useAnimate';
+// import useAnimateGroup from './src/useAnimateGroup';
 import Typography from '@material-ui/core/Typography';
 import './DemoObject.css';
 
@@ -41,31 +41,43 @@ export default function DemoObject({
   //   keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
   // });
 
-  const [{ styles, play: playValue }, playMethod1] = useAnimateGroup([
-    {
-      startStyle: { opacity: 0 },
-      endStyle: { opacity: 1 },
-    },
-    {
-      startStyle: { opacity: 0 },
-      endStyle: { opacity: 1 },
-    },
-    {
-      keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
-    },
-  ]);
+  // const [{ styles, play: playValue }, playMethod1] = useAnimateGroup([
+  //   {
+  //     startStyle: { opacity: 0 },
+  //     endStyle: { opacity: 1 },
+  //   },
+  //   {
+  //     startStyle: { opacity: 0 },
+  //     endStyle: { opacity: 1 },
+  //   },
+  //   {
+  //     keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
+  //   },
+  // ]);
 
-  console.log('styles', styles);
+  const [{ play: playValue, style }, playMethod] = useAnimate({
+    durationSeconds: 1,
+    startStyle: {
+      opacity: 0,
+    },
+    endStyle: {
+      endStyle: 1,
+    },
+    onComplete: () => {
+      console.log('done');
+    },
+    onCompleteStyle: {
+      background: 'red',
+    },
+  });
+
+  const [state, toggle] = useState(true)
 
   return (
     <div className="DemoObject-container">
-      {/*<div style={style}>test</div>*/}
-      {styles.map((style, i) => (
-        <div key={i} style={style}>
-          test
-        </div>
-      ))}
-      <button onClick={() => playMethod1(!playValue)}>what</button>
+      <div style={style}>test</div>
+      <button onClick={() => playMethod(!playValue)}>what</button>
+      <button onClick={() => toggle(!state)}>delete</button>
       <Animate
         play={count > 1}
         startStyle={{ startStyle: 0, maxHeight: 0, overflow: 'hidden' }}

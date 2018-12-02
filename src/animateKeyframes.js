@@ -77,7 +77,9 @@ export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesP
   }
 
   componentWillUnmount() {
-    this.styleTag.sheet.deleteRule(this.index);
+    try {
+      this.styleTag.sheet.deleteRule(this.index);
+    } catch (e) {}
   }
 
   createStyleAndTag = () => {
@@ -112,10 +114,10 @@ export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesP
     const style =
       play || this.state.play
         ? {
-          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-            this.animationName
+            animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+              this.animationName
             }`,
-        }
+          }
         : null;
 
     return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;

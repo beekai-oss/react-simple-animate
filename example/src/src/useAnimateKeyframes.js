@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './style/createTag';
 import type { AnimateKeyframesProps } from './animateKeyframes';
+import deleteRules from './style/deleteRules';
 
 export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
   const {
@@ -18,20 +19,21 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
   } = props;
 
   const [animateProps, setPlay] = useState(props);
-  const { play, animationName } = animateProps;
 
-  const playFunction = (playValue: boolean) => {
+  const playFunction = (playValue: boolean, animationName: string) => {
     setPlay({
       ...props,
+      animationName,
       play: playValue,
     });
   };
 
+  const { play, animationName } = animateProps;
+
   useEffect(() => {
     const name = createRandomName();
-    const { styleTag, index } = createTag({ animationName: name, keyframes });
+    const { styleTag } = createTag({ animationName: name, keyframes });
     const localStyleTag: any = styleTag;
-    const localIndex = index;
 
     setPlay({
       ...props,
@@ -39,8 +41,7 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     });
 
     return () => {
-      if (!localStyleTag.sheet.deleteRule) return;
-      localStyleTag.sheet.deleteRule(localIndex);
+      deleteRules(localStyleTag.sheet, name);
     };
   }, []);
 
@@ -55,6 +56,6 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
       style,
       play,
     },
-    playFunction,
+    playValue => playFunction(playValue, animationName),
   ];
 }

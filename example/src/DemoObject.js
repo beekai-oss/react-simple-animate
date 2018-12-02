@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Animate } from 'react-simple-animate';
-import useAnimate from './src/useAnimate';
+import useAnimateKeyframes from './src/useAnimateKeyframes';
 // import useAnimateGroup from './src/useAnimateGroup';
 import Typography from '@material-ui/core/Typography';
 import './DemoObject.css';
@@ -55,28 +55,25 @@ export default function DemoObject({
   //   },
   // ]);
 
-  const [{ play: playValue, style }, playMethod] = useAnimate({
+  const [{ play: playValue, style }, playMethod] = useAnimateKeyframes({
     durationSeconds: 1,
-    startStyle: {
-      opacity: 0,
-    },
-    endStyle: {
-      endStyle: 1,
-    },
-    onComplete: () => {
-      console.log('done');
-    },
-    onCompleteStyle: {
-      background: 'red',
-    },
+    fillMode: 'forwards',
+    keyframes: ['opacity: 1,', 'opacity: 0'],
   });
 
-  const [state, toggle] = useState(true)
+  const [what, playMethod2] = useAnimateKeyframes({
+    durationSeconds: 1,
+    fillMode: 'forwards',
+    keyframes: ['opacity: 1,', 'opacity: 0'],
+  });
+
+  const [state, toggle] = useState(true);
 
   return (
     <div className="DemoObject-container">
       <div style={style}>test</div>
-      <button onClick={() => playMethod(!playValue)}>what</button>
+      <div style={what.style}>test</div>
+      <button onClick={() => { playMethod(!playValue); playMethod2(!playValue);}}>what</button>
       <button onClick={() => toggle(!state)}>delete</button>
       <Animate
         play={count > 1}

@@ -13,6 +13,7 @@ exports[`AnimateWrapper should render correctly by start animation with minimum 
   }
   forwardedRef={null}
   play={true}
+  register={[Function]}
 >
   test
 </div>
@@ -31,6 +32,7 @@ exports[`AnimateWrapper should render correctly with minimum props 1`] = `
   }
   forwardedRef={null}
   play={false}
+  register={[Function]}
 >
   test
 </div>
@@ -49,6 +51,7 @@ exports[`AnimateWrapper should render correctly with render props 1`] = `
   }
   forwardedRef={null}
   play={false}
+  register={[Function]}
   render={[Function]}
 >
   what
@@ -68,6 +71,7 @@ exports[`AnimateWrapper should render custome tag correctly 1`] = `
   }
   forwardedRef={null}
   play={false}
+  register={[Function]}
   tag="li"
 />
 `;

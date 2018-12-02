@@ -3,6 +3,7 @@ import React from 'react';
 import createTag from './style/createTag';
 import createRandomName from './utils/createRandomName';
 import { AnimateContext } from './animateGroup';
+import deleteRule from './style/deleteRule';
 import type { AnimationStateType } from './animate';
 
 export type Keyframes = Array<Object>;
@@ -77,9 +78,7 @@ export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesP
   }
 
   componentWillUnmount() {
-    try {
-      this.styleTag.sheet.deleteRule(this.index);
-    } catch (e) {}
+    deleteRule(this.styleTag.sheet, this.animationName);
   }
 
   createStyleAndTag = () => {

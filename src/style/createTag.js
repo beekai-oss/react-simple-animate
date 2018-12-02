@@ -3,7 +3,7 @@ import createStyle from './createStyle';
 import type { Keyframes } from '../animateKeyframes';
 
 export default function createTag({ keyframes, animationName }: { keyframes: Keyframes, animationName: string }) {
-  let styleTag = document.querySelector('style[data-id-rsi]');
+  let styleTag = document.querySelector('style[data-id=rsi]');
 
   if (!styleTag) {
     styleTag = document.createElement('style');

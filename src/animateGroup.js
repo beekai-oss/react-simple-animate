@@ -21,8 +21,10 @@ type State = {
   animationStates?: AnimationStateType,
 };
 
-// $FlowIgnoreLine
-export const AnimateContext = React.createContext({
+export const AnimateContext = React.createContext<{
+  animationStates?: AnimationStateType,
+  register: any => void,
+}>({
   animationStates: {},
   register: () => {},
 });
@@ -62,7 +64,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     play,
   }: {
     totalDuration: number,
-    id: string | number,
+    id: number | string,
     restAttributes: AnimationType,
     play: boolean,
   }) => {

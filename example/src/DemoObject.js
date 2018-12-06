@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Animate } from 'react-simple-animate';
-import useAnimateKeyframes from './src/useAnimateKeyframes';
-// import useAnimateGroup from './src/useAnimateGroup';
 import Typography from '@material-ui/core/Typography';
 import './DemoObject.css';
 
@@ -37,44 +35,8 @@ export default function DemoObject({
   keys,
   clickHandler,
 }) {
-  // const [{ play: playValue, style }, playMethod] = useAnimate({
-  //   keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
-  // });
-
-  // const [{ styles, play: playValue }, playMethod1] = useAnimateGroup([
-  //   {
-  //     startStyle: { opacity: 0 },
-  //     endStyle: { opacity: 1 },
-  //   },
-  //   {
-  //     startStyle: { opacity: 0 },
-  //     endStyle: { opacity: 1 },
-  //   },
-  //   {
-  //     keyframes: ['transform: translateX(0)', 'transform: translateX(100px)'],
-  //   },
-  // ]);
-
-  const [{ play: playValue, style }, playMethod] = useAnimateKeyframes({
-    durationSeconds: 1,
-    fillMode: 'forwards',
-    keyframes: ['opacity: 1,', 'opacity: 0'],
-  });
-
-  const [what, playMethod2] = useAnimateKeyframes({
-    durationSeconds: 1,
-    fillMode: 'forwards',
-    keyframes: ['opacity: 1,', 'opacity: 0'],
-  });
-
-  const [state, toggle] = useState(true);
-
   return (
     <div className="DemoObject-container">
-      <div style={style}>test</div>
-      <div style={what.style}>test</div>
-      <button onClick={() => { playMethod(!playValue); playMethod2(!playValue);}}>what</button>
-      <button onClick={() => toggle(!state)}>delete</button>
       <Animate
         play={count > 1}
         startStyle={{ startStyle: 0, maxHeight: 0, overflow: 'hidden' }}

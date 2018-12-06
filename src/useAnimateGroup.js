@@ -6,6 +6,7 @@ import createTag from './style/createTag';
 import attributesGenerator from './utils/attributesGenerator';
 import type { Keyframes } from './animateKeyframes';
 import type { Style } from './animate';
+import deleteRules from './style/deleteRules';
 
 let localAnimationNames = [];
 
@@ -37,24 +38,24 @@ export default function useAnimateGroup(
   const { play } = animateProps;
 
   useEffect(() => {
-    const localStyleTags = [];
-    const localIndexes = [];
+    let localStyleTag;
 
     props.forEach(({ keyframes = false }, i) => {
       if (keyframes) {
         const animationName = createRandomName();
         localAnimationNames[i] = animationName;
-        const { styleTag, index } = createTag({ animationName, keyframes });
-        localStyleTags.push(styleTag);
-        localIndexes.push(index);
+        const { styleTag } = createTag({ animationName, keyframes });
+        localStyleTag = styleTag;
       }
     });
 
     return () => {
-      localStyleTags.forEach((localStyleTag, i) => {
-        // $FlowIgnoreLine
-        localStyleTag.sheet.deleteRule(localIndexes[i]);
-      });
+      if (localStyleTag) {
+        localAnimationNames.forEach(name => {
+          // $FlowIgnoreLine
+          deleteRules(localStyleTag.sheet, name);
+        });
+      }
 
       localAnimationNames = [];
     };

@@ -14,7 +14,7 @@ export default function useAnimate(
   },
 ) {
   let completeTimeout;
-  const { onComplete, onCompleteStyle, delaySeconds, durationSeconds } = props;
+  const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0 } = props;
   const [animateProps, setPlay] = useState(props);
   const playFunction = (play: boolean) => {
     setPlay({

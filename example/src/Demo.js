@@ -203,7 +203,7 @@ export default class Demo extends React.Component {
           </Grid>
 
           <Grid item xs={6} md={8}>
-            {!play && <DemoObject {...this.state} clickHandler={item => this.clickHandler(item)} />}
+            <DemoObject {...this.state} clickHandler={item => this.clickHandler(item)} />
           </Grid>
 
           <Grid item xs={12}>

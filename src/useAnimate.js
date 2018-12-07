@@ -44,11 +44,9 @@ export default function useAnimate(
       }
 
       if (play) {
-        if (play) {
-          initialPlayTimer = setTimeout(() => {
-            playFunction(play);
-          }, msToMin(delaySeconds));
-        }
+        initialPlayTimer = setTimeout(() => {
+          playFunction(play);
+        }, msToMin(delaySeconds));
       }
 
       return () => {

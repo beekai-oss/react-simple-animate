@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import attributesGenerator from './utils/attributesGenerator';
 import type { Props } from './animate';
+import msToMin from './utils/msToMin';
 
 type UseAnimate = Props & {
   willComplete?: boolean,
-}
+};
 
 export default function useAnimate(
   props: UseAnimate = {
@@ -18,6 +19,7 @@ export default function useAnimate(
   },
 ) {
   let completeTimeout;
+  let initialPlayTimer;
   const { onComplete, onCompleteStyle, delaySeconds, durationSeconds } = props;
   const [animateProps, setPlay] = useState(props);
   const playFunction = (play: boolean) => {
@@ -38,10 +40,21 @@ export default function useAnimate(
             willComplete: true,
           });
           onComplete && onComplete();
-        }, (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000);
+        }, msToMin(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
       }
 
-      return () => clearTimeout(completeTimeout);
+      if (play) {
+        if (play) {
+          initialPlayTimer = setTimeout(() => {
+            playFunction(play);
+          }, msToMin(delaySeconds));
+        }
+      }
+
+      return () => {
+        clearTimeout(completeTimeout);
+        clearTimeout(initialPlayTimer);
+      };
     },
     [play],
   );

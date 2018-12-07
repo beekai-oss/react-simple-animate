@@ -1,4 +1,6 @@
 // @flow
+import msToMin from './msToMin';
+
 export default ({
   durationSeconds = 0,
   delaySeconds = 0,
@@ -14,6 +16,5 @@ export default ({
 }): number => {
   const duration =
     parseFloat(play ? durationSeconds : reverseDurationSeconds || durationSeconds) + parseFloat(delaySeconds);
-  const withEarlySeconds = duration - parseFloat(overlaySeconds);
-  return withEarlySeconds * 1000;
+  return msToMin(duration - parseFloat(overlaySeconds));
 };

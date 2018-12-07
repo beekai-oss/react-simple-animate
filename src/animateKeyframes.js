@@ -3,7 +3,7 @@ import React from 'react';
 import createTag from './style/createTag';
 import createRandomName from './utils/createRandomName';
 import { AnimateContext } from './animateGroup';
-import deleteRule from './style/deleteRule';
+import deleteRule from './style/deleteRules';
 import type { AnimationStateType } from './animate';
 
 export type Keyframes = Array<Object>;

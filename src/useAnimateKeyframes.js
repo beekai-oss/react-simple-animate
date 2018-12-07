@@ -6,7 +6,11 @@ import createTag from './style/createTag';
 import type { AnimateKeyframesProps } from './animateKeyframes';
 import deleteRules from './style/deleteRules';
 
-export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
+type UseAnimateKeyframesProps = AnimateKeyframesProps & {
+  animationName: string,
+};
+
+export default function useAnimateKeyframes(props: UseAnimateKeyframesProps) {
   const {
     durationSeconds = 0.3,
     delaySeconds = 0,
@@ -20,10 +24,9 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
 
   const [animateProps, setPlay] = useState(props);
 
-  const playFunction = (playValue: boolean, animationName: string) => {
+  const playFunction = (playValue: boolean) => {
     setPlay({
       ...props,
-      animationName,
       play: playValue,
     });
   };
@@ -55,7 +58,8 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     {
       style,
       play,
+      animationName,
     },
-    playValue => playFunction(playValue, animationName),
+    (playValue: boolean) => playFunction(playValue),
   ];
 }

@@ -4,8 +4,12 @@ import { useState, useEffect } from 'react';
 import attributesGenerator from './utils/attributesGenerator';
 import type { Props } from './animate';
 
+type UseAnimate = Props & {
+  willComplete?: boolean,
+}
+
 export default function useAnimate(
-  props: Props = {
+  props: UseAnimate = {
     durationSeconds: 0.3,
     delaySeconds: 0,
     easeType: 'linear',
@@ -14,7 +18,7 @@ export default function useAnimate(
   },
 ) {
   let completeTimeout;
-  const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0 } = props;
+  const { onComplete, onCompleteStyle, delaySeconds, durationSeconds } = props;
   const [animateProps, setPlay] = useState(props);
   const playFunction = (play: boolean) => {
     setPlay({

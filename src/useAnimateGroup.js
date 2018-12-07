@@ -8,10 +8,8 @@ import type { Keyframes } from './animateKeyframes';
 import type { Style } from './animate';
 import deleteRules from './style/deleteRules';
 
-let localAnimationNames = [];
-
-export default function useAnimateGroup(
-  props: Array<{
+export default function useAnimateGroup(props: {
+  animateProps: Array<{
     keyframes?: Keyframes,
     durationSeconds?: number,
     easeType?: string,
@@ -22,31 +20,33 @@ export default function useAnimateGroup(
     playState?: string,
     overlaySeconds?: number,
     endStyle?: Style,
-  }> = [],
-) {
+  }>,
+  play: boolean,
+  animationNames: string,
+}) {
   let nextDelaySeconds = 0;
-
-  const [animateProps, setPlay] = useState(props);
-
+  const [value, setPlay] = useState(props);
   const playFunction = (playValue: boolean) => {
-    setPlay({
-      props: [...props],
-      play: playValue,
-    });
+    setPlay({ animateProps: props.animateProps, play: playValue, animationNames: props.animationNames });
   };
-
-  const { play } = animateProps;
 
   useEffect(() => {
     let localStyleTag;
+    let localAnimationNames = [];
 
-    props.forEach(({ keyframes = false }, i) => {
+    value.animateProps.forEach(({ keyframes = false }, i) => {
       if (keyframes) {
         const animationName = createRandomName();
         localAnimationNames[i] = animationName;
         const { styleTag } = createTag({ animationName, keyframes });
         localStyleTag = styleTag;
       }
+    });
+
+    setPlay({
+      animateProps: value.animateProps,
+      play: value.play,
+      animationNames: localAnimationNames,
     });
 
     return () => {
@@ -63,7 +63,7 @@ export default function useAnimateGroup(
 
   const styles: Array<?{
     [string]: string,
-  }> = props.map((prop, i) => {
+  }> = value.animateProps.map((prop, i) => {
     const {
       durationSeconds = 0.3,
       keyframes = false,
@@ -79,26 +79,26 @@ export default function useAnimateGroup(
     nextDelaySeconds = durationSeconds + delaySeconds - overlaySeconds;
 
     if (keyframes) {
-      return play
+      return value.play
         ? {
             animation: `${durationSeconds}s ${easeType} ${
               i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds
-            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${localAnimationNames[i]}`,
+            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${value.animationNames[i]}`,
           }
         : null;
     }
 
     return attributesGenerator({
       ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds },
-      play,
+      play: value.play,
     }).style;
   });
 
   return [
     {
       styles,
-      animationNames: localAnimationNames,
-      play,
+      animationNames: value.animationNames,
+      play: value.play,
     },
     playFunction,
   ];

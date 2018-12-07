@@ -9,7 +9,7 @@ import type { Style } from './animate';
 import deleteRules from './style/deleteRules';
 
 export default function useAnimateGroup(props: {
-  animateProps: Array<{
+  sequences: Array<{
     keyframes?: Keyframes,
     durationSeconds?: number,
     easeType?: string,
@@ -25,16 +25,16 @@ export default function useAnimateGroup(props: {
   animationNames: string,
 }) {
   let nextDelaySeconds = 0;
-  const [value, setPlay] = useState(props);
+  const [{ sequences, play, animationNames }, setPlay] = useState(props);
   const playFunction = (playValue: boolean) => {
-    setPlay({ animateProps: props.animateProps, play: playValue, animationNames: props.animationNames });
+    setPlay({ sequences, play: playValue, animationNames });
   };
 
   useEffect(() => {
     let localStyleTag;
     let localAnimationNames = [];
 
-    value.animateProps.forEach(({ keyframes = false }, i) => {
+    sequences.forEach(({ keyframes = false }, i) => {
       if (keyframes) {
         const animationName = createRandomName();
         localAnimationNames[i] = animationName;
@@ -44,8 +44,8 @@ export default function useAnimateGroup(props: {
     });
 
     setPlay({
-      animateProps: value.animateProps,
-      play: value.play,
+      sequences,
+      play,
       animationNames: localAnimationNames,
     });
 
@@ -63,7 +63,7 @@ export default function useAnimateGroup(props: {
 
   const styles: Array<?{
     [string]: string,
-  }> = value.animateProps.map((prop, i) => {
+  }> = sequences.map((prop, i) => {
     const {
       durationSeconds = 0.3,
       keyframes = false,
@@ -79,26 +79,26 @@ export default function useAnimateGroup(props: {
     nextDelaySeconds = durationSeconds + delaySeconds - overlaySeconds;
 
     if (keyframes) {
-      return value.play
+      return play
         ? {
             animation: `${durationSeconds}s ${easeType} ${
               i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds
-            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${value.animationNames[i]}`,
+            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationNames[i]}`,
           }
         : null;
     }
 
     return attributesGenerator({
       ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds },
-      play: value.play,
+      play,
     }).style;
   });
 
   return [
     {
       styles,
-      animationNames: value.animationNames,
-      play: value.play,
+      animationNames,
+      play,
     },
     playFunction,
   ];

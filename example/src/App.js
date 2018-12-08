@@ -12,8 +12,27 @@ export default function App() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="title" color="inherit">
-            React Simple Animate
+            <a
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+              }}
+              href="http://react-simple-animate.now.sh"
+            >
+              React Simple Animate
+            </a>
           </Typography>
+
+          <a href="http://react-simple-animate.now.sh">
+            <Button
+              style={{
+                color: 'white',
+              }}
+              color="default"
+            >
+              Documentation
+            </Button>
+          </a>
 
           <a href="https://medium.com/jsdownunder/react-ui-animation-made-simple-c2ff98056659">
             <Button

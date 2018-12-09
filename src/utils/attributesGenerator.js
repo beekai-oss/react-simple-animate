@@ -1,8 +1,8 @@
 // @flow
-import type { State, Props } from '../animate';
+import type { Props } from '../animate';
 import mapSequenceOverProps from './mapSequenceOverProps';
 
-export default function attributesGenerator(props: Props, { willComplete }: State, isMountWithPlay: boolean): Object {
+export default function attributesGenerator(props: Props, willComplete: boolean = false, isMountWithPlay: mixed = false): Object {
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {
@@ -30,6 +30,7 @@ export default function attributesGenerator(props: Props, { willComplete }: Stat
     } else if (
       play ||
       ((id || id === 0) &&
+        animationStates &&
         Object.keys(animationStates).length &&
         animationStates[id] &&
         animationStates[id].play)

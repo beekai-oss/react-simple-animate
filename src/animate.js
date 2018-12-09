@@ -2,6 +2,7 @@
 import React from 'react';
 import attributesGenerator from './utils/attributesGenerator';
 import { AnimateContext } from './animateGroup';
+import msToSec from './utils/msToSec';
 
 export type Style = { [string]: string | number };
 
@@ -16,10 +17,10 @@ export type AnimationType = {
   reverseDurationSeconds?: number,
   delaySeconds?: number,
   children?: React.Component<*>,
-  forwardedRef: any,
+  forwardedRef?: any,
 };
 
-export type AnimationStateType = { [string | number]: AnimationType } | {};
+export type AnimationStateType = { [string | number]: AnimationType };
 
 export type Props = {
   easeType?: string,
@@ -30,7 +31,7 @@ export type Props = {
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
-  animationStates: AnimationStateType,
+  animationStates?: AnimationStateType,
 } & AnimationType;
 
 export type State = {
@@ -47,6 +48,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     easeType: 'linear',
     sequenceId: undefined,
     sequenceIndex: undefined,
+    animationStates: undefined,
   };
 
   isMountWithPlay: boolean = false;
@@ -63,7 +65,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
       this.initialPlayTimer = setTimeout(() => {
         this.isMountWithPlay = false;
         this.forceUpdate();
-      }, (props.delaySeconds || 0) * 1000);
+      }, msToSec(props.delaySeconds));
     }
   }
 
@@ -106,7 +108,12 @@ export class AnimateChild extends React.PureComponent<Props, State> {
     if (
       (onComplete || onCompleteStyle) &&
       !this.state.willComplete &&
-      (play || (id && Object.keys(animationStates).length && animationStates[id] && animationStates[id].play))
+      (play ||
+        (id &&
+          animationStates &&
+          Object.keys(animationStates).length &&
+          animationStates[id] &&
+          animationStates[id].play))
     ) {
       clearTimeout(this.completeTimeout);
       this.completeTimeout = setTimeout(() => {
@@ -114,7 +121,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
           willComplete: true,
         });
         onComplete && onComplete();
-      }, (parseFloat(delaySeconds) + parseFloat(durationSeconds)) * 1000);
+      }, msToSec(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
     }
   }
 
@@ -133,7 +140,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   render() {
     const { tag = 'div', children, render } = this.props;
 
-    const props = attributesGenerator(this.props, this.state, this.isMountWithPlay);
+    const props = attributesGenerator(this.props, this.state.willComplete, this.isMountWithPlay);
     return render ? render(props) : React.createElement(tag, props, children);
   }
 }

@@ -5,8 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^3.2.2",
     "@material-ui/icons": "^3.0.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "16.7.0-alpha.0",
+    "react-dom": "16.7.0-alpha.0",
     "react-scripts": "^2.0.5",
     "react-simple-animate": "2.3.0-beta.3",
     "react-syntax-highlight": "^15.3.1"

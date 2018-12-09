@@ -3,12 +3,12 @@ import React from 'react';
 import createTag from './style/createTag';
 import createRandomName from './utils/createRandomName';
 import { AnimateContext } from './animateGroup';
-import deleteRule from './style/deleteRule';
+import deleteRule from './style/deleteRules';
 import type { AnimationStateType } from './animate';
 
 export type Keyframes = Array<Object>;
 
-type Props = {
+export type AnimateKeyframesProps = {
   keyframes: Keyframes,
   easeType?: string,
   durationSeconds?: number,
@@ -16,8 +16,8 @@ type Props = {
   play: boolean,
   playState?: string,
   delaySeconds?: number,
-  direction?: string,
-  fillMode?: string,
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse',
+  fillMode?: 'none' | 'forwards' | 'backwards' | 'both',
   iterationCount?: string | number,
   animationStates: AnimationStateType,
   children?: any,
@@ -30,7 +30,7 @@ type State = {
   play: boolean,
 };
 
-export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
+export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesProps, State> {
   static displayName = 'AnimateKeyframes';
 
   static defaultProps = {
@@ -62,7 +62,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     }
   }
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+  static getDerivedStateFromProps(nextProps: AnimateKeyframesProps, prevState: State) {
     const { animationStates, play, sequenceId, sequenceIndex } = nextProps;
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
@@ -113,10 +113,10 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
     const style =
       play || this.state.play
         ? {
-            animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-              this.animationName
+          animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+            this.animationName
             }`,
-          }
+        }
         : null;
 
     return render ? render(style) : <div {...(style ? { style } : null)}>{children}</div>;
@@ -124,7 +124,7 @@ export class AnimateKeyframesChild extends React.PureComponent<Props, State> {
 }
 
 // $FlowIgnoreLine: flow complain about React.forwardRef disable for now
-export default React.forwardRef((props: Props, ref) => (
+export default React.forwardRef((props: AnimateKeyframesProps, ref) => (
   <AnimateContext.Consumer>
     {({ animationStates = {}, register = undefined }) => (
       <AnimateKeyframesChild {...{ ...props, animationStates, register }} forwardedRef={ref} />

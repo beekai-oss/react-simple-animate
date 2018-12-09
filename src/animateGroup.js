@@ -21,6 +21,11 @@ type State = {
   animationStates?: AnimationStateType,
 };
 
+// Flowtype to be added later
+// <{
+//   animationStates?: AnimationStateType,
+//   register: any => void,
+// }>
 // $FlowIgnoreLine
 export const AnimateContext = React.createContext({
   animationStates: {},
@@ -62,7 +67,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     play,
   }: {
     totalDuration: number,
-    id: string | number,
+    id: number | string,
     restAttributes: AnimationType,
     play: boolean,
   }) => {
@@ -85,10 +90,10 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
 
   calculateSequences = () => {
     const { sequences, reverseSequences, play } = this.props;
-    const sequencesToAnimate: any = Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
-    const reverseSequencesToAnimate: any = Array.isArray(reverseSequences) && reverseSequences.length
-      ? reverseSequences
-      : [...sequencesToAnimate].reverse();
+    const sequencesToAnimate: any =
+      Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
+    const reverseSequencesToAnimate: any =
+      Array.isArray(reverseSequences) && reverseSequences.length ? reverseSequences : [...sequencesToAnimate].reverse();
 
     return (play ? sequencesToAnimate : reverseSequencesToAnimate).reduce((previous, current, currentIndex) => {
       const { sequenceId, sequenceIndex, ...restAttributes } = current;

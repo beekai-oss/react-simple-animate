@@ -8,26 +8,29 @@ import type { Keyframes } from './animateKeyframes';
 import type { Style } from './animate';
 import deleteRules from './style/deleteRules';
 
+type Sequences = Array<{
+  keyframes?: Keyframes,
+  durationSeconds?: number,
+  easeType?: string,
+  delaySeconds?: number,
+  iterationCount?: string,
+  direction?: string,
+  fillMode?: string,
+  playState?: string,
+  overlaySeconds?: number,
+  endStyle?: Style,
+}>;
+
 export default function useAnimateGroup(props: {
-  sequences: Array<{
-    keyframes?: Keyframes,
-    durationSeconds?: number,
-    easeType?: string,
-    delaySeconds?: number,
-    iterationCount?: string,
-    direction?: string,
-    fillMode?: string,
-    playState?: string,
-    overlaySeconds?: number,
-    endStyle?: Style,
-  }>,
+  sequences: Sequences,
+  reverseSequences?: Sequences,
   play: boolean,
   animationNames: string,
 }) {
   let nextDelaySeconds = 0;
-  const [{ sequences, play, animationNames }, setPlay] = useState(props);
+  const [{ sequences, reverseSequences, play, animationNames }, setPlay] = useState(props);
   const playFunction = (playValue: boolean) => {
-    setPlay({ sequences, play: playValue, animationNames });
+    setPlay({ sequences, reverseSequences, play: playValue, animationNames });
   };
 
   useEffect(() => {
@@ -46,6 +49,7 @@ export default function useAnimateGroup(props: {
     setPlay({
       sequences,
       play,
+      reverseSequences,
       animationNames: localAnimationNames,
     });
 
@@ -61,9 +65,11 @@ export default function useAnimateGroup(props: {
     };
   }, []);
 
+  const localSequences = (play ? sequences : reverseSequences) || [];
+
   const styles: Array<?{
     [string]: string,
-  }> = sequences.map((prop, i) => {
+  }> = (reverseSequences ? localSequences : sequences).map((prop, i) => {
     const {
       durationSeconds = 0.3,
       keyframes = false,

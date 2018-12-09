@@ -24,11 +24,11 @@ export default function useAnimate(
   const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0.3 } = props;
   const [animateProps, setPlay] = useState(props);
   const { play, willComplete, isMountWithPlay } = animateProps;
-  const playFunction = (play: boolean, isMountWithPlay: mixed = animateProps.isMountWithPlay) => {
+  const playFunction = (playValue: boolean, isMountWithPlayValue: mixed = animateProps.isMountWithPlay) => {
     setPlay({
       ...props,
-      play,
-      isMountWithPlay,
+      play: playValue,
+      isMountWithPlay: isMountWithPlayValue,
     });
   };
 

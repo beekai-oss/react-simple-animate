@@ -2,7 +2,7 @@
 import type { Props } from '../animate';
 import mapSequenceOverProps from './mapSequenceOverProps';
 
-export default function attributesGenerator(props: Props, willComplete: boolean = false, isMountWithPlay: boolean = false): Object {
+export default function attributesGenerator(props: Props, willComplete: boolean = false, isMountWithPlay: mixed = false): Object {
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {

@@ -21,10 +21,13 @@ type State = {
   animationStates?: AnimationStateType,
 };
 
-export const AnimateContext = React.createContext<{
-  animationStates?: AnimationStateType,
-  register: any => void,
-}>({
+// Flowtype to be added later
+// <{
+//   animationStates?: AnimationStateType,
+//   register: any => void,
+// }>
+// $FlowIgnoreLine
+export const AnimateContext = React.createContext({
   animationStates: {},
   register: () => {},
 });

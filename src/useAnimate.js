@@ -7,7 +7,7 @@ import msToSec from './utils/msToSec';
 
 type UseAnimate = Props & {
   willComplete?: boolean,
-  isMountWithPlay: boolean,
+  isMountWithPlay?: boolean,
 };
 
 export default function useAnimate(
@@ -24,7 +24,7 @@ export default function useAnimate(
   const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0.3 } = props;
   const [animateProps, setPlay] = useState(props);
   const { play, willComplete, isMountWithPlay } = animateProps;
-  const playFunction = (play: boolean, isMountWithPlay: boolean = animateProps.isMountWithPlay) => {
+  const playFunction = (play: boolean, isMountWithPlay: mixed = animateProps.isMountWithPlay) => {
     setPlay({
       ...props,
       play,

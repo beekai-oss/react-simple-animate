@@ -81,7 +81,7 @@ export default function useAnimateGroup(props: {
     if (keyframes) {
       return play
         ? {
-            animation: `${durationSeconds}s ${easeType} ${
+            styles: `${durationSeconds}s ${easeType} ${
               i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds
             }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationNames[i]}`,
           }

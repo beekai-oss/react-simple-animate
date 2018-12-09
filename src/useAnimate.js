@@ -7,6 +7,7 @@ import msToMin from './utils/msToMin';
 
 type UseAnimate = Props & {
   willComplete?: boolean,
+  isMountWithPlay: boolean,
 };
 
 export default function useAnimate(
@@ -20,15 +21,16 @@ export default function useAnimate(
 ) {
   let completeTimeout;
   let initialPlayTimer;
-  const { onComplete, onCompleteStyle, delaySeconds, durationSeconds } = props;
+  const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0.3 } = props;
   const [animateProps, setPlay] = useState(props);
-  const playFunction = (play: boolean) => {
+  const { play, willComplete, isMountWithPlay } = animateProps;
+  const playFunction = (play: boolean, isMountWithPlay: boolean = animateProps.isMountWithPlay) => {
     setPlay({
       ...props,
       play,
+      isMountWithPlay,
     });
   };
-  const { play, willComplete } = animateProps;
 
   useEffect(
     () => {
@@ -38,14 +40,15 @@ export default function useAnimate(
           setPlay({
             ...animateProps,
             willComplete: true,
+            isMountWithPlay: false,
           });
           onComplete && onComplete();
         }, msToMin(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
       }
 
-      if (play) {
+      if (play && props.play && isMountWithPlay === undefined) {
         initialPlayTimer = setTimeout(() => {
-          playFunction(play);
+          playFunction(play, false);
         }, msToMin(delaySeconds));
       }
 
@@ -59,7 +62,11 @@ export default function useAnimate(
 
   return [
     {
-      style: attributesGenerator({ ...props, play }, willComplete).style,
+      style: attributesGenerator(
+        { ...props, play },
+        willComplete,
+        isMountWithPlay === undefined ? props.play : isMountWithPlay,
+      ).style,
       play,
     },
     playFunction,

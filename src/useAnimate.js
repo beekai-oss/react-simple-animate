@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import attributesGenerator from './utils/attributesGenerator';
 import type { Props } from './animate';
-import msToMin from './utils/msToMin';
+import msToSec from './utils/msToSec';
 
 type UseAnimate = Props & {
   willComplete?: boolean,
@@ -43,13 +43,13 @@ export default function useAnimate(
             isMountWithPlay: false,
           });
           onComplete && onComplete();
-        }, msToMin(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
+        }, msToSec(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
       }
 
       if (play && props.play && isMountWithPlay === undefined) {
         initialPlayTimer = setTimeout(() => {
           playFunction(play, false);
-        }, msToMin(delaySeconds));
+        }, msToSec(delaySeconds));
       }
 
       return () => {

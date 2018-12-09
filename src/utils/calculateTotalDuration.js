@@ -1,5 +1,5 @@
 // @flow
-import msToMin from './msToMin';
+import msToSec from './msToSec';
 
 export default ({
   durationSeconds = 0,
@@ -16,5 +16,5 @@ export default ({
 }): number => {
   const duration =
     parseFloat(play ? durationSeconds : reverseDurationSeconds || durationSeconds) + parseFloat(delaySeconds);
-  return msToMin(duration - parseFloat(overlaySeconds));
+  return msToSec(duration - parseFloat(overlaySeconds));
 };

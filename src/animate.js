@@ -2,7 +2,7 @@
 import React from 'react';
 import attributesGenerator from './utils/attributesGenerator';
 import { AnimateContext } from './animateGroup';
-import msToMin from './utils/msToMin';
+import msToSec from './utils/msToSec';
 
 export type Style = { [string]: string | number };
 
@@ -65,7 +65,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
       this.initialPlayTimer = setTimeout(() => {
         this.isMountWithPlay = false;
         this.forceUpdate();
-      }, msToMin(props.delaySeconds));
+      }, msToSec(props.delaySeconds));
     }
   }
 
@@ -121,7 +121,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
           willComplete: true,
         });
         onComplete && onComplete();
-      }, msToMin(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
+      }, msToSec(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
     }
   }
 

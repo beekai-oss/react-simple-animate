@@ -22,7 +22,7 @@
 - [Custom Hooks](https://react-simple-animate.now.sh/hooks)
 - [Advanced](https://react-simple-animate.now.sh/advanced)
 
-## Quick start
+## Quickstart
 
     import react from 'react';
     import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';

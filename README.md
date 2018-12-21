@@ -24,6 +24,7 @@
 
 ## Quickstart
 
+```jsx
     import react from 'react';
     import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';
 
@@ -54,3 +55,4 @@
             </AnimateGroup>
         );
     };
+```

@@ -25,34 +25,34 @@
 ## Quickstart
 
 ```jsx
-    import react from 'react';
-    import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';
+import react from 'react';
+import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';
 
-    const props = {
-        startStyle: { opacity: 0 }
-        endStyle: { opacity: 1 }
-    };
+const props = {
+    startStyle: { opacity: 0 }
+    endStyle: { opacity: 1 }
+};
 
-    export default () => {
-        return (
-            // This example demonstrate animate individual element.
-            <Animate play {...props}>
-                <h1>React simple animate</h1>
-            </Animate>
+export default () => {
+    return (
+        // This example demonstrate animate individual element.
+        <Animate play {...props}>
+            <h1>React simple animate</h1>
+        </Animate>
 
-            // This example demonstrate animate keyframes with individual element.
-            <AnimateKeyframes play iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
-                <h1>React simple animate with keyframes</h1>
-            </Animate>
+        // This example demonstrate animate keyframes with individual element.
+        <AnimateKeyframes play iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
+            <h1>React simple animate with keyframes</h1>
+        </Animate>
 
-            // This example demonstrate animate group of animation with sequenceIndex.
-            <AnimateGroup play>
-                <Animate {...props} sequenceIndex={0} />
-                <p>Next animation below: </p>
-                <Animate {...props} sequenceIndex={1} />
-                <p>Final animation below: </p>
-                <Animate {...props} sequenceIndex={2} />
-            </AnimateGroup>
-        );
-    };
+        // This example demonstrate animate group of animation with sequenceIndex.
+        <AnimateGroup play>
+            <Animate {...props} sequenceIndex={0} />
+            <p>Next animation below: </p>
+            <Animate {...props} sequenceIndex={1} />
+            <p>Final animation below: </p>
+            <Animate {...props} sequenceIndex={2} />
+        </AnimateGroup>
+    );
+};
 ```

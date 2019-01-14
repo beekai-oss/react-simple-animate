@@ -25,6 +25,7 @@
     "flow": "flow"
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",
+  "homepage": "https://react-simple-animate.now.sh",
   "author": "beier luo",
   "license": "Mit",
   "bugs": {

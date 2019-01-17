@@ -11,3 +11,5 @@ CONTRIBUTING.md
 .eslintrc
 jestConfig.json
 .idea/
+rollup.config.js
+.coveralls.yml

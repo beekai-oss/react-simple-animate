@@ -4,14 +4,14 @@
 
 ## Features:
 
-- Simple animation from inline style A to style B
-- React animation with CSS keyframes
+- Simple animation from style A to B
+- CSS keyframes animation
 - Chain up animation sequences
 - Tiny size without other dependency
 
 ## Install
 
-    $ yarn add react-simple-animate || npm install react-simple-animate
+    $ npm install react-simple-animate
 
 ## [Docs](https://react-simple-animate.now.sh/)
 

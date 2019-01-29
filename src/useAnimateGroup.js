@@ -83,6 +83,7 @@ export default function useAnimateGroup(props: {
     } = prop;
 
     nextDelaySeconds = durationSeconds + delaySeconds - overlaySeconds;
+    nextDelaySeconds = nextDelaySeconds < 0 ? 0 : nextDelaySeconds;
 
     if (keyframes) {
       return play

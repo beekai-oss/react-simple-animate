@@ -21,13 +21,10 @@ type State = {
   animationStates?: AnimationStateType,
 };
 
-// Flowtype to be added later
-// <{
-//   animationStates?: AnimationStateType,
-//   register: any => void,
-// }>
-// $FlowIgnoreLine
-export const AnimateContext = React.createContext({
+export const AnimateContext = React.createContext<{
+  animationStates?: AnimationStateType,
+  register: any => void,
+}>({
   animationStates: {},
   register: () => {},
 });
@@ -71,6 +68,8 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
     restAttributes: AnimationType,
     play: boolean,
   }) => {
+    const duration = totalDuration - (restAttributes.overlaySeconds || 0) * 1000;
+
     this.timers[id] = setTimeout(() => {
       this.setState(previousState => {
         const stateCopy = { ...previousState.animationStates };
@@ -85,7 +84,7 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
           animationStates: stateCopy,
         };
       });
-    }, totalDuration);
+    }, duration < 0 ? 0 : duration);
   };
 
   calculateSequences = () => {

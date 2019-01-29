@@ -21,7 +21,7 @@ export default function attributesGenerator(props: Props, willComplete: boolean 
   let style = startStyle;
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
 
-  if (!play && (reverseDurationSeconds || reverseDelaySeconds)) {
+  if (play !== undefined && !play && (reverseDurationSeconds || reverseDelaySeconds)) {
     transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
   } else if (!isMountWithPlay) {
     if (willComplete && onCompleteStyle && play) {

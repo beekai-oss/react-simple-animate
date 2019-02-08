@@ -21,4 +21,13 @@ describe('calculateTotalDuration', () => {
       }),
     ).toEqual(3000);
   });
+
+  it('should return correctly when those default duration and delay are not supplied', () => {
+    expect(
+      calculateTotalDuration({
+        reverseDurationSeconds: 2,
+        play: false,
+      }),
+    ).toEqual(2000);
+  });
 });

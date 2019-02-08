@@ -12,12 +12,6 @@ exports[`AnimateKeyframesChild should render correctly when play set true 1`] = 
 />
 `;
 
-exports[`AnimateKeyframesChild should render correctly when render pro 1`] = `<div />`;
-
 exports[`AnimateKeyframesChild should render correctly when render props is supplied 1`] = `<div />`;
 
-exports[`AnimateKeyframesChild should render correctly with 1`] = `<div />`;
-
 exports[`AnimateKeyframesChild should render correctly with AnimateKeyframesChild 1`] = `<div />`;
-
-exports[`AnimateKeyframesChild should render correctly with AnimateKeyframesChild 2`] = `<div />`;

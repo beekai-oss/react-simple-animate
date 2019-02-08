@@ -17,7 +17,7 @@
     "clean": "rimraf lib/",
     "release": "npm version",
     "postrelease": "yarn publish && git push --follow-tags",
-    "test": "jest --config ./jestConfig.json",
+    "test": "jest --coverage --config ./jestConfig.json",
     "coverage": "jest --config ./jestConfig.json --coverage --coverageReporters=text-lcov | coveralls",
     "testw": "yarn test --config ./jestConfig.json -- --watchAll",
     "build": "rollup -c",

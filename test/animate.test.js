@@ -95,4 +95,18 @@ describe('Animate', () => {
     expect(tree.state('willComplete')).toBeTruthy();
     expect(onComplete).toBeCalled();
   });
+
+  it('should clear all timers with component unmount', () => {
+    const tree = shallow(<AnimateChild {...{ ...props, play: false }} />);
+    const instance = tree.instance();
+    window.clearTimeout = jest.fn();
+    instance.completeTimeout = 1;
+    instance.unMountTimeout = 2;
+    instance.initialPlayTimer = 3;
+    instance.componentWillUnmount();
+
+    expect(window.clearTimeout).toBeCalledWith(1);
+    expect(window.clearTimeout).toBeCalledWith(2);
+    expect(window.clearTimeout).toBeCalledWith(3);
+  });
 });

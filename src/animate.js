@@ -75,9 +75,10 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle } = nextProps;
+    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle, register } = nextProps;
     const id = sequenceId || sequenceIndex;
     let currentPlay = play;
+    register && register(nextProps);
 
     if (id !== undefined && animationStates && animationStates[id]) {
       const state = animationStates[id];

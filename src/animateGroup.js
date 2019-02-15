@@ -48,12 +48,17 @@ export default class AnimateGroup extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.play !== prevProps.play) this.calculateSequences();
+    if (this.props.play !== prevProps.play) {
+      this.clearTimers();
+      this.calculateSequences();
+    }
   }
 
   componentWillUnmount() {
-    Object.values(this.timers).forEach((timer: any) => clearTimeout(timer));
+    this.clearTimers();
   }
+
+  clearTimers = () => Object.values(this.timers).forEach((timer: any) => clearTimeout(timer));
 
   setupAnimationTimers = ({
     totalDuration,

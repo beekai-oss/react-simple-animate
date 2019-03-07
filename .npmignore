@@ -13,3 +13,4 @@ jestConfig.json
 .idea/
 rollup.config.js
 .coveralls.yml
+coverage/

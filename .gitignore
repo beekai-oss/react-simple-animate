@@ -63,3 +63,4 @@ typings/
 
 /lib
 .idea/
+.coveralls.yml

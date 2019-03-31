@@ -43,7 +43,7 @@ export default () => {
     // This example demonstrate animate keyframes with individual element.
     <AnimateKeyframes play iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
       <h1>React simple animate with keyframes</h1>
-    </Animate>
+    </AnimateKeyframes>
 
     // This example demonstrate animate group of animation with sequenceIndex.
     <AnimateGroup play>

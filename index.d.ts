@@ -1,6 +1,7 @@
-interface IStyles {
-    [key: string]: any;
-}
+import * as React from 'react';
+import * as CSS from 'csstype';
+
+export interface CSSProperties extends CSS.Properties<string | number> {}
 
 interface IKeyFrame {
     [keyFramePercentage: number]: string
@@ -39,23 +40,6 @@ export enum EASE_TYPES {
     easeInOutBounce = 'easeInOutBounce',
 }
 
-export interface Animate {
-    play?: boolean;
-    startStyle: IStyles;
-    endStyle: IStyles;
-    onCompleteStyle: IStyles;
-    durationSeconds?: number;
-    delaySeconds: number;
-    reverseDurationSeconds: number;
-    reverseDelaySeconds: number;
-    onComplete: () => void;
-    render: (styles: IStyles) => any;
-    easeType?: EASE_TYPES
-    sequenceIndex: number;
-    sequenceId: string | number;
-    overlaySeconds: number;
-}
-
 export enum ANIMATION_DIRECTIONS {
     NORMAL = 'normal',
     REVERSE = 'reverse',
@@ -63,35 +47,85 @@ export enum ANIMATION_DIRECTIONS {
     ALTERNATE_REVERSE = 'alternate-reverse'
 }
 
-export interface AnimateGroup {
-    play?: boolean
-    sequences?: any
-    reverseSequences: string[] | number[]
+export interface IBaseAnimateProps {
+    play: boolean,
+    startStyle?: CSSProperties,
+    endStyle: CSSProperties,
+    onCompleteStyle?: CSSProperties,
+    overlaySeconds?: number,
+    durationSeconds?: number,
+    reverseDelaySeconds?: number,
+    reverseDurationSeconds?: number,
+    delaySeconds?: number,
+    children?: React.Component<any>,
+    forwardedRef?: any,
 }
-export interface AnimateKeyframes {
-    play?: boolean;
-    keyframes: string[] | IKeyFrame[];
-    durationSeconds?: number;
-    delaySeconds: number;
-    iterationCount?: string | number;
-    direction?: ANIMATION_DIRECTIONS;
-    playState?: 'running' | 'paused';
-    fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
-    render: (styles: IStyles) => any;
-    easeType?: EASE_TYPES;
-    sequenceIndex: number,
-    sequenceId: string | number;
-    overlaySeconds: number;
+
+export interface AnimationStateType { [key: number]: IBaseAnimateProps }
+
+export interface IAnimateProps extends IBaseAnimateProps {
+    easeType?: EASE_TYPES,
+    tag?: string,
+    onComplete?: () => void,
+    className?: string,
+    render?: (props : IAnimateProps) => React.ReactElement,
+    sequenceId?: string,
+    sequenceIndex?: number,
+    register?: (props : IAnimateProps) => void
+    animationStates?: AnimationStateType,
 }
-export function useAnimate (animateProps : Partial<Animate>) : [
-    {style: IStyles, play: boolean},
+
+export interface ISequence extends IBaseAnimateProps {
+    sequenceId?: string | number,
+    sequenceIndex?: number,
+}
+
+export interface IAnimateGroupProps {
+    play: boolean,
+    sequences?: ISequence[],
+    reverseSequences?: ISequence[],
+    children: React.ReactElement,
+}
+
+export type Keyframes = Object[];
+
+export interface IAnimateKeyframesProps {
+    keyframes: IKeyFrame[],
+    easeType?: string,
+    durationSeconds?: number,
+    render?: (styles : CSSProperties) => any,
+    play: boolean,
+    playState?: string,
+    delaySeconds?: number,
+    direction?: ANIMATION_DIRECTIONS,
+    fillMode?: 'none' | 'forwards' | 'backwards' | 'both',
+    iterationCount?: string | number,
+    animationStates: AnimationStateType,
+    children?: React.ReactElement,
+    register?: (props : IAnimateKeyframesProps) => void,
+    sequenceId?: string,
+    sequenceIndex?: number,
+}
+
+/**
+ * Components
+ */
+export class Animate extends React.Component<IAnimateProps> {}
+export class AnimateGroup extends React.Component<IAnimateGroupProps> {}
+export class AnimateKeyframes extends React.Component<IAnimateKeyframesProps> {}
+
+/**
+ * Hooks
+ */
+export function useAnimate (animateProps : Partial<IAnimateProps>) : [
+    {style: CSSProperties, play: boolean},
     (play : boolean) => void
-]
+    ]
 export function useAnimateKeyframes (animateProps : Partial<AnimateGroup>) : [
-    {style: IStyles, play: boolean},
+    {style: CSSProperties, play: boolean},
     (play : boolean) => void
-]
+    ]
 export function useAnimateGroup (animateProps : Partial<AnimateGroup>) : [
-    {style: IStyles, play: boolean},
+    {style: CSSProperties, play: boolean},
     (play : boolean) => void
-]
+    ]

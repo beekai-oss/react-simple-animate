@@ -120,12 +120,12 @@ export class AnimateKeyframes extends React.Component<IAnimateKeyframesProps> {}
 export function useAnimate (animateProps : Partial<IAnimateProps>) : [
     {style: CSSProperties, play: boolean},
     (play : boolean) => void
-]
+    ]
 export function useAnimateKeyframes (animateProps : Partial<AnimateGroup>) : [
     {style: CSSProperties, play: boolean},
     (play : boolean) => void
-]
+    ]
 export function useAnimateGroup (animateProps : Partial<AnimateGroup>) : [
     {style: CSSProperties, play: boolean},
     (play : boolean) => void
-]
+    ]

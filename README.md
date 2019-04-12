@@ -6,7 +6,7 @@
 - Animation from style A to B
 - CSS keyframes animation
 - Chain up animation sequences
-- Tiny size without other dependency 4.4 kB (minified + gzipped)
+- Tiny size without other dependency
 
 ## Install
 

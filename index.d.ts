@@ -121,11 +121,11 @@ export function useAnimate (animateProps : Partial<IAnimateProps>) : [
     {style: CSSProperties, play: boolean},
     (play : boolean) => void
     ]
-export function useAnimateKeyframes (animateProps : Partial<AnimateGroup>) : [
+export function useAnimateKeyframes (animateProps : Partial<IAnimateKeyframesProps>) : [
     {style: CSSProperties, play: boolean},
     (play : boolean) => void
     ]
-export function useAnimateGroup (animateProps : Partial<AnimateGroup>) : [
+export function useAnimateGroup (animateProps : Partial<IAnimateGroupProps>) : [
     {style: CSSProperties, play: boolean},
     (play : boolean) => void
     ]

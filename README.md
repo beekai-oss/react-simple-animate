@@ -55,3 +55,11 @@ export default () => {
   );
 };
 ```
+
+## Contributors 
+Thanks goes to these wonderful people:
+
+<p float="left">
+    <a href="https://github.com/3stacks"><img src="https://avatars2.githubusercontent.com/u/14143193?s=60&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/willmcpo"><img src="https://avatars1.githubusercontent.com/u/13824314?s=60&v=4" width="50" height="50" /></a>
+</p>

@@ -64,7 +64,7 @@ export interface IBaseAnimateProps {
 export interface AnimationStateType { [key: number]: IBaseAnimateProps }
 
 export interface IAnimateProps extends IBaseAnimateProps {
-    easeType?: EASE_TYPES,
+    easeType?: EASE_TYPES | string,
     tag?: string,
     onComplete?: () => void,
     className?: string,

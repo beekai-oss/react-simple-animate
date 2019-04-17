@@ -57,7 +57,7 @@ export interface IBaseAnimateProps {
     reverseDelaySeconds?: number,
     reverseDurationSeconds?: number,
     delaySeconds?: number,
-    children?: React.Component<any>,
+    children?: React.ReactElement,
     forwardedRef?: any,
 }
 

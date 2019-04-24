@@ -57,7 +57,7 @@ export interface IBaseAnimateProps {
   reverseDelaySeconds?: number;
   reverseDurationSeconds?: number;
   delaySeconds?: number;
-  children?: React.ReactElement;
+  children?: any;
   forwardedRef?: any;
 }
 
@@ -70,7 +70,7 @@ export interface IAnimateProps extends IBaseAnimateProps {
   tag?: string;
   onComplete?: () => void;
   className?: string;
-  render?: (props: any) => React.ReactElement;
+  render?: (props: any) => any;
   sequenceId?: string;
   sequenceIndex?: number;
   register?: (props: IAnimateProps) => void;
@@ -86,7 +86,7 @@ export interface IAnimateGroupProps {
   play: boolean;
   sequences?: ISequence[];
   reverseSequences?: ISequence[];
-  children: React.ReactElement;
+  children: any;
 }
 
 export type Keyframes = Object[];
@@ -103,7 +103,7 @@ export interface IAnimateKeyframesProps {
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   iterationCount?: string | number;
   animationStates: AnimationStateType;
-  children?: React.ReactElement;
+  children?: any;
   register?: (props: IAnimateKeyframesProps) => void;
   sequenceId?: string;
   sequenceIndex?: number;

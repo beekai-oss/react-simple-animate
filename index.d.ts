@@ -66,7 +66,7 @@ export interface AnimationStateType {
 }
 
 export interface IAnimateProps extends IBaseAnimateProps {
-  easeType?: EASE_TYPES | string;
+  easeType?: string;
   tag?: string;
   onComplete?: () => void;
   className?: string;

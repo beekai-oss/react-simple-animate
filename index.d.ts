@@ -70,7 +70,7 @@ export interface IAnimateProps extends IBaseAnimateProps {
   tag?: string;
   onComplete?: () => void;
   className?: string;
-  render?: (props: IAnimateProps) => any;
+  render?: (props: any) => any;
   sequenceId?: string;
   sequenceIndex?: number;
   register?: (props: IAnimateProps) => void;
@@ -95,7 +95,7 @@ export interface IAnimateKeyframesProps {
   keyframes: IKeyFrame[];
   easeType?: string;
   durationSeconds?: number;
-  render?: (styles: CSSProperties) => any;
+  render?: (styles: any) => any;
   play: boolean;
   playState?: string;
   delaySeconds?: number;

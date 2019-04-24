@@ -66,11 +66,11 @@ export interface AnimationStateType {
 }
 
 export interface IAnimateProps extends IBaseAnimateProps {
-  easeType?: string;
+  easeType?: EASE_TYPES | string;
   tag?: string;
   onComplete?: () => void;
   className?: string;
-  render?: (props: IAnimateProps) => React.ReactElement;
+  render?: (props: any) => React.ReactElement;
   sequenceId?: string;
   sequenceIndex?: number;
   register?: (props: IAnimateProps) => void;

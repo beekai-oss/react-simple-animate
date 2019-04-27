@@ -48,7 +48,7 @@ export enum ANIMATION_DIRECTIONS {
 }
 
 export interface IBaseAnimateProps {
-  play: boolean;
+  play?: boolean;
   startStyle?: CSSProperties;
   endStyle: CSSProperties;
   onCompleteStyle?: CSSProperties;
@@ -83,7 +83,7 @@ export interface ISequence extends IBaseAnimateProps {
 }
 
 export interface IAnimateGroupProps {
-  play: boolean;
+  play?: boolean;
   sequences?: ISequence[];
   reverseSequences?: ISequence[];
   children: any;
@@ -96,7 +96,7 @@ export interface IAnimateKeyframesProps {
   easeType?: string;
   durationSeconds?: number;
   render?: (styles: any) => any;
-  play: boolean;
+  play?: boolean;
   playState?: string;
   delaySeconds?: number;
   direction?: ANIMATION_DIRECTIONS;

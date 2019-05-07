@@ -46,7 +46,7 @@ export default function useAnimateKeyframes(props: UseAnimateKeyframesProps) {
         }
       };
     },
-    [play],
+    [],
   );
 
   const style = play

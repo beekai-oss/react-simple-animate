@@ -28,7 +28,9 @@ export default function Animate(props: Props) {
     ...rest
   } = props;
   const onCompleteTimeRef = useRef(null);
+  const firstRender = useRef(true);
   const [style, setStyle] = useState(start);
+  const forceUpdate = useState(false)[1];
   const { register } = useContext(AnimateContext);
 
   useEffect(() => {
@@ -36,9 +38,22 @@ export default function Animate(props: Props) {
   }, []);
 
   useEffect(() => {
+    const transition = `all ${duration}s ${easeType} ${delay}s`;
+
+    if (firstRender.current && play) {
+      setStyle({
+        start,
+        transition,
+      });
+
+      firstRender.current = false;
+      forceUpdate(true);
+      return;
+    }
+
     setStyle({
       ...(play ? end : start),
-      transition: `all ${duration}s ${easeType} ${delay}s`,
+      transition,
     });
 
     if (play && (complete || onComplete)) {
@@ -52,7 +67,7 @@ export default function Animate(props: Props) {
   }, [play, duration, easeType, delay, onComplete, start, end, complete]);
 
   return render ? (
-    render(style)
+    render({ style })
   ) : (
     <div style={style} {...rest}>
       {children}

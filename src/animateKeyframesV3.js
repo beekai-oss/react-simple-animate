@@ -1,9 +1,9 @@
 // @flow
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import createTag from './style/createTag';
 import createRandomName from './utils/createRandomName';
-import { AnimateContext } from './animateGroup';
 import deleteRule from './style/deleteRules';
+import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
 import type { AnimationType } from './types';
 
@@ -39,12 +39,18 @@ export default function AnimateKeyframesChild(props: Props) {
   const animationNameRef = useRef('');
   const styleTagRef = useRef('');
   const { register } = useContext(AnimateContext);
+  const forceUpdate = useState(false)[1];
 
   useEffect(() => {
     animationNameRef.current = createRandomName();
-    const { styleTag } = createTag({ animationName: this.animationName, keyframes });
+    const { styleTag } = createTag({
+      animationName: animationNameRef.current,
+      keyframes,
+    });
     styleTagRef.current = styleTag;
     register(props);
+
+    if (play) forceUpdate(true);
 
     return () => {
       deleteRule(styleTagRef.sheet, animationNameRef.current);
@@ -59,5 +65,5 @@ export default function AnimateKeyframesChild(props: Props) {
       }
     : null;
 
-  return render ? render({ style }) : <div {...(style ? { style } : null)}>{children}</div>;
+  return render ? render({ style }) : <div style={style}>{children}</div>;
 }

@@ -7,7 +7,7 @@ import msToSec from './utils/msToSec';
 export type Style = { [string]: string | number };
 
 export type AnimationType = {
-  play: boolean,
+  play: any,
   startStyle?: Style,
   endStyle: Style,
   onCompleteStyle?: Style,

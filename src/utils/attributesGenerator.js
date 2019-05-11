@@ -2,7 +2,11 @@
 import type { Props } from '../animate';
 import mapSequenceOverProps from './mapSequenceOverProps';
 
-export default function attributesGenerator(props: Props, willComplete: boolean = false, isMountWithPlay: mixed = false): Object {
+export default function attributesGenerator(
+  props: Props,
+  willComplete?: boolean = false,
+  isMountWithPlay?: mixed = false,
+): Object {
   const { animationStates, sequenceId, sequenceIndex } = props;
   const id = sequenceId || sequenceIndex;
   const {
@@ -22,7 +26,9 @@ export default function attributesGenerator(props: Props, willComplete: boolean 
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
 
   if (play !== undefined && !play && (reverseDurationSeconds || reverseDelaySeconds)) {
-    transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${reverseDelaySeconds}s`;
+    transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${
+      play ? delaySeconds : reverseDelaySeconds
+    }s`;
   } else if (!isMountWithPlay) {
     if (willComplete && onCompleteStyle && play) {
       style = onCompleteStyle;

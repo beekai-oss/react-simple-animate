@@ -11,8 +11,8 @@ export default function attributesGenerator(
   const id = sequenceId || sequenceIndex;
   const {
     play,
-    startStyle,
-    endStyle,
+    start,
+    end,
     onCompleteStyle,
     durationSeconds = 0.3,
     delaySeconds = 0,
@@ -22,7 +22,7 @@ export default function attributesGenerator(
     reverseDelaySeconds = 0,
     forwardedRef,
   } = mapSequenceOverProps(props, id);
-  let style = startStyle;
+  let style = start;
   let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
 
   if (play !== undefined && !play && (reverseDurationSeconds || reverseDelaySeconds)) {
@@ -41,7 +41,7 @@ export default function attributesGenerator(
         animationStates[id] &&
         animationStates[id].play)
     ) {
-      style = endStyle;
+      style = end;
     }
   }
 

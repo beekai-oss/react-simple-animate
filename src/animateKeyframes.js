@@ -1,133 +1,63 @@
 // @flow
-import React from 'react';
+import React, { useRef, useEffect, useContext, useState } from 'react';
 import createTag from './style/createTag';
 import createRandomName from './utils/createRandomName';
-import { AnimateContext } from './animateGroup';
 import deleteRule from './style/deleteRules';
+import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
+import type { AnimationType } from './types';
 
 export type Keyframes = Array<Object>;
 
-export type AnimateKeyframesProps = {
+export type Props = {
   keyframes: Keyframes,
-  easeType?: string,
-  duration?: number,
-  render?: (?Object) => any,
-  play: boolean,
   playState?: string,
-  delay?: number,
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse',
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both',
   iterationCount?: string | number,
   animationStates: AnimationStateType,
-  children?: any,
-  register?: any => void,
-  sequenceId?: string,
-  sequenceIndex?: number,
-};
+} & AnimationType;
 
-type State = {
-  play: boolean,
-};
+export default function AnimateKeyframesChild(props: Props) {
+  const {
+    children,
+    play,
+    render,
+    duration = 0.3,
+    delay = 0,
+    easeType = 'linear',
+    playState = 'running',
+    direction = 'normal',
+    fillMode = 'none',
+    iterationCount = 1,
+    keyframes,
+  } = props;
+  const animationNameRef = useRef('');
+  const styleTagRef = useRef('');
+  const { register } = useContext(AnimateContext);
+  const forceUpdate = useState(false)[1];
 
-export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesProps, State> {
-  static displayName = 'AnimateKeyframes';
+  useEffect(() => {
+    animationNameRef.current = createRandomName();
+    const { styleTag } = createTag({
+      animationName: animationNameRef.current,
+      keyframes,
+    });
+    styleTagRef.current = styleTag;
+    register(props);
 
-  static defaultProps = {
-    duration: 0.3,
-    delay: 0,
-    easeType: 'linear',
-    render: undefined,
-    playState: 'running',
-    direction: 'normal',
-    fillMode: 'none',
-    iterationCount: 1,
-    children: undefined,
-    sequenceId: undefined,
-    sequenceIndex: undefined,
-    register: undefined,
-  };
+    if (play) forceUpdate(true);
 
-  state = {
-    play: false,
-  };
+    return () => deleteRule(styleTagRef.current.sheet, animationNameRef.current);
+  }, []);
 
-  componentDidMount() {
-    const { register, play } = this.props;
-    this.createStyleAndTag();
-    register && register(this.props);
+  const style = play
+    ? {
+        animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+          animationNameRef.current
+        }`,
+      }
+    : null;
 
-    if (play) {
-      this.forceUpdate();
-    }
-  }
-
-  static getDerivedStateFromProps(nextProps: AnimateKeyframesProps, prevState: State) {
-    const { animationStates, play, sequenceId, sequenceIndex } = nextProps;
-    const id = sequenceId || sequenceIndex;
-    let currentPlay = play;
-
-    if (id !== undefined && animationStates && animationStates[id]) {
-      const state = animationStates[id];
-      currentPlay = state.play;
-    }
-
-    return {
-      ...(currentPlay !== prevState.play ? { play: currentPlay } : null),
-    };
-  }
-
-  componentWillUnmount() {
-    deleteRule(this.styleTag.sheet, this.animationName);
-  }
-
-  createStyleAndTag = () => {
-    const { keyframes } = this.props;
-
-    this.animationName = createRandomName();
-    const { styleTag, index } = createTag({ animationName: this.animationName, keyframes });
-
-    this.styleTag = styleTag;
-    this.index = index;
-  };
-
-  animationName: string;
-
-  index: number;
-
-  styleTag: any;
-
-  render() {
-    const {
-      children,
-      play,
-      render,
-      duration = 0.3,
-      delay = 0,
-      easeType = 'linear',
-      playState = 'running',
-      direction = 'normal',
-      fillMode = 'none',
-      iterationCount = 1,
-    } = this.props;
-    const style =
-      play || this.state.play
-        ? {
-            animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-              this.animationName
-            }`,
-          }
-        : null;
-
-    return render ? render({ style }) : <div {...(style ? { style } : null)}>{children}</div>;
-  }
+  return render ? render({ style }) : <div style={style}>{children}</div>;
 }
-
-// $FlowIgnoreLine: flow complain about React.forwardRef disable for now
-export default React.forwardRef((props: AnimateKeyframesProps, ref) => (
-  <AnimateContext.Consumer>
-    {({ animationStates = {}, register = undefined }) => (
-      <AnimateKeyframesChild {...{ ...props, animationStates, register }} forwardedRef={ref} />
-    )}
-  </AnimateContext.Consumer>
-));

@@ -11,6 +11,7 @@ export type AnimationType = {
   delay: number,
   easeType?: string,
   children?: any,
+  register?: any => void,
 };
 
 export type AnimationStateType = { [string | number]: AnimationType };

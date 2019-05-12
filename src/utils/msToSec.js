@@ -1,3 +1,3 @@
 // @flow
 
-export default (ms: ?number) => (parseFloat(ms) || 0) * 1000;
+export default (ms: ?number): number => (parseFloat(ms) || 0) * 1000;

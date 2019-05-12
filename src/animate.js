@@ -1,22 +1,19 @@
 // @flow
-import React from 'react';
-import attributesGenerator from './utils/attributesGenerator';
-import { AnimateContext } from './animateGroup';
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { AnimateContext } from './animateGroupV3';
 import msToSec from './utils/msToSec';
 
 export type Style = { [string]: string | number };
 
 export type AnimationType = {
-  play: any,
-  startStyle?: Style,
-  endStyle: Style,
-  onCompleteStyle?: Style,
-  overlaySeconds?: number,
+  play?: boolean,
+  start?: Style,
+  end: Style,
+  complete?: Style,
+  overlay?: number,
   duration?: number,
-  reversedelay?: number,
-  reverseduration?: number,
   delay?: number,
-  children?: React.Component<*>,
+  children?: any,
   forwardedRef?: any,
 };
 
@@ -25,9 +22,9 @@ export type AnimationStateType = { [string | number]: AnimationType };
 export type Props = {
   easeType?: string,
   tag?: string,
-  onComplete?: () => mixed,
+  complete?: any,
   className?: string,
-  render?: Object => any,
+  render?: any,
   sequenceId?: string,
   sequenceIndex?: number,
   register?: any => void,
@@ -39,118 +36,58 @@ export type State = {
   play: boolean,
 };
 
-export class AnimateChild extends React.PureComponent<Props, State> {
-  static displayName = 'Animate';
-
-  static defaultProps = {
-    duration: 0.3,
-    delay: 0,
+export default function Animate(
+  props: Props = {
+    durationSeconds: 0.3,
+    delaySeconds: 0,
     easeType: 'linear',
     sequenceId: undefined,
     sequenceIndex: undefined,
     animationStates: undefined,
-  };
+    start: {},
+    end: {},
+    play: undefined,
+    onComplete: () => {},
+  },
+) {
+  const {
+    play,
+    children,
+    render,
+    start,
+    end,
+    complete,
+    onComplete,
+    delay,
+    duration,
+    easeType = 'linear',
+    sequenceId,
+    sequenceIndex,
+  } = props;
+  const onCompleteTimeRef = useRef(null);
+  const [style, setStyle] = useState(start);
+  const { register, animationStates = {} } = useContext(AnimateContext);
+  const id = sequenceIndex >= 0 ? sequenceIndex : sequenceId;
 
-  isMountWithPlay: boolean = false;
+  useEffect(() => {
+    if (sequenceIndex >= 0 || sequenceId) register(props);
+  }, []);
 
-  constructor(props: Props) {
-    super(props);
+  useEffect(() => {
+    setStyle({
+      ...(play || (animationStates[id] || {}).play ? end : start),
+      transition: `all ${duration}s ${easeType} ${parseFloat((animationStates[id] || {}).delay || delay)}s`,
+    });
 
-    const { play, register } = props;
-    register && register(this.props);
-
-    if (play) {
-      this.isMountWithPlay = true;
-
-      this.initialPlayTimer = setTimeout(() => {
-        this.isMountWithPlay = false;
-        this.forceUpdate();
-      }, msToSec(props.delay));
-    }
-  }
-
-  state: State = {
-    willComplete: false,
-    play: false,
-  };
-
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { animationStates, play, sequenceId, sequenceIndex, onCompleteStyle, register } = nextProps;
-    const id = sequenceId || sequenceIndex;
-    let currentPlay = play;
-    register && register(nextProps);
-
-    if (id !== undefined && animationStates && animationStates[id]) {
-      const state = animationStates[id];
-      currentPlay = state.play;
-    }
-
-    return {
-      ...(onCompleteStyle && prevState.willComplete
-        ? { willComplete: !(play && !prevState.play && prevState.willComplete) }
-        : null),
-      ...(currentPlay !== prevState.play ? { play: currentPlay } : null),
-    };
-  }
-
-  componentDidUpdate() {
-    const {
-      delay,
-      play,
-      onCompleteStyle,
-      duration,
-      onComplete,
-      animationStates,
-      sequenceId,
-      sequenceIndex,
-    } = this.props;
-    const id = sequenceId || sequenceIndex;
-
-    if (
-      (onComplete || onCompleteStyle) &&
-      !this.state.willComplete &&
-      (play ||
-        (id &&
-          animationStates &&
-          Object.keys(animationStates).length &&
-          animationStates[id] &&
-          animationStates[id].play))
-    ) {
-      clearTimeout(this.completeTimeout);
-      this.completeTimeout = setTimeout(() => {
-        this.setState({
-          willComplete: true,
-        });
+    if (play && (complete || onComplete)) {
+      onCompleteTimeRef.current = setTimeout(() => {
+        complete && setStyle(complete);
         onComplete && onComplete();
-      }, msToSec(parseFloat(delay) + parseFloat(duration)));
+      }, msToSec(parseFloat((animationStates[id] || {}).delay || delay) + parseFloat(duration)));
     }
-  }
 
-  componentWillUnmount() {
-    clearTimeout(this.completeTimeout);
-    clearTimeout(this.unMountTimeout);
-    clearTimeout(this.initialPlayTimer);
-  }
+    return () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
+  }, [id, animationStates, play, duration, easeType, delay, onComplete, start, end, complete]);
 
-  completeTimeout: TimeoutID;
-
-  unMountTimeout: TimeoutID;
-
-  initialPlayTimer: TimeoutID;
-
-  render() {
-    const { tag = 'div', children, render } = this.props;
-
-    const props = attributesGenerator(this.props, this.state.willComplete, this.isMountWithPlay);
-    return render ? render(props) : React.createElement(tag, props, children);
-  }
+  return render ? render(style) : <div style={style}>{children}</div>;
 }
-
-// $FlowIgnoreLine: flow complain about React.forwardRef disable for now
-export default React.forwardRef((props: Props, ref) => (
-  <AnimateContext.Consumer>
-    {({ animationStates = {}, register = undefined }) => (
-      <AnimateChild {...{ ...props, animationStates, register }} forwardedRef={ref} />
-    )}
-  </AnimateContext.Consumer>
-));

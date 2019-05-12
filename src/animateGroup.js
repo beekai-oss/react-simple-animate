@@ -1,6 +1,6 @@
 // @flow
-import React, { type Element } from 'react';
-import type { AnimationType, AnimationStateType } from './animate';
+import React, { useState, useRef, useEffect } from 'react';
+import type { AnimationType } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 
 type Sequence = AnimationType & {
@@ -12,127 +12,55 @@ type Sequences = Array<Sequence>;
 
 type Props = {
   play: boolean,
-  sequences?: Sequences,
-  reverseSequences?: Sequences,
-  children: Element<*>,
+  sequences: Sequences,
 };
 
-type State = {
-  animationStates?: AnimationStateType,
-};
-
-// $FlowIgnoreLine
 export const AnimateContext = React.createContext({
   animationStates: {},
   register: () => {},
 });
 
-export default class AnimateGroup extends React.PureComponent<Props, State> {
-  static displayName = 'AnimateGroup';
+export default function AnimateGroup(props: Props) {
+  const { play, sequences = [] } = props;
+  const [animationStates, setAnimationStates] = useState();
+  const animationsRef = useRef({});
 
-  static defaultProps = {
-    sequences: [],
-    reverseSequences: [],
+  const register = (data) => {
+    const { sequenceIndex, sequenceId } = data;
+    const id = sequenceId || sequenceIndex;
+    if (id === undefined || (sequenceIndex && sequenceIndex < 0) || (sequenceId && sequenceId === '')) return;
+
+    animationsRef.current[id] = {
+      ...data,
+    };
   };
 
-  state = {
-    animationStates: {},
-  };
+  useEffect(() => {
+    const sequencesToAnimate =
+      Array.isArray(sequences) && sequences.length ? sequences : Object.values(animationsRef.current);
+    const reverseSequencesToAnimate = [...sequencesToAnimate].reverse();
+    const localAnimationState = {};
 
-  timers: { [string | number]: TimeoutID } = {};
-
-  animations: { [string | number]: AnimationType } = {};
-
-  componentDidMount() {
-    this.props.play && this.calculateSequences();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.play !== prevProps.play) {
-      this.clearTimers();
-      this.calculateSequences();
-    }
-  }
-
-  componentWillUnmount() {
-    this.clearTimers();
-  }
-
-  clearTimers = () => Object.values(this.timers).forEach((timer: any) => clearTimeout(timer));
-
-  setupAnimationTimers = ({
-    totalDuration,
-    id,
-    restAttributes,
-    play,
-  }: {
-    totalDuration: number,
-    id: number | string,
-    restAttributes: AnimationType,
-    play: boolean,
-  }) => {
-    const duration = totalDuration - (restAttributes.overlaySeconds || 0) * 1000;
-
-    this.timers[id] = setTimeout(() => {
-      this.setState(previousState => {
-        const stateCopy = { ...previousState.animationStates };
-
-        if (!stateCopy[id]) stateCopy[id] = {};
-        Object.entries(restAttributes).forEach(([key, value]) => {
-          stateCopy[id][key] = value;
-        });
-        stateCopy[id].play = play;
-
-        return {
-          animationStates: stateCopy,
-        };
-      });
-    }, duration < 0 ? 0 : duration);
-  };
-
-  calculateSequences = () => {
-    const { sequences, reverseSequences, play } = this.props;
-    const sequencesToAnimate: any =
-      Array.isArray(sequences) && sequences.length ? sequences : Object.values(this.animations);
-    const reverseSequencesToAnimate: any =
-      Array.isArray(reverseSequences) && reverseSequences.length ? reverseSequences : [...sequencesToAnimate].reverse();
-
-    return (play ? sequencesToAnimate : reverseSequencesToAnimate).reduce((previous, current, currentIndex) => {
+    (play ? sequencesToAnimate : reverseSequencesToAnimate).reduce((previous, current, currentIndex) => {
       const { sequenceId, sequenceIndex, ...restAttributes } = current;
       const id = sequenceId === undefined && sequenceIndex === undefined ? currentIndex : sequenceId || sequenceIndex;
       const totalDuration =
         previous +
         calculateTotalDuration({
-          ...this.animations[id],
-          play,
+          ...animationsRef.current[id],
           restAttributes,
         });
 
-      this.setupAnimationTimers({
-        id,
-        totalDuration: currentIndex === 0 ? 0 : previous,
-        restAttributes,
+      localAnimationState[id] = {
         play,
-      });
+        delay: currentIndex === 0 ? 0 || restAttributes.delay : totalDuration,
+      };
+
       return totalDuration;
     }, 0);
-  };
 
-  register = (props: Sequence) => {
-    const { sequenceIndex, sequenceId } = props;
-    const id = sequenceId || sequenceIndex;
-    if (id === undefined || (sequenceIndex && sequenceIndex < 0) || (sequenceId && sequenceId === '')) return;
+    setAnimationStates(localAnimationState);
+  }, [play]);
 
-    this.animations[id] = {
-      ...props,
-    };
-  };
-
-  render() {
-    return (
-      <AnimateContext.Provider value={{ animationStates: this.state.animationStates, register: this.register }}>
-        {this.props.children}
-      </AnimateContext.Provider>
-    );
-  }
+  return <AnimateContext.Provider value={{ animationStates, register }}>{props.children}</AnimateContext.Provider>;
 }

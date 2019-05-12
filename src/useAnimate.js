@@ -12,8 +12,8 @@ type UseAnimate = Props & {
 
 export default function useAnimate(
   props: UseAnimate = {
-    durationSeconds: 0.3,
-    delaySeconds: 0,
+    duration: 0.3,
+    delay: 0,
     easeType: 'linear',
     play: false,
     endStyle: {},
@@ -21,7 +21,7 @@ export default function useAnimate(
 ) {
   let completeTimeout;
   let initialPlayTimer;
-  const { onComplete, onCompleteStyle, delaySeconds = 0, durationSeconds = 0.3 } = props;
+  const { onComplete, onCompleteStyle, delay = 0, duration = 0.3 } = props;
   const [animateProps, setPlay] = useState(props);
   const { play, willComplete, isMountWithPlay } = animateProps;
   const playFunction = (playValue: boolean, isMountWithPlayValue: mixed = animateProps.isMountWithPlay) => {
@@ -43,13 +43,13 @@ export default function useAnimate(
             isMountWithPlay: false,
           });
           onComplete && onComplete();
-        }, msToSec(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
+        }, msToSec(parseFloat(delay) + parseFloat(duration)));
       }
 
       if (play && props.play && isMountWithPlay === undefined) {
         initialPlayTimer = setTimeout(() => {
           playFunction(play, false);
-        }, msToSec(delaySeconds));
+        }, msToSec(delay));
       }
 
       return () => {

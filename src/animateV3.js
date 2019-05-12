@@ -1,19 +1,55 @@
 // @flow
 import React, { useEffect, useState, useRef, useContext } from 'react';
+import { AnimateContext } from './animateGroupV3';
 import msToSec from './utils/msToSec';
-import { AnimateContext } from './animateGroup';
-import type { AnimationStateType, AnimationType } from './types';
 
-type Props = {
-  children: any,
-  render: style => any,
-  onComplete: () => void,
-  sequenceId: number,
-  sequenceIndex: number,
-  animationStates: AnimationStateType,
+export type Style = { [string]: string | number };
+
+export type AnimationType = {
+  play?: boolean,
+  start?: Style,
+  end: Style,
+  complete?: Style,
+  overlay?: number,
+  duration?: number,
+  delay?: number,
+  children?: any,
+  forwardedRef?: any,
+};
+
+export type AnimationStateType = { [string | number]: AnimationType };
+
+export type Props = {
+  easeType?: string,
+  tag?: string,
+  complete?: any,
+  className?: string,
+  render?: any,
+  sequenceId?: string,
+  sequenceIndex?: number,
+  register?: any => void,
+  animationStates?: AnimationStateType,
 } & AnimationType;
 
-export default function Animate(props: Props) {
+export type State = {
+  willComplete: boolean,
+  play: boolean,
+};
+
+export default function Animate(
+  props: Props = {
+    durationSeconds: 0.3,
+    delaySeconds: 0,
+    easeType: 'linear',
+    sequenceId: undefined,
+    sequenceIndex: undefined,
+    animationStates: undefined,
+    start: {},
+    end: {},
+    play: undefined,
+    onComplete: () => {},
+  },
+) {
   const {
     play,
     children,
@@ -22,38 +58,25 @@ export default function Animate(props: Props) {
     end,
     complete,
     onComplete,
-    duration = 0.3,
-    delay = 0,
+    delay,
+    duration,
     easeType = 'linear',
-    ...rest
+    sequenceId,
+    sequenceIndex,
+    animationStates,
   } = props;
   const onCompleteTimeRef = useRef(null);
-  const firstRender = useRef(true);
   const [style, setStyle] = useState(start);
-  const forceUpdate = useState(false)[1];
   const { register } = useContext(AnimateContext);
 
   useEffect(() => {
-    register(props);
+    if (sequenceIndex >= 0 || sequenceId) register(props);
   }, []);
 
   useEffect(() => {
-    const transition = `all ${duration}s ${easeType} ${delay}s`;
-
-    if (firstRender.current && play) {
-      setStyle({
-        start,
-        transition,
-      });
-
-      firstRender.current = false;
-      forceUpdate(true);
-      return;
-    }
-
     setStyle({
       ...(play ? end : start),
-      transition,
+      transition: `all ${duration}s ${easeType} ${delay}s`,
     });
 
     if (play && (complete || onComplete)) {
@@ -66,11 +89,5 @@ export default function Animate(props: Props) {
     return () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
   }, [play, duration, easeType, delay, onComplete, start, end, complete]);
 
-  return render ? (
-    render({ style })
-  ) : (
-    <div style={style} {...rest}>
-      {children}
-    </div>
-  );
+  return render ? render(style) : <div style={style}>{children}</div>;
 }

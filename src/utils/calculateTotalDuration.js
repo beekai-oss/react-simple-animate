@@ -2,17 +2,13 @@
 import msToSec from './msToSec';
 
 export default ({
-  durationSeconds = 0,
-  delaySeconds = 0,
-  reverseDurationSeconds = 0,
-  play,
+  duration = 0,
+  delay = 0,
 }: {
-  durationSeconds?: number,
-  delaySeconds?: number,
-  reverseDurationSeconds?: number,
-  play: boolean,
+  duration?: number,
+  delay?: number,
 }): number => {
-  const duration =
-    parseFloat(play ? durationSeconds : reverseDurationSeconds || durationSeconds) + parseFloat(delaySeconds);
-  return msToSec(duration);
+  const time =
+    parseFloat(duration) + parseFloat(delay);
+  return msToSec(time);
 };

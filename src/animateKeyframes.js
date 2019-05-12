@@ -11,11 +11,11 @@ export type Keyframes = Array<Object>;
 export type AnimateKeyframesProps = {
   keyframes: Keyframes,
   easeType?: string,
-  durationSeconds?: number,
+  duration?: number,
   render?: (?Object) => any,
   play: boolean,
   playState?: string,
-  delaySeconds?: number,
+  delay?: number,
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse',
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both',
   iterationCount?: string | number,
@@ -34,8 +34,8 @@ export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesP
   static displayName = 'AnimateKeyframes';
 
   static defaultProps = {
-    durationSeconds: 0.3,
-    delaySeconds: 0,
+    duration: 0.3,
+    delay: 0,
     easeType: 'linear',
     render: undefined,
     playState: 'running',
@@ -102,8 +102,8 @@ export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesP
       children,
       play,
       render,
-      durationSeconds = 0.3,
-      delaySeconds = 0,
+      duration = 0.3,
+      delay = 0,
       easeType = 'linear',
       playState = 'running',
       direction = 'normal',
@@ -113,7 +113,7 @@ export class AnimateKeyframesChild extends React.PureComponent<AnimateKeyframesP
     const style =
       play || this.state.play
         ? {
-            animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+            animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
               this.animationName
             }`,
           }

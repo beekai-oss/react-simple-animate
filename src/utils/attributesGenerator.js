@@ -14,20 +14,20 @@ export default function attributesGenerator(
     start,
     end,
     onCompleteStyle,
-    durationSeconds = 0.3,
-    delaySeconds = 0,
+    duration = 0.3,
+    delay = 0,
     easeType = 'linear',
     className,
-    reverseDurationSeconds = 0,
-    reverseDelaySeconds = 0,
+    reverseduration = 0,
+    reversedelay = 0,
     forwardedRef,
   } = mapSequenceOverProps(props, id);
   let style = start;
-  let transition = `all ${durationSeconds}s ${easeType} ${delaySeconds}s`;
+  let transition = `all ${duration}s ${easeType} ${delay}s`;
 
-  if (play !== undefined && !play && (reverseDurationSeconds || reverseDelaySeconds)) {
-    transition = `all ${reverseDurationSeconds || durationSeconds}s ${easeType} ${
-      play ? delaySeconds : reverseDelaySeconds
+  if (play !== undefined && !play && (reverseduration || reversedelay)) {
+    transition = `all ${reverseduration || duration}s ${easeType} ${
+      play ? delay : reversedelay
     }s`;
   } else if (!isMountWithPlay) {
     if (willComplete && onCompleteStyle && play) {

@@ -11,8 +11,8 @@ type UseAnimateKeyframesProps = AnimateKeyframesProps & {
 
 export default function useAnimateKeyframes(props: UseAnimateKeyframesProps) {
   const {
-    durationSeconds = 0.3,
-    delaySeconds = 0,
+    duration = 0.3,
+    delay = 0,
     easeType = 'linear',
     direction = 'normal',
     fillMode = 'none',
@@ -51,7 +51,7 @@ export default function useAnimateKeyframes(props: UseAnimateKeyframesProps) {
 
   const style = play
     ? {
-        animation: `${durationSeconds}s ${easeType} ${delaySeconds}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNameRef.current ||
+        animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNameRef.current ||
           ''}`,
       }
     : null;

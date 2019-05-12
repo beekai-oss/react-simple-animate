@@ -10,9 +10,9 @@ import deleteRules from './style/deleteRules';
 
 type Sequences = Array<{
   keyframes?: Keyframes,
-  durationSeconds?: number,
+  duration?: number,
   easeType?: string,
-  delaySeconds?: number,
+  delay?: number,
   iterationCount?: string,
   direction?: string,
   fillMode?: string,
@@ -27,7 +27,7 @@ export default function useAnimateGroup(props: {
   play: boolean,
   animationNames: string,
 }) {
-  let nextDelaySeconds = 0;
+  let nextdelay = 0;
   const [{ sequences, reverseSequences, play, animationNames }, setPlay] = useState(props);
   const playFunction = (playValue: boolean) => {
     setPlay({ sequences, reverseSequences, play: playValue, animationNames });
@@ -71,10 +71,10 @@ export default function useAnimateGroup(props: {
     [string]: string,
   }> = (reverseSequences ? localSequences : sequences).map((prop, i) => {
     const {
-      durationSeconds = 0.3,
+      duration = 0.3,
       keyframes = false,
       easeType = 'linear',
-      delaySeconds = 0,
+      delay = 0,
       iterationCount = 1,
       direction = 'normal',
       fillMode = 'none',
@@ -82,21 +82,21 @@ export default function useAnimateGroup(props: {
       overlaySeconds = 0,
     } = prop;
 
-    nextDelaySeconds = durationSeconds + delaySeconds - overlaySeconds;
-    nextDelaySeconds = nextDelaySeconds < 0 ? 0 : nextDelaySeconds;
+    nextdelay = duration + delay - overlaySeconds;
+    nextdelay = nextdelay < 0 ? 0 : nextdelay;
 
     if (keyframes) {
       return play
         ? {
-            style: `${durationSeconds}s ${easeType} ${
-              i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds
+            style: `${duration}s ${easeType} ${
+              i === 0 ? delay : nextdelay + delay
             }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationNames[i]}`,
           }
         : null;
     }
 
     return attributesGenerator({
-      ...{ ...prop, delaySeconds: i === 0 ? delaySeconds : nextDelaySeconds + delaySeconds },
+      ...{ ...prop, delay: i === 0 ? delay : nextdelay + delay },
       play,
     }).style;
   });

@@ -12,10 +12,10 @@ export type AnimationType = {
   endStyle: Style,
   onCompleteStyle?: Style,
   overlaySeconds?: number,
-  durationSeconds?: number,
-  reverseDelaySeconds?: number,
-  reverseDurationSeconds?: number,
-  delaySeconds?: number,
+  duration?: number,
+  reversedelay?: number,
+  reverseduration?: number,
+  delay?: number,
   children?: React.Component<*>,
   forwardedRef?: any,
 };
@@ -43,8 +43,8 @@ export class AnimateChild extends React.PureComponent<Props, State> {
   static displayName = 'Animate';
 
   static defaultProps = {
-    durationSeconds: 0.3,
-    delaySeconds: 0,
+    duration: 0.3,
+    delay: 0,
     easeType: 'linear',
     sequenceId: undefined,
     sequenceIndex: undefined,
@@ -65,7 +65,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
       this.initialPlayTimer = setTimeout(() => {
         this.isMountWithPlay = false;
         this.forceUpdate();
-      }, msToSec(props.delaySeconds));
+      }, msToSec(props.delay));
     }
   }
 
@@ -95,10 +95,10 @@ export class AnimateChild extends React.PureComponent<Props, State> {
 
   componentDidUpdate() {
     const {
-      delaySeconds,
+      delay,
       play,
       onCompleteStyle,
-      durationSeconds,
+      duration,
       onComplete,
       animationStates,
       sequenceId,
@@ -122,7 +122,7 @@ export class AnimateChild extends React.PureComponent<Props, State> {
           willComplete: true,
         });
         onComplete && onComplete();
-      }, msToSec(parseFloat(delaySeconds) + parseFloat(durationSeconds)));
+      }, msToSec(parseFloat(delay) + parseFloat(duration)));
     }
   }
 

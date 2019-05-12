@@ -2,11 +2,11 @@
 // $FlowIgnoreLine
 import { useEffect, useState } from 'react';
 import createRandomName from './utils/createRandomName';
-import createTag from './style/createTag';
+import createTag from './logic/createTag';
 import attributesGenerator from './utils/attributesGenerator';
 import type { Keyframes } from './animateKeyframes';
 import type { Style } from './animate';
-import deleteRules from './style/deleteRules';
+import deleteRules from './logic/deleteRules';
 
 type Sequences = Array<{
   keyframes?: Keyframes,
@@ -79,10 +79,10 @@ export default function useAnimateGroup(props: {
       direction = 'normal',
       fillMode = 'none',
       playState: stylePlayState = 'running',
-      overlaySeconds = 0,
+      overlay = 0,
     } = prop;
 
-    nextdelay = duration + delay - overlaySeconds;
+    nextdelay = duration + delay - overlay;
     nextdelay = nextdelay < 0 ? 0 : nextdelay;
 
     if (keyframes) {

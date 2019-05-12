@@ -47,8 +47,7 @@ export default function AnimateGroup(props: Props) {
       const totalDuration =
         previous +
         calculateTotalDuration({
-          ...animationsRef.current[id],
-          restAttributes,
+          ...restAttributes,
         });
 
       localAnimationState[id] = {

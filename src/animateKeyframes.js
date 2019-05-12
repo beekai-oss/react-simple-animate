@@ -1,8 +1,8 @@
 // @flow
 import React, { useRef, useEffect, useContext, useState } from 'react';
-import createTag from './style/createTag';
+import createTag from './logic/createTag';
 import createRandomName from './utils/createRandomName';
-import deleteRule from './style/deleteRules';
+import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
 import type { AnimationStateType } from './animate';
 import type { AnimationType } from './types';

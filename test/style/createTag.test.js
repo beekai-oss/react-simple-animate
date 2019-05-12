@@ -1,4 +1,4 @@
-import createTag from '../../src/style/createTag';
+import createTag from '../../src/logic/createTag';
 
 jest.mock('../../src/style/createStyle', () => () => 'test');
 

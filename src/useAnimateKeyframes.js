@@ -1,9 +1,9 @@
 // @flow
 import { useState, useEffect, useRef } from 'react';
 import createRandomName from './utils/createRandomName';
-import createTag from './style/createTag';
+import createTag from './logic/createTag';
 import type { AnimateKeyframesProps } from './animateKeyframes';
-import deleteRules from './style/deleteRules';
+import deleteRules from './logic/deleteRules';
 
 type UseAnimateKeyframesProps = AnimateKeyframesProps & {
   animationName: string,

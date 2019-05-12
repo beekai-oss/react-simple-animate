@@ -1,55 +1,15 @@
 // @flow
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { AnimateContext } from './animateGroupV3';
+import { AnimateContext } from './animateGroup';
 import msToSec from './utils/msToSec';
-
-export type Style = { [string]: string | number };
-
-export type AnimationType = {
-  play?: boolean,
-  start?: Style,
-  end: Style,
-  complete?: Style,
-  overlay?: number,
-  duration?: number,
-  delay?: number,
-  children?: any,
-  forwardedRef?: any,
-};
-
-export type AnimationStateType = { [string | number]: AnimationType };
+import type { AnimationStateType, AnimationType, Style } from './types';
 
 export type Props = {
-  easeType?: string,
-  tag?: string,
-  complete?: any,
-  className?: string,
-  render?: any,
-  sequenceId?: string,
-  sequenceIndex?: number,
-  register?: any => void,
+  complete?: Style,
   animationStates?: AnimationStateType,
 } & AnimationType;
 
-export type State = {
-  willComplete: boolean,
-  play: boolean,
-};
-
-export default function Animate(
-  props: Props = {
-    durationSeconds: 0.3,
-    delaySeconds: 0,
-    easeType: 'linear',
-    sequenceId: undefined,
-    sequenceIndex: undefined,
-    animationStates: undefined,
-    start: {},
-    end: {},
-    play: undefined,
-    onComplete: () => {},
-  },
-) {
+export default function Animate(props: Props) {
   const {
     play,
     children,
@@ -58,8 +18,8 @@ export default function Animate(
     end,
     complete,
     onComplete,
-    delay,
-    duration,
+    delay = 0,
+    duration = 0.3,
     easeType = 'linear',
     sequenceId,
     sequenceIndex,

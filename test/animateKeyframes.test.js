@@ -2,7 +2,7 @@ import renderer from 'react-test-renderer';
 import React from 'react';
 import { shallow } from 'enzyme';
 import AnimateKeyframes, { AnimateKeyframesChild } from '../src/animateKeyframes';
-import deleteRule from '../src/style/deleteRules';
+import deleteRule from '../src/logic/deleteRules';
 
 jest.mock('../src/style/deleteRules');
 jest.mock('../src/style/createTag', () => () => 'createTag');

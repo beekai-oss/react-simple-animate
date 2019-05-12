@@ -1,7 +1,4 @@
 // @flow
-
-export default function createRandomName(): string {
-  return `RSI-${Math.random()
+export default (): string =>  `RSI-${Math.random()
     .toString(36)
-    .substr(2, 9)}`;
-}
+    .substr(2, 9)}`

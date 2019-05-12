@@ -1,74 +1,31 @@
 // @flow
-// $FlowIgnoreLine
-import { useState, useEffect } from 'react';
-import attributesGenerator from './utils/attributesGenerator';
+import { useState, useEffect, useRef } from 'react';
 import type { Props } from './animate';
 import msToSec from './utils/msToSec';
 
-type UseAnimate = Props & {
-  willComplete?: boolean,
-  isMountWithPlay?: boolean,
-};
+export default function useAnimate(props: Props) {
+  const { play, start, end, complete, onComplete, delay = 0, duration = 0.3, easeType = 'linear' } = props;
+  const [style, setStyle] = useState(start);
+  const onCompleteTimeRef = useRef(null);
 
-export default function useAnimate(
-  props: UseAnimate = {
-    duration: 0.3,
-    delay: 0,
-    easeType: 'linear',
-    play: false,
-    endStyle: {},
-  },
-) {
-  let completeTimeout;
-  let initialPlayTimer;
-  const { onComplete, onCompleteStyle, delay = 0, duration = 0.3 } = props;
-  const [animateProps, setPlay] = useState(props);
-  const { play, willComplete, isMountWithPlay } = animateProps;
-  const playFunction = (playValue: boolean, isMountWithPlayValue: mixed = animateProps.isMountWithPlay) => {
-    setPlay({
-      ...props,
-      play: playValue,
-      isMountWithPlay: isMountWithPlayValue,
+  useEffect(() => {
+    setStyle({
+      ...(play.play ? end : start),
+      transition: `all ${duration}s ${easeType} ${delay}s`,
     });
+
+    if (play && (complete || onComplete)) {
+      onCompleteTimeRef.current = setTimeout(() => {
+        complete && setStyle(complete);
+        onComplete && onComplete();
+      }, msToSec(delay + parseFloat(duration)));
+    }
+
+    return () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
+  }, [play, duration, easeType, delay, onComplete, start, end, complete]);
+
+  return {
+    style,
+    play,
   };
-
-  useEffect(
-    () => {
-      if ((onComplete || onCompleteStyle) && play) {
-        clearTimeout(completeTimeout);
-        completeTimeout = setTimeout(() => {
-          setPlay({
-            ...animateProps,
-            willComplete: true,
-            isMountWithPlay: false,
-          });
-          onComplete && onComplete();
-        }, msToSec(parseFloat(delay) + parseFloat(duration)));
-      }
-
-      if (play && props.play && isMountWithPlay === undefined) {
-        initialPlayTimer = setTimeout(() => {
-          playFunction(play, false);
-        }, msToSec(delay));
-      }
-
-      return () => {
-        clearTimeout(completeTimeout);
-        clearTimeout(initialPlayTimer);
-      };
-    },
-    [play],
-  );
-
-  return [
-    {
-      style: attributesGenerator(
-        { ...props, play },
-        willComplete,
-        isMountWithPlay === undefined ? props.play : isMountWithPlay,
-      ).style,
-      play,
-    },
-    playFunction,
-  ];
 }

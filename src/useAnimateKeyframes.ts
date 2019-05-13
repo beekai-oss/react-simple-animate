@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './logic/createTag';
-import { Props } from './animateKeyframes';
 import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
+import { AnimateKeyframesProps } from './types';
 
-export default function useAnimateKeyframes(props: Props) {
+export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
   const {
     duration = 0.3,
     delay = 0,

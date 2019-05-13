@@ -30,7 +30,7 @@ export default function AnimateGroup(props: Props) {
   };
 
   useEffect(
-    () => {
+    (): void => {
       const sequencesToAnimate =
         Array.isArray(sequences) && sequences.length ? sequences : Object.values(animationsRef.current);
       const localAnimationState = {};
@@ -57,6 +57,5 @@ export default function AnimateGroup(props: Props) {
     [play],
   );
 
-  // @ts-ignore
   return <AnimateContext.Provider value={{ animationStates, register }}>{children}</AnimateContext.Provider>;
 }

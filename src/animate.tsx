@@ -1,17 +1,11 @@
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
 import msToSec from './utils/msToSec';
-import { AnimationStateType, AnimationType, Style } from './types';
+import { AnimationProps } from './types';
 
 const { useEffect, useState, useRef, useContext } = React;
 
-export type Props = {
-  complete?: Style;
-  onComplete?: () => void;
-  animationStates?: AnimationStateType;
-} & AnimationType;
-
-export default function Animate(props: Props) {
+export default function Animate(props: AnimationProps) {
   const {
     play,
     children,
@@ -26,13 +20,13 @@ export default function Animate(props: Props) {
     sequenceId,
     sequenceIndex,
   } = props;
-  const onCompleteTimeRef = useRef({});
-  const [style, setStyle] = useState(start);
+  const onCompleteTimeRef = useRef(null);
+  const [style, setStyle] = useState(start || {});
   const { register, animationStates = {} } = useContext(AnimateContext);
   const id = (sequenceIndex && sequenceIndex >= 0 ? sequenceIndex : sequenceId) || 0;
 
   useEffect((): void => {
-    if (sequenceIndex && sequenceIndex >= 0 || sequenceId) register(props);
+    if ((sequenceIndex && sequenceIndex >= 0) || sequenceId) register(props);
   }, []);
 
   useEffect(
@@ -43,6 +37,7 @@ export default function Animate(props: Props) {
       });
 
       if (play && (complete || onComplete)) {
+        // @ts-ignore
         onCompleteTimeRef.current = setTimeout((): void => {
           complete && setStyle(complete);
           onComplete && onComplete();
@@ -50,15 +45,12 @@ export default function Animate(props: Props) {
       }
 
       return (): void => {
-        if (onCompleteTimeRef.current) {
-          // @ts-ignore
-          clearTimeout(onCompleteTimeRef.current);
-        }
+        // @ts-ignore
+        onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
       };
     },
     [id, animationStates, play, duration, easeType, delay, onComplete, start, end, complete],
   );
 
-  // @ts-ignore
   return render ? render({ style }) : <div style={style}>{children}</div>;
 }

@@ -12,16 +12,20 @@ export default function createTag({
   index: number;
 } {
   let styleTag = document.querySelector('style[data-id=rsi]');
+  let index = 0;
 
   if (!styleTag) {
     styleTag = document.createElement('style');
     styleTag.setAttribute('data-id', 'rsi');
-    // $FlowIgnoreLine:
     document.head.appendChild(styleTag);
   }
 
-  // @ts-ignore
-  const index = styleTag.sheet.cssRules.length || 0;
+  try {
+    // @ts-ignore
+    index = styleTag.sheet.cssRules.length;
+  } catch (e) {
+    index = 0;
+  }
 
   try {
     // @ts-ignore

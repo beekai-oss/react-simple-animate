@@ -3,20 +3,11 @@ import createTag from './logic/createTag';
 import createRandomName from './utils/createRandomName';
 import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
-import { AnimationType, AnimationStateType, Keyframes } from './types';
+import { AnimateKeyframesProps } from './types';
 
 const { useRef, useEffect, useContext, useState } = React;
 
-export type Props = {
-  keyframes: Keyframes;
-  playState?: string;
-  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
-  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
-  iterationCount?: string | number;
-  animationStates: AnimationStateType;
-} & AnimationType;
-
-export default function AnimateKeyframesChild(props: Props) {
+export default function AnimateKeyframesChild(props: AnimateKeyframesProps) {
   const {
     children,
     play,

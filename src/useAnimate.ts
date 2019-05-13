@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Props } from './animate';
+import { AnimationProps } from './types';
 import msToSec from './utils/msToSec';
 
-export default function useAnimate(props: Props) {
+export default function useAnimate(props: AnimationProps) {
   const { start, end, complete, onComplete, delay = 0, duration = 0.3, easeType = 'linear' } = props;
   const transition = `all ${duration}s ${easeType} ${delay}s`;
   const [style, setStyle] = useState({ ...start, transition });

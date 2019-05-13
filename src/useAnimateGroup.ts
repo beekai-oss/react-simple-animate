@@ -3,13 +3,28 @@ import createRandomName from './utils/createRandomName';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
-import { Sequences, Sequence } from './types';
+import { AnimationStateType, Style } from './types';
+import { Keyframes } from './animateKeyframes';
 
-export default function useAnimateGroup(props: { sequences: Sequences }) {
+interface Props {
+  easeType: string;
+  delay: number;
+  end: Style;
+  duration: number;
+  overlay: number;
+  keyframes: Keyframes;
+  playState?: string;
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
+  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
+  iterationCount?: string | number;
+  animationStates: AnimationStateType;
+}
+
+export default function useAnimateGroup(props: { sequences: Props[] }) {
   let nextDelay = 0;
   const localAnimationNames = {};
   const { sequences } = props;
-  const [isPlaying, setPlay] = useState(props);
+  const [isPlaying, setPlay] = useState(false);
 
   useEffect(() => {
     let localStyleTag;
@@ -18,6 +33,7 @@ export default function useAnimateGroup(props: { sequences: Sequences }) {
       if (keyframes) {
         const animationName = createRandomName();
         localAnimationNames[i] = animationName;
+        // @ts-ignore
         const { styleTag } = createTag({ animationName, keyframes });
         localStyleTag = styleTag;
       }
@@ -33,41 +49,46 @@ export default function useAnimateGroup(props: { sequences: Sequences }) {
     };
   }, []);
 
-  const styles = sequences.map((prop: Sequence, i) => {
-    if (!isPlaying) return null;
+  const styles = sequences.map(
+    (
+      prop,
+      i,
+    ) => {
+      if (!isPlaying) return null;
 
-    const {
-      duration = 0.3,
-      keyframes = false,
-      easeType = 'linear',
-      delay = 0,
-      iterationCount = 1,
-      direction = 'normal',
-      fillMode = 'none',
-      playState: stylePlayState = 'running',
-      end,
-      overlay,
-    } = prop;
+      const {
+        duration = 0.3,
+        keyframes = false,
+        easeType = 'linear',
+        delay = 0,
+        iterationCount = 1,
+        direction = 'normal',
+        fillMode = 'none',
+        playState: stylePlayState = 'running',
+        end,
+        overlay,
+      } = prop;
 
-    nextDelay = calculateTotalDuration({
-      duration,
-      delay,
-      overlay,
-    });
+      nextDelay = calculateTotalDuration({
+        duration,
+        delay,
+        overlay,
+      });
 
-    if (keyframes) {
+      if (keyframes) {
+        return {
+          style: `${duration}s ${easeType} ${
+            i === 0 ? delay : nextDelay + delay
+          }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${localAnimationNames[i]}`,
+        };
+      }
+
       return {
-        style: `${duration}s ${easeType} ${
-          i === 0 ? delay : nextDelay + delay
-        }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${localAnimationNames[i]}`,
+        ...end,
+        transition: `all ${duration}s ${easeType} ${delay}s`,
       };
-    }
-
-    return {
-      ...end,
-      transition: `all ${duration}s ${easeType} ${delay}s`,
-    };
-  });
+    },
+  );
 
   const play = (playValue: boolean) => {
     setPlay(playValue);

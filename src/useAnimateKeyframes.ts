@@ -31,7 +31,7 @@ export default function useAnimateKeyframes(props: Props) {
     styleTagRef.current = styleTag;
     register(props);
 
-    // $FlowIgnoreLine
+    // @ts-ignore
     return () => deleteRules(styleTagRef.current.sheet, animationNameRef.current);
   }, []);
 

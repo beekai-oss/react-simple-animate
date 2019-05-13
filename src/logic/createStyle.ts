@@ -12,6 +12,7 @@ export default function createStyle({
   return `${keyframes.reduce((previous, keyframe, currentIndex): string => {
     if (keyframe) {
       return `${previous} ${
+        // @ts-ignore
         animationLength === 2 ? currentIndex * 100 : parseFloat((100 / (animationLength - 1)).toFixed(2)) * currentIndex
       }% {${keyframe}}`;
     }

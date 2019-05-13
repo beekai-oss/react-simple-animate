@@ -61,6 +61,8 @@ typings/
 
 .DS_Store
 
+/dist
 /lib
 .idea/
 .coveralls.yml
+.rpt2_cache/

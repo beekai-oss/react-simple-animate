@@ -4,7 +4,7 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { AnimationStateType, Style } from './types';
-import { Keyframes } from './animateKeyframes';
+import { Keyframes } from './types';
 
 interface Props {
   easeType: string;

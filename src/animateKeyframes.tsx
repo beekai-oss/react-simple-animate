@@ -1,14 +1,11 @@
-// @flow
 import * as React from 'react';
 import createTag from './logic/createTag';
 import createRandomName from './utils/createRandomName';
 import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
-import { AnimationType, AnimationStateType } from './types';
+import { AnimationType, AnimationStateType, Keyframes } from './types';
 
 const { useRef, useEffect, useContext, useState } = React;
-
-export type Keyframes = [];
 
 export type Props = {
   keyframes: Keyframes;
@@ -34,7 +31,9 @@ export default function AnimateKeyframesChild(props: Props) {
     keyframes,
   } = props;
   const animationNameRef = useRef('');
-  const styleTagRef = useRef('');
+  const styleTagRef = useRef({
+    sheet: {},
+  });
   const { register } = useContext(AnimateContext);
   const forceUpdate = useState(false)[1];
 
@@ -48,8 +47,7 @@ export default function AnimateKeyframesChild(props: Props) {
     register(props);
 
     if (play) forceUpdate(true);
-    // @ts-ignore
-    return () => deleteRule(styleTagRef.current.sheet, animationNameRef.current);
+    return (): void => deleteRule(styleTagRef.current.sheet, animationNameRef.current);
   }, []);
 
   const style = play

@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { Sequences } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';

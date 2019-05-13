@@ -1,5 +1,5 @@
 import createStyle from './createStyle';
-import { Keyframes } from '../animateKeyframes';
+import { Keyframes } from '../types';
 
 export default function createTag({
   keyframes,

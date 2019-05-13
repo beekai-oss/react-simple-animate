@@ -1,4 +1,3 @@
-// @flow
 import { useState, useEffect, useRef } from 'react';
 import { Props } from './animate';
 import msToSec from './utils/msToSec';

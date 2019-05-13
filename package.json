@@ -1,8 +1,8 @@
 {
   "name": "react-simple-animate",
-  "version": "2.8.0",
+  "version": "3.0.0-beta.2",
   "description": "react simple animate",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "keywords": [
     "react",
     "animation",
@@ -23,7 +23,7 @@
     "postrelease": "yarn publish && git push --follow-tags",
     "test": "jest --coverage",
     "testw": "yarn test -- --watchAll",
-    "prepublish": "yarn lint && yarn test && yarn run clean && yarn build"
+    "prepublish": "yarn run clean && yarn build"
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",
   "homepage": "https://react-simple-animate.now.sh",

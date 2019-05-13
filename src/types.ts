@@ -1,10 +1,9 @@
-// @flow
 export interface Style {
   [key: string]: string | number;
 }
 
 export interface AnimationType {
-  play: boolean;
+  play?: boolean;
   start?: Style;
   end: Style;
   complete?: Style;
@@ -24,3 +23,5 @@ export interface AnimationStateType {
 }
 
 export type Sequences = AnimationType[];
+
+export type Keyframes = { [key: string]: string }[] | { [key: number]: string }[];

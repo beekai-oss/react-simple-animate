@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
 import msToSec from './utils/msToSec';

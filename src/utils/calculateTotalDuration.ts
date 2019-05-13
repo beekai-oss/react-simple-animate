@@ -1,4 +1,3 @@
-// @flow
 export default ({
   duration = 0.3,
   delay = 0,

@@ -7,4 +7,4 @@ export default ({
   duration?: number,
   delay?: number,
   overlay: ?number,
-}): number => parseFloat(duration) + parseFloat(delay) - parseFloat(overlay);
+}): number => parseFloat(duration) + parseFloat(delay) - parseFloat(overlay) || 0;

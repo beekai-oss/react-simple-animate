@@ -1,20 +1,14 @@
 // @flow
 import React, { useState, useRef, useEffect } from 'react';
-import type { AnimationType } from './types';
+import type { Sequences } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
-
-type Sequence = AnimationType & {
-  sequenceId?: string | number,
-  sequenceIndex?: number,
-};
-
-export type Sequences = Array<Sequence>;
 
 type Props = {
   play: boolean,
   sequences: Sequences,
 };
 
+// $FlowIgnoreLine
 export const AnimateContext = React.createContext({
   animationStates: {},
   register: () => {},
@@ -30,9 +24,7 @@ export default function AnimateGroup(props: Props) {
     const id = sequenceId || sequenceIndex;
     if (id === undefined || (sequenceIndex && sequenceIndex < 0) || (sequenceId && sequenceId === '')) return;
 
-    animationsRef.current[id] = {
-      ...data,
-    };
+    animationsRef.current[id] = data;
   };
 
   useEffect(() => {
@@ -46,9 +38,7 @@ export default function AnimateGroup(props: Props) {
       const id = sequenceId === undefined && sequenceIndex === undefined ? currentIndex : sequenceId || sequenceIndex;
       const totalDuration =
         previous +
-        calculateTotalDuration({
-          ...restAttributes,
-        });
+        calculateTotalDuration(restAttributes);
 
       localAnimationState[id] = {
         play,

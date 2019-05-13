@@ -18,3 +18,10 @@ export type AnimationType = {
 };
 
 export type AnimationStateType = { [string | number]: AnimationType };
+
+type Sequence = AnimationType & {
+  sequenceId?: string | number,
+  sequenceIndex?: number,
+};
+
+export type Sequences = Array<Sequence>;

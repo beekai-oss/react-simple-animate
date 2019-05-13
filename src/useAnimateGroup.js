@@ -2,20 +2,19 @@
 // $FlowIgnoreLine
 import { useEffect, useState } from 'react';
 import createRandomName from './utils/createRandomName';
+import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
-import type { Sequences } from './animateGroup';
 import deleteRules from './logic/deleteRules';
+import type { Sequences } from './types';
 
-export default function useAnimateGroup(props: { sequences: Sequences, play: boolean }) {
-  let nextdelay = 0;
-  const [{ sequences, play }, setPlay] = useState(props);
-  const playFunction = (playValue: boolean) => {
-    setPlay({ sequences, play: playValue });
-  };
+export default function useAnimateGroup(props: { sequences: Sequences }) {
+  let nextDelay = 0;
+  const localAnimationNames = [];
+  const { sequences } = props;
+  const [isPlaying, setPlay] = useState(props);
 
   useEffect(() => {
     let localStyleTag;
-    let localAnimationNames = [];
 
     sequences.forEach(({ keyframes = false }, i) => {
       if (keyframes) {
@@ -26,12 +25,6 @@ export default function useAnimateGroup(props: { sequences: Sequences, play: boo
       }
     });
 
-    setPlay({
-      sequences,
-      play,
-      animationNames: localAnimationNames,
-    });
-
     return () => {
       if (localStyleTag) {
         localAnimationNames.forEach(name => {
@@ -39,14 +32,14 @@ export default function useAnimateGroup(props: { sequences: Sequences, play: boo
           deleteRules(localStyleTag.sheet, name);
         });
       }
-
-      localAnimationNames = [];
     };
   }, []);
 
   const styles: Array<?{
     [string]: string,
   }> = sequences.map((prop, i) => {
+    if (!isPlaying) return null;
+
     const {
       duration = 0.3,
       keyframes = false,
@@ -56,34 +49,28 @@ export default function useAnimateGroup(props: { sequences: Sequences, play: boo
       direction = 'normal',
       fillMode = 'none',
       playState: stylePlayState = 'running',
-      overlay = 0,
+      end,
     } = prop;
 
-    nextdelay = duration + delay - overlay;
-    nextdelay = nextdelay < 0 ? 0 : nextdelay;
+    nextDelay = calculateTotalDuration(props);
 
     if (keyframes) {
-      return play
-        ? {
-            style: `${duration}s ${easeType} ${
-              i === 0 ? delay : nextdelay + delay
-            }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${animationNames[i]}`,
-          }
-        : null;
+      return {
+        style: `${duration}s ${easeType} ${
+          i === 0 ? delay : nextDelay + delay
+        }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${localAnimationNames[i]}`,
+      };
     }
 
-    // return attributesGenerator({
-    //   ...{ ...prop, delay: i === 0 ? delay : nextdelay + delay },
-    //   play,
-    // }).style;
+    return {
+      ...end,
+      transition: `all ${duration}s ${easeType} ${delay}s`,
+    };
   });
 
-  return [
-    {
-      styles,
-      animationNames,
-      play,
-    },
-    playFunction,
-  ];
+  const play = (playValue: boolean) => {
+    setPlay(playValue);
+  };
+
+  return [styles, play, isPlaying];
 }

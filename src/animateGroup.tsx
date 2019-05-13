@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Sequences } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
-import { FC } from 'react';
 
 const { useState, useRef, useEffect } = React;
 
@@ -18,7 +17,7 @@ export const AnimateContext = React.createContext({
   register: (any): void => {},
 });
 
-export default function AnimateGroup(props: Props): FC {
+export default function AnimateGroup(props: Props) {
   const { play, sequences = [], children } = props;
   const [animationStates, setAnimationStates] = useState();
   const animationsRef = useRef({});

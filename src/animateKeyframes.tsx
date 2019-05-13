@@ -5,7 +5,6 @@ import createRandomName from './utils/createRandomName';
 import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
 import { AnimationType, AnimationStateType } from './types';
-import { FC } from 'react';
 
 const { useRef, useEffect, useContext, useState } = React;
 
@@ -20,7 +19,7 @@ export type Props = {
   animationStates: AnimationStateType;
 } & AnimationType;
 
-export default function AnimateKeyframesChild(props: Props): FC {
+export default function AnimateKeyframesChild(props: Props) {
   const {
     children,
     play,

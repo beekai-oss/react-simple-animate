@@ -3,7 +3,6 @@ import * as React from 'react';
 import { AnimateContext } from './animateGroup';
 import msToSec from './utils/msToSec';
 import { AnimationStateType, AnimationType, Style } from './types';
-import { FC } from 'react';
 
 const { useEffect, useState, useRef, useContext } = React;
 
@@ -13,7 +12,7 @@ export type Props = {
   animationStates?: AnimationStateType;
 } & AnimationType;
 
-export default function Animate(props: Props): FC {
+export default function Animate(props: Props) {
   const {
     play,
     children,
@@ -31,10 +30,10 @@ export default function Animate(props: Props): FC {
   const onCompleteTimeRef = useRef({});
   const [style, setStyle] = useState(start);
   const { register, animationStates = {} } = useContext(AnimateContext);
-  const id = sequenceIndex >= 0 ? sequenceIndex : sequenceId;
+  const id = (sequenceIndex && sequenceIndex >= 0 ? sequenceIndex : sequenceId) || 0;
 
   useEffect((): void => {
-    if (sequenceIndex >= 0 || sequenceId) register(props);
+    if (sequenceIndex && sequenceIndex >= 0 || sequenceId) register(props);
   }, []);
 
   useEffect(
@@ -61,5 +60,6 @@ export default function Animate(props: Props): FC {
     [id, animationStates, play, duration, easeType, delay, onComplete, start, end, complete],
   );
 
+  // @ts-ignore
   return render ? render({ style }) : <div style={style}>{children}</div>;
 }

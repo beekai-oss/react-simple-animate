@@ -5,18 +5,18 @@ export interface Style {
 
 export interface AnimationType {
   play: boolean;
-  start: Style;
+  start?: Style;
   end: Style;
-  complete: Style;
+  complete?: Style;
   overlay?: number;
-  duration: number;
-  delay: number;
+  duration?: number;
+  delay?: number;
   easeType?: string;
   children?: any;
   register?: (data: any) => void;
   render?: (data: { style: Style | null }) => any;
-  sequenceId: string | number;
-  sequenceIndex: number;
+  sequenceId?: string | number;
+  sequenceIndex?: number;
 }
 
 export interface AnimationStateType {

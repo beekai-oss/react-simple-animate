@@ -7,19 +7,20 @@ export default function useAnimate(props: Props) {
   const { start, end, complete, onComplete, delay = 0, duration = 0.3, easeType = 'linear' } = props;
   const transition = `all ${duration}s ${easeType} ${delay}s`;
   const [style, setStyle] = useState({ ...start, transition });
+  const [isPlaying, setIsPlaying] = useState(false);
   const onCompleteTimeRef = useRef(null);
 
-  useEffect(() => {
-    return () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-  }, [duration, easeType, delay, onComplete, start, end, complete]);
+  useEffect(() => () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current), []);
 
-  const play = isPlaying => {
+  const play = (isPlay: boolean) => {
     setStyle({
-      ...(isPlaying ? end : start),
+      ...(isPlay ? end : start),
       transition,
     });
 
-    if (isPlaying && (complete || onComplete)) {
+    setIsPlaying(isPlay);
+
+    if (isPlay && (complete || onComplete)) {
       onCompleteTimeRef.current = setTimeout(() => {
         complete && setStyle(complete);
         onComplete && onComplete();
@@ -28,6 +29,7 @@ export default function useAnimate(props: Props) {
   };
 
   return {
+    isPlaying,
     style,
     play,
   };

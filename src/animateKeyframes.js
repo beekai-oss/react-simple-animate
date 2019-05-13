@@ -4,8 +4,7 @@ import createTag from './logic/createTag';
 import createRandomName from './utils/createRandomName';
 import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
-import type { AnimationStateType } from './animate';
-import type { AnimationType } from './types';
+import type { AnimationType, AnimationStateType } from './types';
 
 export type Keyframes = Array<Object>;
 
@@ -47,14 +46,14 @@ export default function AnimateKeyframesChild(props: Props) {
     register(props);
 
     if (play) forceUpdate(true);
-
+    // $FlowIgnoreLine
     return () => deleteRule(styleTagRef.current.sheet, animationNameRef.current);
   }, []);
 
   const style = play
     ? {
         animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-          animationNameRef.current
+          animationNameRef.current || ''
         }`,
       }
     : null;

@@ -1,15 +1,12 @@
 // @flow
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './logic/createTag';
-import type { AnimateKeyframesProps } from './animateKeyframes';
+import type { Props } from './animateKeyframes';
+import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 
-type UseAnimateKeyframesProps = AnimateKeyframesProps & {
-  animationName: string,
-};
-
-export default function useAnimateKeyframes(props: UseAnimateKeyframesProps) {
+export default function useAnimateKeyframes(props: Props) {
   const {
     duration = 0.3,
     delay = 0,
@@ -21,46 +18,37 @@ export default function useAnimateKeyframes(props: UseAnimateKeyframesProps) {
     keyframes,
   } = props;
   const animationNameRef = useRef('');
-  const styleTagRef = useRef(null);
-  const [{ play }, setPlay] = useState(props);
-  const playFunction = (playValue: boolean) => {
-    setPlay({
-      ...props,
-      play: playValue,
+  const styleTagRef = useRef('');
+  const { register } = useContext(AnimateContext);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    animationNameRef.current = createRandomName();
+    const { styleTag } = createTag({
+      animationName: animationNameRef.current,
+      keyframes,
     });
+    styleTagRef.current = styleTag;
+    register(props);
+
+    // $FlowIgnoreLine
+    return () => deleteRules(styleTagRef.current.sheet, animationNameRef.current);
+  }, []);
+
+  const play = (isPlay: boolean) => {
+    setIsPlaying(isPlay);
   };
 
-  useEffect(
-    () => {
-      if (!animationNameRef.current) {
-        const name = createRandomName();
-        const { styleTag } = createTag({ animationName: name, keyframes });
-        styleTagRef.current = styleTag;
-        animationNameRef.current = name;
-      }
-
-      return () => {
-        if (styleTagRef.current && animationNameRef.current) {
-          // $FlowIgnoreLine
-          deleteRules(styleTagRef.current.sheet, animationNameRef.current);
-        }
-      };
-    },
-    [],
-  );
-
-  const style = play
+  const style = isPlaying
     ? {
         animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNameRef.current ||
           ''}`,
       }
     : null;
 
-  return [
-    {
-      style,
-      play,
-    },
-    (playValue: boolean) => playFunction(playValue),
-  ];
+  return {
+    style,
+    play,
+    isPlaying,
+  };
 }

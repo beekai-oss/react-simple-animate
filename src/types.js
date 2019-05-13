@@ -12,7 +12,9 @@ export type AnimationType = {
   easeType?: string,
   children?: any,
   register?: any => void,
-  render?: ({ style: Style }) => any,
+  render?: ({ style: Style | null }) => any,
+  sequenceId: string | number,
+  sequenceIndex: number,
 };
 
 export type AnimationStateType = { [string | number]: AnimationType };

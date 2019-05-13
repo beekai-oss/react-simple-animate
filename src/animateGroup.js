@@ -8,7 +8,7 @@ type Sequence = AnimationType & {
   sequenceIndex?: number,
 };
 
-type Sequences = Array<Sequence>;
+export type Sequences = Array<Sequence>;
 
 type Props = {
   play: boolean,

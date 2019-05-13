@@ -6,6 +6,7 @@ import type { AnimationStateType, AnimationType, Style } from './types';
 
 export type Props = {
   complete?: Style,
+  onComplete?: () => void,
   animationStates?: AnimationStateType,
 } & AnimationType;
 
@@ -16,7 +17,7 @@ export default function Animate(props: Props) {
     render,
     start,
     end,
-    complete,
+    complete = '',
     onComplete,
     delay = 0,
     duration = 0.3,
@@ -49,5 +50,5 @@ export default function Animate(props: Props) {
     return () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
   }, [id, animationStates, play, duration, easeType, delay, onComplete, start, end, complete]);
 
-  return render ? render(style) : <div style={style}>{children}</div>;
+  return render ? render({ style }) : <div style={style}>{children}</div>;
 }

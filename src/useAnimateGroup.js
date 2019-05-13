@@ -3,34 +3,14 @@
 import { useEffect, useState } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './logic/createTag';
-import attributesGenerator from './utils/attributesGenerator';
-import type { Keyframes } from './animateKeyframes';
-import type { Style } from './animate';
+import type { Sequences } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 
-type Sequences = Array<{
-  keyframes?: Keyframes,
-  duration?: number,
-  easeType?: string,
-  delay?: number,
-  iterationCount?: string,
-  direction?: string,
-  fillMode?: string,
-  playState?: string,
-  overlaySeconds?: number,
-  endStyle?: Style,
-}>;
-
-export default function useAnimateGroup(props: {
-  sequences: Sequences,
-  reverseSequences?: Sequences,
-  play: boolean,
-  animationNames: string,
-}) {
+export default function useAnimateGroup(props: { sequences: Sequences, play: boolean }) {
   let nextdelay = 0;
-  const [{ sequences, reverseSequences, play, animationNames }, setPlay] = useState(props);
+  const [{ sequences, play }, setPlay] = useState(props);
   const playFunction = (playValue: boolean) => {
-    setPlay({ sequences, reverseSequences, play: playValue, animationNames });
+    setPlay({ sequences, play: playValue });
   };
 
   useEffect(() => {
@@ -49,7 +29,6 @@ export default function useAnimateGroup(props: {
     setPlay({
       sequences,
       play,
-      reverseSequences,
       animationNames: localAnimationNames,
     });
 
@@ -65,11 +44,9 @@ export default function useAnimateGroup(props: {
     };
   }, []);
 
-  const localSequences = (play ? sequences : reverseSequences) || [];
-
   const styles: Array<?{
     [string]: string,
-  }> = (reverseSequences ? localSequences : sequences).map((prop, i) => {
+  }> = sequences.map((prop, i) => {
     const {
       duration = 0.3,
       keyframes = false,
@@ -95,10 +72,10 @@ export default function useAnimateGroup(props: {
         : null;
     }
 
-    return attributesGenerator({
-      ...{ ...prop, delay: i === 0 ? delay : nextdelay + delay },
-      play,
-    }).style;
+    // return attributesGenerator({
+    //   ...{ ...prop, delay: i === 0 ? delay : nextdelay + delay },
+    //   play,
+    // }).style;
   });
 
   return [

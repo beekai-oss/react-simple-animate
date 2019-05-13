@@ -1,23 +1,26 @@
 // @flow
-import React, { useRef, useEffect, useContext, useState } from 'react';
+import * as React from 'react';
 import createTag from './logic/createTag';
 import createRandomName from './utils/createRandomName';
 import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
-import type { AnimationType, AnimationStateType } from './types';
+import { AnimationType, AnimationStateType } from './types';
+import { FC } from 'react';
 
-export type Keyframes = Array<Object>;
+const { useRef, useEffect, useContext, useState } = React;
+
+export type Keyframes = [];
 
 export type Props = {
-  keyframes: Keyframes,
-  playState?: string,
-  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse',
-  fillMode?: 'none' | 'forwards' | 'backwards' | 'both',
-  iterationCount?: string | number,
-  animationStates: AnimationStateType,
+  keyframes: Keyframes;
+  playState?: string;
+  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
+  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
+  iterationCount?: string | number;
+  animationStates: AnimationStateType;
 } & AnimationType;
 
-export default function AnimateKeyframesChild(props: Props) {
+export default function AnimateKeyframesChild(props: Props): FC {
   const {
     children,
     play,
@@ -46,17 +49,16 @@ export default function AnimateKeyframesChild(props: Props) {
     register(props);
 
     if (play) forceUpdate(true);
-    // $FlowIgnoreLine
+    // @ts-ignore
     return () => deleteRule(styleTagRef.current.sheet, animationNameRef.current);
   }, []);
 
   const style = play
     ? {
-        animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-          animationNameRef.current || ''
-        }`,
+        animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNameRef.current ||
+          ''}`,
       }
     : null;
 
-  return render ? render({ style }) : <div style={style}>{children}</div>;
+  return render ? render({ style }) : <div style={style || {}}>{children}</div>;
 }

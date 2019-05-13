@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
-import AnimateGroup from '../src/animateGroup';
+import AnimateGroup from 'src/animateGroup';
 
 jest.mock('../src/utils/calculateTotalDuration', () => () => 1);
 

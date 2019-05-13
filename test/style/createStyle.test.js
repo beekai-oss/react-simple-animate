@@ -1,4 +1,4 @@
-import createStyle from '../../src/logic/createStyle';
+import createStyle from 'src/logic/createStyle';
 
 describe('createStyle', () => {
   it('should create correct style', () => {

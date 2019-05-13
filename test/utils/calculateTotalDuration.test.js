@@ -1,4 +1,4 @@
-import calculateTotalDuration from '../../src/utils/calculateTotalDuration';
+import calculateTotalDuration from 'src/utils/calculateTotalDuration';
 
 describe('calculateTotalDuration', () => {
   it('should return correctly seconds', () => {

@@ -1,4 +1,4 @@
-import deleteRules from '../../src/logic/deleteRules';
+import deleteRules from 'src/logic/deleteRules';
 
 describe('deleteRules', () => {
   it('should do nothing when index not found', () => {

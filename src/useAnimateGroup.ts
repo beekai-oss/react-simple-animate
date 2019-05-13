@@ -1,15 +1,13 @@
-// @flow
-// $FlowIgnoreLine
 import { useEffect, useState } from 'react';
 import createRandomName from './utils/createRandomName';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
-import type { Sequences } from './types';
+import { Sequences, Sequence } from './types';
 
 export default function useAnimateGroup(props: { sequences: Sequences }) {
   let nextDelay = 0;
-  const localAnimationNames = [];
+  const localAnimationNames = {};
   const { sequences } = props;
   const [isPlaying, setPlay] = useState(props);
 
@@ -25,19 +23,17 @@ export default function useAnimateGroup(props: { sequences: Sequences }) {
       }
     });
 
-    return () => {
+    return (): void => {
       if (localStyleTag) {
-        localAnimationNames.forEach(name => {
-          // $FlowIgnoreLine
+        Object.values(localAnimationNames).forEach(name => {
+          // @ts-ignore
           deleteRules(localStyleTag.sheet, name);
         });
       }
     };
   }, []);
 
-  const styles: Array<?{
-    [string]: string,
-  }> = sequences.map((prop, i) => {
+  const styles = sequences.map((prop: Sequence, i) => {
     if (!isPlaying) return null;
 
     const {
@@ -50,9 +46,14 @@ export default function useAnimateGroup(props: { sequences: Sequences }) {
       fillMode = 'none',
       playState: stylePlayState = 'running',
       end,
+      overlay,
     } = prop;
 
-    nextDelay = calculateTotalDuration(props);
+    nextDelay = calculateTotalDuration({
+      duration,
+      delay,
+      overlay,
+    });
 
     if (keyframes) {
       return {

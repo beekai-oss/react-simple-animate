@@ -1,8 +1,16 @@
-// @flow
 import createStyle from './createStyle';
-import type { Keyframes } from '../animateKeyframes';
+import { Keyframes } from '../animateKeyframes';
 
-export default function createTag({ keyframes, animationName }: { keyframes: Keyframes, animationName: string }) {
+export default function createTag({
+  keyframes,
+  animationName,
+}: {
+  keyframes: Keyframes;
+  animationName: string;
+}): {
+  styleTag: any;
+  index: number;
+} {
   let styleTag = document.querySelector('style[data-id=rsi]');
 
   if (!styleTag) {
@@ -12,11 +20,11 @@ export default function createTag({ keyframes, animationName }: { keyframes: Key
     document.head.appendChild(styleTag);
   }
 
-  // $FlowIgnoreLine
+  // @ts-ignore
   const index = styleTag.sheet.cssRules.length || 0;
 
   try {
-    // $FlowIgnoreLine
+    // @ts-ignore
     styleTag.sheet.insertRule(
       createStyle({
         keyframes,

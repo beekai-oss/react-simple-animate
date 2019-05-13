@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './logic/createTag';
-import type { Props } from './animateKeyframes';
+import { Props } from './animateKeyframes';
 import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 

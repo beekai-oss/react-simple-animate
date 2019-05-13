@@ -1,6 +1,6 @@
 // @flow
 import { useState, useEffect, useRef } from 'react';
-import type { Props } from './animate';
+import { Props } from './animate';
 import msToSec from './utils/msToSec';
 
 export default function useAnimate(props: Props) {
@@ -8,9 +8,14 @@ export default function useAnimate(props: Props) {
   const transition = `all ${duration}s ${easeType} ${delay}s`;
   const [style, setStyle] = useState({ ...start, transition });
   const [isPlaying, setIsPlaying] = useState(false);
-  const onCompleteTimeRef = useRef(null);
+  const onCompleteTimeRef = useRef<number>(0);
 
-  useEffect(() => () => onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current), []);
+  useEffect(
+    (): any => (): void => {
+      onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
+    },
+    [],
+  );
 
   const play = (isPlay: boolean) => {
     setStyle({
@@ -21,10 +26,12 @@ export default function useAnimate(props: Props) {
     setIsPlaying(isPlay);
 
     if (isPlay && (complete || onComplete)) {
+      // @ts-ignore
       onCompleteTimeRef.current = setTimeout(() => {
+        // @ts-ignore
         complete && setStyle(complete);
         onComplete && onComplete();
-      }, msToSec(delay + parseFloat(duration)));
+      }, msToSec(delay + duration));
     }
   };
 

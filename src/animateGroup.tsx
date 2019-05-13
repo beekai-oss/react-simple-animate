@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Sequences } from './types';
+import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 
 const { useState, useRef, useEffect } = React;
@@ -10,10 +10,9 @@ interface Props {
   children: any;
 }
 
-// $FlowIgnoreLine
 export const AnimateContext = React.createContext({
   animationStates: {},
-  register: (any): void => {},
+  register: (data: AnimationProps | AnimateKeyframesProps): void => {},
 });
 
 export default function AnimateGroup(props: Props) {
@@ -21,7 +20,7 @@ export default function AnimateGroup(props: Props) {
   const [animationStates, setAnimationStates] = useState();
   const animationsRef = useRef({});
 
-  const register = data => {
+  const register = (data: AnimationProps | AnimateKeyframesProps) => {
     const { sequenceIndex, sequenceId } = data;
     const id = sequenceId || sequenceIndex;
     if (id === undefined || (sequenceIndex && sequenceIndex < 0) || (sequenceId && sequenceId === '')) return;
@@ -31,22 +30,19 @@ export default function AnimateGroup(props: Props) {
 
   useEffect(
     (): void => {
-      const sequencesToAnimate =
-        Array.isArray(sequences) && sequences.length ? sequences : Object.values(animationsRef.current);
+      const sequencesToAnimate = Array.isArray(sequences) && sequences.length ? sequences : Object.values(sequences);
       const localAnimationState = {};
 
       sequencesToAnimate.reduce((previous, current, currentIndex) => {
-        // @ts-ignore
         const { sequenceId, sequenceIndex, ...restAttributes } = current;
-        // @ts-ignore
         const { duration, delay, overlay } = restAttributes;
-        const id = sequenceId === undefined && sequenceIndex === undefined ? currentIndex : sequenceId || sequenceIndex;
-        // @ts-ignore
+        const id =
+          (sequenceId === undefined && sequenceIndex === undefined ? currentIndex : sequenceId || sequenceIndex) || 0;
         const totalDuration = calculateTotalDuration({ duration, delay, overlay }) + previous;
 
         localAnimationState[id] = {
           play,
-          delay: currentIndex === 0 ? 0 || delay : totalDuration,
+          delay: currentIndex === 0 ? delay || 0 : totalDuration,
         };
 
         return totalDuration;
@@ -57,5 +53,11 @@ export default function AnimateGroup(props: Props) {
     [play],
   );
 
-  return <AnimateContext.Provider value={{ animationStates, register }}>{children}</AnimateContext.Provider>;
+  // @ts-ignore
+  return (
+    <AnimateContext.Provider value={{ animationStates, register }}>
+      {/* @ts-ignore */}
+      {children}
+    </AnimateContext.Provider>
+  );
 }

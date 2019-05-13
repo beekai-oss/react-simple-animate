@@ -26,7 +26,7 @@ export default function useAnimateGroup(props: { sequences: Props[] }) {
   const { sequences } = props;
   const [isPlaying, setPlay] = useState(false);
 
-  useEffect(() => {
+  useEffect((): any => {
     let localStyleTag;
 
     sequences.forEach(({ keyframes = false }, i) => {

@@ -18,7 +18,7 @@ export const AnimateContext = React.createContext({
 export default function AnimateGroup(props: Props) {
   const { play, sequences = [], children } = props;
   const [animationStates, setAnimationStates] = useState();
-  const animationsRef = useRef({});
+  const animationsRef = useRef<{ [key: string]: AnimationProps | AnimateKeyframesProps }>({});
 
   const register = (data: AnimationProps | AnimateKeyframesProps) => {
     const { sequenceIndex, sequenceId } = data;
@@ -30,14 +30,15 @@ export default function AnimateGroup(props: Props) {
 
   useEffect(
     (): void => {
-      const sequencesToAnimate = Array.isArray(sequences) && sequences.length ? sequences : Object.values(sequences);
+      const sequencesToAnimate =
+        Array.isArray(sequences) && sequences.length ? sequences : Object.values(animationsRef.current);
       const localAnimationState = {};
 
       sequencesToAnimate.reduce((previous, current, currentIndex) => {
         const { sequenceId, sequenceIndex, ...restAttributes } = current;
         const { duration, delay, overlay } = restAttributes;
-        const id =
-          (sequenceId === undefined && sequenceIndex === undefined ? currentIndex : sequenceId || sequenceIndex) || 0;
+        let id = sequenceId || sequenceIndex;
+        id = sequenceId === undefined && sequenceIndex === undefined ? currentIndex : id || 0;
         const totalDuration = calculateTotalDuration({ duration, delay, overlay }) + previous;
 
         localAnimationState[id] = {

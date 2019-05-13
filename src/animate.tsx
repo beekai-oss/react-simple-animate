@@ -26,7 +26,7 @@ export default function Animate(props: AnimationProps) {
   const id = (sequenceIndex && sequenceIndex >= 0 ? sequenceIndex : sequenceId) || 0;
 
   useEffect((): void => {
-    if ((sequenceIndex && sequenceIndex >= 0) || sequenceId) register(props);
+    if ((sequenceIndex !== undefined && sequenceIndex >= 0) || sequenceId) register(props);
   }, []);
 
   useEffect(

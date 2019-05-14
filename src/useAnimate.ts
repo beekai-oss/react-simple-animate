@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { AnimationProps } from './types';
-import msToSec from './utils/msToSec';
+import msToSec from './utils/secToMs';
 
 export default function useAnimate(props: AnimationProps) {
   const { start, end, complete, onComplete, delay = 0, duration = 0.3, easeType = 'linear' } = props;

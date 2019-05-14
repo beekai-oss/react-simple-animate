@@ -23,7 +23,7 @@
     "postrelease": "yarn publish && git push --follow-tags",
     "test": "jest --coverage",
     "testw": "yarn test -- --watchAll",
-    "prepublish": "yarn run clean && yarn build"
+    "prepublish": "yarn test && yarn run clean && yarn build"
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",
   "homepage": "https://react-simple-animate.now.sh",

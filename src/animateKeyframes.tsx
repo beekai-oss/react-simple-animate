@@ -7,7 +7,7 @@ import { AnimateKeyframesProps } from './types';
 
 const { useRef, useEffect, useContext, useState } = React;
 
-export default function AnimateKeyframesChild(props: AnimateKeyframesProps) {
+export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   const {
     children,
     play,

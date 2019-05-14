@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
-import msToSec from './utils/msToSec';
+import msToSec from './utils/secToMs';
 import { AnimationProps } from './types';
 
 const { useEffect, useState, useRef, useContext } = React;
 
-export default function Animate(props: AnimationProps) {
+export default function AnimateGroup(props: AnimationProps) {
   const {
     play,
     children,

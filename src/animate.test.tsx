@@ -63,6 +63,7 @@ describe('Animate', () => {
 
   it('should render correctly with render props', () => {
     act(() => {
+      // @ts-ignore
       ReactDOM.render(
         <Animate play end={{ opacity: 0 }} render={({ style }) => <span style={style}>render props</span>}>
           bill

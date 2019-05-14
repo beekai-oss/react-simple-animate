@@ -5,7 +5,7 @@ import getSequenceId from './utils/getSequenceId';
 
 const { useState, useRef, useEffect } = React;
 
-interface Props {
+export interface Props {
   play: boolean;
   sequences?: Sequences;
   children?: any;

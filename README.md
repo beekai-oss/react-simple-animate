@@ -28,14 +28,14 @@ import react from 'react';
 import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';
 
 const props = {
-  startStyle: { opacity: 0 }
-  endStyle: { opacity: 1 }
+  end: { opacity: 0 }
+  start: { opacity: 1 }
 };
 
 export default () => {
   return (
     // This example demonstrate animate individual element.
-    <Animate play {...props}>
+    <Animate play start={{ opacity: 1 }} end={{ opacity: 0 }}>
       <h1>React simple animate</h1>
     </Animate>
 

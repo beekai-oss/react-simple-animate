@@ -1,98 +1,93 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import createRandomName from './utils/createRandomName';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
-import { AnimationStateType, Style } from './types';
-import { Keyframes } from './types';
+import { AnimateKeyframesProps, AnimationProps } from './types';
 
 interface Props {
-  easeType: string;
-  delay: number;
-  end: Style;
-  duration: number;
-  overlay: number;
-  keyframes: Keyframes;
-  playState?: string;
-  direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
-  fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
-  iterationCount?: string | number;
-  animationStates: AnimationStateType;
+  sequences: [AnimationProps | AnimateKeyframesProps];
 }
 
-export default function useAnimateGroup(props: { sequences: Props[] }) {
-  let nextDelay = 0;
-  const localAnimationNames = {};
-  const { sequences } = props;
-  const [isPlaying, setPlay] = useState(false);
+export default function useAnimateGroup(props: Props) {
+  const { sequences = [] } = props;
+  const [styles, setStyles] = useState([]);
+  const [isPlaying, setPlaying] = useState(false);
+  const animationNamesRef = useRef({});
 
-  useEffect((): any => {
+  useEffect(() => {
     let localStyleTag;
 
     sequences.forEach(({ keyframes = false }, i) => {
-      if (keyframes) {
-        const animationName = createRandomName();
-        localAnimationNames[i] = animationName;
-        // @ts-ignore
-        const { styleTag } = createTag({ animationName, keyframes });
-        localStyleTag = styleTag;
-      }
+      if (!Array.isArray(keyframes)) return;
+      const animationName = createRandomName();
+      animationNamesRef.current[i] = animationName;
+      const { styleTag } = createTag({ animationName, keyframes });
+      localStyleTag = styleTag;
     });
 
-    return (): void => {
-      if (localStyleTag) {
-        Object.values(localAnimationNames).forEach(name => {
-          // @ts-ignore
-          deleteRules(localStyleTag.sheet, name);
-        });
-      }
+    return () => {
+      if (!localStyleTag) return;
+      Object.values(animationNamesRef).forEach(name => {
+        deleteRules(localStyleTag.sheet, name);
+      });
     };
   }, []);
 
-  const styles = sequences.map(
-    (
-      prop,
-      i,
-    ) => {
-      if (!isPlaying) return null;
+  const play = (isPlay: boolean) => {
+    if (!isPlay) {
+      setStyles([]);
+      setPlaying(false);
+      return;
+    }
 
-      const {
-        duration = 0.3,
-        keyframes = false,
-        easeType = 'linear',
-        delay = 0,
-        iterationCount = 1,
-        direction = 'normal',
-        fillMode = 'none',
-        playState: stylePlayState = 'running',
-        end,
-        overlay,
-      } = prop;
+    const styles = sequences
+      // @ts-ignore
+      .reduce((previous: [{ totalDuration: number; style: {} }], current, currentIndex) => {
+        const {
+          duration,
+          delay,
+          overlay,
+          easeType,
+          keyframes,
+          iterationCount,
+          direction,
+          fillMode,
+          playState,
+          end = {},
+        } = current;
+        const lastIndex = currentIndex - 1;
+        const totalDuration = calculateTotalDuration({ duration, delay, overlay }) + previous[lastIndex].totalDuration;
 
-      nextDelay = calculateTotalDuration({
-        duration,
-        delay,
-        overlay,
-      });
+        if (keyframes) {
+          previous.push({
+            style: {
+              animation: `${duration}s ${easeType} ${
+                currentIndex === 0 ? delay : previous[lastIndex].totalDuration
+              }s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNamesRef.current[currentIndex]}`,
+            },
+            totalDuration,
+          });
 
-      if (keyframes) {
-        return {
-          style: `${duration}s ${easeType} ${
-            i === 0 ? delay : nextDelay + delay
-          }s ${iterationCount} ${direction} ${fillMode} ${stylePlayState} ${localAnimationNames[i]}`,
-        };
-      }
+          return previous;
+        }
 
-      return {
-        ...end,
-        transition: `all ${duration}s ${easeType} ${delay}s`,
-      };
-    },
-  );
+        const transition = `all ${duration}s ${easeType} ${delay}s`;
+        previous.push({
+          style: {
+            ...end,
+            transition,
+          },
+          totalDuration,
+        });
 
-  const play = (playValue: boolean) => {
-    setPlay(playValue);
+        return previous;
+      }, [])
+      .map(({ style }) => style);
+
+    setStyles(styles);
+    setPlaying(true);
   };
 
-  return [styles, play, isPlaying];
+  return { styles, play, isPlaying };
 }

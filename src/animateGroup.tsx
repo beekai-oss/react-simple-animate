@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
+import getSequenceId from './utils/getSequenceId';
 
 const { useState, useRef, useEffect } = React;
 
@@ -22,10 +23,9 @@ export default function AnimateGroup(props: Props) {
 
   const register = (data: AnimationProps | AnimateKeyframesProps) => {
     const { sequenceIndex, sequenceId } = data;
-    const id = sequenceId || sequenceIndex;
-    if (id === undefined || (sequenceIndex && sequenceIndex < 0) || (sequenceId && sequenceId === '')) return;
+    if (sequenceId === undefined && sequenceIndex === undefined) return;
 
-    animationsRef.current[id] = data;
+    animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
   };
 
   useEffect(
@@ -37,8 +37,7 @@ export default function AnimateGroup(props: Props) {
       sequencesToAnimate.reduce((previous, current, currentIndex) => {
         const { sequenceId, sequenceIndex, ...restAttributes } = current;
         const { duration, delay, overlay } = restAttributes;
-        let id = sequenceId || sequenceIndex;
-        id = sequenceId === undefined && sequenceIndex === undefined ? currentIndex : id || 0;
+        const id = getSequenceId(sequenceIndex, sequenceId, currentIndex);
         const totalDuration = calculateTotalDuration({ duration, delay, overlay }) + previous;
 
         localAnimationState[id] = {

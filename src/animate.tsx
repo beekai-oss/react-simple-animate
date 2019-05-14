@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AnimateContext } from './animateGroup';
 import msToSec from './utils/secToMs';
 import { AnimationProps } from './types';
+import getSequenceId from "./utils/getSequenceId";
 
 const { useEffect, useState, useRef, useContext } = React;
 
@@ -23,7 +24,7 @@ export default function AnimateGroup(props: AnimationProps) {
   const onCompleteTimeRef = useRef(null);
   const [style, setStyle] = useState(start || {});
   const { register, animationStates = {} } = useContext(AnimateContext);
-  const id = (sequenceIndex && sequenceIndex >= 0 ? sequenceIndex : sequenceId) || 0;
+  const id = getSequenceId(sequenceIndex, sequenceId);
 
   useEffect((): void => {
     if ((sequenceIndex !== undefined && sequenceIndex >= 0) || sequenceId) register(props);

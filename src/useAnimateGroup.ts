@@ -3,10 +3,10 @@ import createRandomName from './utils/createRandomName';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
-import { AnimateKeyframesProps, AnimationProps } from './types';
+import { HookSequences } from './types';
 
 interface Props {
-  sequences: [AnimationProps | AnimateKeyframesProps];
+  sequences: HookSequences;
 }
 
 function createArrayWithNumbers(length: number) {
@@ -41,54 +41,44 @@ export default function useAnimateGroup(props: Props) {
   }, []);
 
   const play = (isPlay: boolean) => {
-    const styles = sequences
-      // @ts-ignore
-      .reduce((previous: [{ totalDuration: number; style: {} }], current, currentIndex) => {
-        const {
-          duration = 0.3,
-          delay = 0,
-          overlay,
-          easeType = 'linear',
-          keyframes,
-          iterationCount,
-          direction,
-          fillMode,
-          playState,
-          end = {},
-          start = {},
-        } = current;
-        const lastIndex = currentIndex - 1;
-        const totalDuration =
-          calculateTotalDuration({ duration, delay, overlay }) +
-          (currentIndex === 0 ? 0 : previous[lastIndex].totalDuration);
+    let totalDuration = 0;
+    console.log(isPlay ? sequences : [...sequences].reverse())
+    const styles = (isPlay ? sequences : [...sequences].reverse()).map((current, currentIndex) => {
+      const {
+        duration = 0.3,
+        delay = 0,
+        overlay,
+        keyframes,
+        iterationCount = 1,
+        easeType = 'linear',
+        playState = 'running',
+        direction = 'normal',
+        fillMode = 'none',
+        end = {},
+        start = {},
+      } = current;
+      const delayDuration = currentIndex === 0 ? delay : totalDuration;
+      totalDuration = calculateTotalDuration({ duration, delay, overlay }) + totalDuration;
 
-        if (keyframes) {
-          previous.push({
-            style: {
-              animation: `${duration}s ${easeType} ${
-                currentIndex === 0 ? delay : previous[lastIndex].totalDuration
-              }s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNamesRef.current[currentIndex]}`,
-            },
-            totalDuration,
-          });
+      if (keyframes) {
+        return isPlay
+          ? {
+              animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
+                animationNamesRef.current[currentIndex]
+              }`,
+            }
+          : {};
+      }
 
-          return previous;
-        }
+      const transition = `all ${duration}s ${easeType} ${delayDuration}s`;
+      return {
+        ...(isPlay ? end : start),
+        transition,
+      };
+    });
 
-        const transition = `all ${duration}s ${easeType} ${delay}s`;
-        previous.push({
-          style: {
-            ...isPlay ? end : start,
-            transition,
-          },
-          totalDuration,
-        });
-
-        return previous;
-      }, [])
-      .map(({ style }) => style);
-
-    setStyles(styles);
+    // @ts-ignore
+    setStyles(isPlay ? styles : [...styles].reverse());
     setPlaying(!isPlaying);
   };
 

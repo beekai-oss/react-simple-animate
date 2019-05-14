@@ -34,7 +34,7 @@ export default function AnimateGroup(props: Props) {
         Array.isArray(sequences) && sequences.length ? sequences : Object.values(animationsRef.current);
       const localAnimationState = {};
 
-      sequencesToAnimate.reduce((previous, current, currentIndex) => {
+      (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce((previous, current, currentIndex) => {
         const { sequenceId, sequenceIndex, ...restAttributes } = current;
         const { duration, delay, overlay } = restAttributes;
         const id = getSequenceId(sequenceIndex, sequenceId, currentIndex);

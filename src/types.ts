@@ -25,6 +25,23 @@ export interface AnimationStateType {
 
 export type Sequences = AnimationType[];
 
+export type HookSequences = [
+  {
+    keyframes?: Keyframes;
+    playState?: string;
+    direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
+    fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
+    iterationCount?: string | number;
+    start?: Style;
+    end?: Style;
+    play?: boolean;
+    overlay?: number;
+    duration?: number;
+    delay?: number;
+    easeType?: string;
+  }
+];
+
 export type Keyframes = string[] | { [key: number]: string }[];
 
 export interface AnimationProps extends AnimationType {

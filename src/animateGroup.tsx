@@ -7,8 +7,8 @@ const { useState, useRef, useEffect } = React;
 
 interface Props {
   play: boolean;
-  sequences: Sequences;
-  children: any;
+  sequences?: Sequences;
+  children?: any;
 }
 
 export const AnimateContext = React.createContext({
@@ -42,7 +42,7 @@ export default function AnimateGroup(props: Props) {
 
         localAnimationState[id] = {
           play,
-          delay: currentIndex === 0 ? delay || 0 : totalDuration,
+          delay: currentIndex === 0 ? delay || 0 : previous,
         };
 
         return totalDuration;

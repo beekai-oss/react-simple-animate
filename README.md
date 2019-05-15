@@ -72,9 +72,7 @@ export const useAnimateExample = () => {
   
   useEffect(() => play(true), []);
   
-  return (
-    <div style={style}>useAnimate</>
-  );
+  return <div style={style}>useAnimate</div>;
 };
 
 export const useAnimateKeyframesExample = () => {
@@ -85,21 +83,21 @@ export const useAnimateKeyframesExample = () => {
   
   useEffect(() => play(true), []);
   
-  return (
-    <div style={style}>useAnimate</>
-  );
+  return <div style={style}>useAnimate</div>;
 };
 
-export const useAnimateGroupExample = () => {
-  const { styles, play } = useAnimateKeyframes([
-    { start: { opacity: 0 }, end: { opacity: 1 } },
-    { start: { background: 'red' }, end: { background: 'blue' } },
-  ]]);
-  
+export const useAnimateGroup = () => {
+  const { styles = [], play } = useAnimateGroup({
+    sequences: [
+      { start: { opacity: 1 }, end: { opacity: 0 } },
+      { start: { background: "red" }, end: { background: "blue" } }
+    ]
+  });
+
   useEffect(() => play(true), []);
-  
+
   return (
-    {styles.map(({ style }) => <div style={style}>useAnimate</>)}
+    {styles.map(style => <div style={style}>useAnimateGroup</div>)}
   );
 };
 ```

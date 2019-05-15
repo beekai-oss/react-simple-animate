@@ -26,36 +26,39 @@
 #### Components
 
 ```jsx
-import react from 'react';
-import { Animate, AnimateKeyframes, AnimateGroup } from 'react-simple-animate';
+import React from "react";
+import { Animate, AnimateKeyframes, AnimateGroup } from "react-simple-animate";
 
-const props = {
-  end: { opacity: 0 }
-  start: { opacity: 1 }
-};
-
-export default () => {
-  return (
-    // This example demonstrate animate individual element.
-    <Animate play start={{ opacity: 1 }} end={{ opacity: 0 }}>
+export default () => (
+  <>
+    {/* This example demonstrate animate individual element. */}
+    <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
       <h1>React simple animate</h1>
     </Animate>
-
-    // This example demonstrate animate keyframes with individual element.
-    <AnimateKeyframes play iterationCount="infinite" keyframes={['opacity: 0', 'opacity: 1']}>
+    {/* This example demonstrate animate keyframes with individual element. */}
+    <AnimateKeyframes
+      play
+      iterationCount="infinite"
+      keyframes={["opacity: 0", "opacity: 1"]}
+    >
       <h1>React simple animate with keyframes</h1>
     </AnimateKeyframes>
-
-    // This example demonstrate animate group of animation with sequenceIndex.
+    {/* This example demonstrate animate group of animation with sequenceIndex. */}
     <AnimateGroup play>
-      <Animate {...props} sequenceIndex={0} />
-      <p>Next animation below: </p>
-      <Animate {...props} sequenceIndex={1} />
-      <p>Final animation below: </p>
-      <Animate {...props} sequenceIndex={2} />
+      <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={0}>
+        first
+      </Animate>
+
+      <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={1}>
+        second
+      </Animate>
+      <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={2}>
+        third
+      </Animate>
     </AnimateGroup>
-  );
-};
+  </>
+);
+
 ```
 
 #### Hooks

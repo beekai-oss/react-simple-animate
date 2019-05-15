@@ -6,7 +6,7 @@ import getSequenceId from "./utils/getSequenceId";
 
 const { useEffect, useState, useRef, useContext } = React;
 
-export default function AnimateGroup(props: AnimationProps) {
+export default function Animate(props: AnimationProps) {
   const {
     play,
     children,

@@ -15,7 +15,6 @@
 ## [Docs](https://react-simple-animate.now.sh/)
 
 - [Getting started](https://react-simple-animate.now.sh/basics)
-- [Quick Tutorial](https://alligator.io/react/craft-simple-animations-in-react/)
 - [Animate](https://react-simple-animate.now.sh/animate)
 - [AnimateKeyframes](https://react-simple-animate.now.sh/animate-keyframes)
 - [AnimateGroup](https://react-simple-animate.now.sh/animate-group)

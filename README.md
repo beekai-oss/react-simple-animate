@@ -48,7 +48,6 @@ export default () => (
       <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={0}>
         first
       </Animate>
-
       <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={1}>
         second
       </Animate>
@@ -69,7 +68,6 @@ import { useAnimate, useAnimateKeyframes, useAnimateGroup } from 'react-simple-a
 
 export const useAnimateExample = () => {
   const { style, play } = useAnimate({ start: { opacity: 0 }, end: { opacity: 1 } });
-  
   useEffect(() => play(true), []);
   
   return <div style={style}>useAnimate</div>;
@@ -80,7 +78,6 @@ export const useAnimateKeyframesExample = () => {
     keyframes: ['opacity: 0', 'opacity: 1'], 
     iterationCount: 4 
   });
-  
   useEffect(() => play(true), []);
   
   return <div style={style}>useAnimate</div>;
@@ -93,12 +90,9 @@ export const useAnimateGroup = () => {
       { start: { background: "red" }, end: { background: "blue" } }
     ]
   });
-
   useEffect(() => play(true), []);
 
-  return (
-    {styles.map(style => <div style={style}>useAnimateGroup</div>)}
-  );
+  return {styles.map(style => <div style={style}>useAnimateGroup</div>)};
 };
 ```
 

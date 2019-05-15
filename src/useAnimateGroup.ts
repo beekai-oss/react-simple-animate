@@ -42,7 +42,6 @@ export default function useAnimateGroup(props: Props) {
 
   const play = (isPlay: boolean) => {
     let totalDuration = 0;
-    console.log(isPlay ? sequences : [...sequences].reverse())
     const styles = (isPlay ? sequences : [...sequences].reverse()).map((current, currentIndex) => {
       const {
         duration = 0.3,

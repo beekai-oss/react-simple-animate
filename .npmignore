@@ -14,3 +14,12 @@ jestConfig.json
 rollup.config.js
 .coveralls.yml
 coverage/
+/lib
+jest.config.js
+rollup.config.js
+setup.ts
+tsconfig.json
+tsconfig.jest.json
+/website
+.eslintrc.js
+jest.config.js

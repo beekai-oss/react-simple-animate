@@ -10,7 +10,7 @@ export default function createStyle({
   const animationLength = keyframes.length;
 
   return `${keyframes.reduce((previous, keyframe, currentIndex): string => {
-    if (keyframe) {
+    if (typeof keyframe === 'string') {
       return `${previous} ${
         animationLength === 2 ? currentIndex * 100 : parseFloat((100 / (animationLength - 1)).toFixed(2)) * currentIndex
       }% {${keyframe}}`;

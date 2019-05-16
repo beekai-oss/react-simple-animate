@@ -2,4 +2,4 @@
 
 exports[`createStyle should create correct style 1`] = `"@keyframes test { 0% {opacity: 0;} 33.33% {opacity: 1;} 66.66% {opacity: 2;} 99.99% {opacity: 3;}}"`;
 
-exports[`createStyle should create correct style with object 1`] = `"@keyframes test { 0% {[object Object]} 33.33% {[object Object]} 66.66% {[object Object]} 99.99% {[object Object]}}"`;
+exports[`createStyle should create correct style with object 1`] = `"@keyframes test { 0% {opacity: 0;} 25% {opacity: 1;} 75% {opacity: 2;} 100% {opacity: 3;}}"`;

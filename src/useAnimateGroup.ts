@@ -4,6 +4,7 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { HookSequences } from './types';
+import getPlayState from './utils/getPlayState';
 
 interface Props {
   sequences: HookSequences;
@@ -50,30 +51,25 @@ export default function useAnimateGroup(props: Props) {
         keyframes,
         iterationCount = 1,
         easeType = 'linear',
-        playState = 'running',
         direction = 'normal',
         fillMode = 'none',
         end = {},
         start = {},
       } = current;
       const delayDuration = currentIndex === 0 ? delay : totalDuration;
+      const transition = `all ${duration}s ${easeType} ${delayDuration}s`;
       totalDuration = calculateTotalDuration({ duration, delay, overlay }) + totalDuration;
 
-      if (keyframes) {
-        return isPlay
-          ? {
-              animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${playState} ${
-                animationNamesRef.current[currentIndex]
-              }`,
-            }
-          : {};
-      }
-
-      const transition = `all ${duration}s ${easeType} ${delayDuration}s`;
-      return {
-        ...(isPlay ? end : start),
-        transition,
-      };
+      return keyframes
+        ? {
+            animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
+              isPlay,
+            )} ${animationNamesRef.current[currentIndex]}`,
+          }
+        : {
+            ...(isPlay ? end : start),
+            transition,
+          };
     });
 
     // @ts-ignore

@@ -5,6 +5,7 @@ import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
 import getSequenceId from './utils/getSequenceId';
 import { AnimateKeyframesProps } from './types';
+import getPlayState from './utils/getPlayState';
 
 const { useRef, useEffect, useContext, useState } = React;
 
@@ -16,7 +17,6 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     duration = 0.3,
     delay = 0,
     easeType = 'linear',
-    playState = 'running',
     direction = 'normal',
     fillMode = 'none',
     iterationCount = 1,
@@ -45,13 +45,11 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     return (): void => deleteRule(styleTagRef.current.sheet, animationNameRef.current);
   }, []);
 
-  const style =
-    (animationStates[id] || {}).play || play
-      ? {
-          animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNameRef.current ||
-            ''}`,
-        }
-      : null;
+  const style = {
+    animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
+      (animationStates[id] || {}).play || play,
+    )} ${animationNameRef.current || ''}`,
+  };
 
   return render ? render({ style }) : <div style={style || {}}>{children}</div>;
 }

@@ -4,6 +4,7 @@ import createTag from './logic/createTag';
 import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 import { AnimateKeyframesProps } from './types';
+import getPlayState from './utils/getPlayState';
 
 export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
   const {
@@ -13,7 +14,6 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     direction = 'normal',
     fillMode = 'none',
     iterationCount = 1,
-    playState = 'running',
     keyframes,
   } = props;
   const animationNameRef = useRef('');
@@ -38,12 +38,11 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     setIsPlaying(isPlay);
   };
 
-  const style = isPlaying
-    ? {
-        animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${playState} ${animationNameRef.current ||
-          ''}`,
-      }
-    : null;
+  const style = {
+    animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
+      isPlaying,
+    )} ${animationNameRef.current || ''}`,
+  };
 
   return {
     style,

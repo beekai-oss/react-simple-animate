@@ -23,3 +23,4 @@ tsconfig.jest.json
 /website
 .eslintrc.js
 jest.config.js
+logo.png

@@ -16,18 +16,32 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     iterationCount = 1,
     keyframes,
   } = props;
-  const animationNameRef = useRef('');
-  const styleTagRef = useRef('');
+  const animationNameRef = useRef({
+    forward: '',
+    reverse: '',
+  });
+  const styleTagRef = useRef({
+    forward: { sheet: {} },
+    reverse: { sheet: {} },
+  });
   const { register } = useContext(AnimateContext);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    animationNameRef.current = createRandomName();
-    const { styleTag } = createTag({
-      animationName: animationNameRef.current,
+    animationNameRef.current.forward = createRandomName();
+    let result = createTag({
+      animationName: animationNameRef.current.forward,
       keyframes,
     });
-    styleTagRef.current = styleTag;
+    styleTagRef.current.forward = result.styleTag;
+
+    animationNameRef.current.reverse = createRandomName();
+    result = createTag({
+      animationName: animationNameRef.current.reverse,
+      keyframes: keyframes.reverse(),
+    });
+    styleTagRef.current.reverse = result.styleTag;
     register(props);
 
     // @ts-ignore
@@ -38,15 +52,20 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     setIsPlaying(isPlay);
   };
 
+  const pause = (isPaused: boolean) => {
+    setIsPaused(isPaused);
+  };
+
   const style = {
     animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
-      isPlaying,
-    )} ${animationNameRef.current || ''}`,
+      isPaused,
+    )} ${(isPlaying ? animationNameRef.current.forward : animationNameRef.current.reverse) || ''}`,
   };
 
   return {
     style,
     play,
+    pause,
     isPlaying,
   };
 }

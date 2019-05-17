@@ -54,4 +54,5 @@ export interface AnimateKeyframesProps extends AnimationType {
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   iterationCount?: string | number;
   animationStates?: AnimationStateType;
+  pause?: boolean;
 }

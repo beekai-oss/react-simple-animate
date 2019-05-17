@@ -62,9 +62,9 @@ export default function useAnimateGroup(props: Props) {
 
       return keyframes
         ? {
-            animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
-              isPlay,
-            )} ${animationNamesRef.current[currentIndex]}`,
+            animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} running ${
+              animationNamesRef.current[currentIndex]
+            }`,
           }
         : {
             ...(isPlay ? end : start),

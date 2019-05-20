@@ -5,7 +5,7 @@ import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
 import getSequenceId from './utils/getSequenceId';
 import { AnimateKeyframesProps } from './types';
-import getPlayState from './utils/getPlayState';
+import getPlayState from './utils/getPauseState';
 
 const { useRef, useEffect, useContext, useState } = React;
 

@@ -4,7 +4,7 @@ import createTag from './logic/createTag';
 import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 import { AnimateKeyframesProps } from './types';
-import getPlayState from './utils/getPlayState';
+import getPlayState from './utils/getPauseState';
 
 export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
   const {
@@ -44,8 +44,10 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps) {
     styleTagRef.current.reverse = result.styleTag;
     register(props);
 
-    // @ts-ignore
-    return () => deleteRules(styleTagRef.current.sheet, animationNameRef.current);
+    return () => {
+      deleteRules(styleTagRef.current.forward.sheet, animationNameRef.current.forward);
+      deleteRules(styleTagRef.current.reverse.sheet, animationNameRef.current.reverse);
+    }
   }, []);
 
   const play = (isPlay: boolean) => {

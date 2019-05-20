@@ -35,6 +35,7 @@ export default () => (
     <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
       <h1>React simple animate</h1>
     </Animate>
+    
     {/* This example demonstrate animate keyframes with individual element. */}
     <AnimateKeyframes
       play
@@ -43,6 +44,7 @@ export default () => (
     >
       <h1>React simple animate with keyframes</h1>
     </AnimateKeyframes>
+    
     {/* This example demonstrate animate group of animation with sequenceIndex. */}
     <AnimateGroup play>
       <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={0}>

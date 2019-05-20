@@ -42,7 +42,9 @@ export default function AnimateGroup(props: Props) {
 
         localAnimationState[id] = {
           play,
+          pause: !play,
           delay: currentIndex === 0 ? delay || 0 : previous,
+          controlled: true,
         };
 
         return totalDuration;

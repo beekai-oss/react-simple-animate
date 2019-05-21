@@ -31,12 +31,12 @@ import { Animate, AnimateKeyframes, AnimateGroup } from "react-simple-animate";
 
 export default () => (
   <>
-    {/* This example demonstrate animate individual element. */}
+    {/* animate individual element. */}
     <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
       <h1>React simple animate</h1>
     </Animate>
     
-    {/* This example demonstrate animate keyframes with individual element. */}
+    {/* animate keyframes with individual element. */}
     <AnimateKeyframes
       play
       iterationCount="infinite"
@@ -45,7 +45,7 @@ export default () => (
       <h1>React simple animate with keyframes</h1>
     </AnimateKeyframes>
     
-    {/* This example demonstrate animate group of animation with sequenceIndex. */}
+    {/* animate group of animation in sequences */}
     <AnimateGroup play>
       <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={0}>
         first

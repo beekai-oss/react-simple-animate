@@ -17,6 +17,7 @@ export interface AnimationType {
   render?: (data: { style: Style | null }) => any;
   sequenceId?: string | number;
   sequenceIndex?: number;
+  ignoreStyles?: string[];
 }
 
 export interface AnimationStateType {

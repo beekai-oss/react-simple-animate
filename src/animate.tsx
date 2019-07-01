@@ -2,7 +2,9 @@ import * as React from 'react';
 import { AnimateContext } from './animateGroup';
 import msToSec from './utils/secToMs';
 import { AnimationProps } from './types';
-import getSequenceId from "./utils/getSequenceId";
+import getSequenceId from './utils/getSequenceId';
+
+import getIgnoreString from './utils/getIgnoreString';
 
 const { useEffect, useState, useRef, useContext } = React;
 
@@ -20,11 +22,13 @@ export default function Animate(props: AnimationProps) {
     easeType = 'linear',
     sequenceId,
     sequenceIndex,
+    ignoreStyles = [],
   } = props;
   const onCompleteTimeRef = useRef(null);
   const [style, setStyle] = useState(start || {});
   const { register, animationStates = {} } = useContext(AnimateContext);
   const id = getSequenceId(sequenceIndex, sequenceId);
+  
 
   useEffect((): void => {
     if ((sequenceIndex !== undefined && sequenceIndex >= 0) || sequenceId) register(props);
@@ -32,9 +36,10 @@ export default function Animate(props: AnimationProps) {
 
   useEffect(
     (): any => {
+      const ignoreString = getIgnoreString(ignoreStyles);
       setStyle({
         ...(play || (animationStates[id] || {}).play ? end : start),
-        transition: `all ${duration}s ${easeType} ${parseFloat((animationStates[id] || {}).delay || delay)}s`,
+        transition: `all ${duration}s ${easeType} ${parseFloat((animationStates[id] || {}).delay || delay)}s ${ignoreString}`,
       });
 
       if (play && (complete || onComplete)) {

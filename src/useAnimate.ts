@@ -1,9 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
-import { AnimationProps } from './types';
+import { AnimationProps, Style } from './types';
 import msToSec from './utils/secToMs';
 
-export default function useAnimate(props: AnimationProps) {
-  const { start, end, complete, onComplete, delay = 0, duration = 0.3, easeType = 'linear' } = props;
+export default function useAnimate(
+  props: AnimationProps,
+): {
+  isPlaying: boolean;
+  style: Style;
+  play: (boolean) => void;
+} {
+  const {
+    start,
+    end,
+    complete,
+    onComplete,
+    delay = 0,
+    duration = 0.3,
+    easeType = 'linear',
+  } = props;
   const transition = `all ${duration}s ${easeType} ${delay}s`;
   const [style, setStyle] = useState({ ...start, transition });
   const [isPlaying, setIsPlaying] = useState(false);

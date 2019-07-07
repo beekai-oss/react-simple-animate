@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { AnimationProps, Style } from './types';
+import * as React from 'react';
 import msToSec from './utils/secToMs';
+import { AnimationProps, Style } from './types';
+
+const { useState, useEffect, useRef } = React;
 
 export default function useAnimate(
   props: AnimationProps,
@@ -19,7 +21,7 @@ export default function useAnimate(
     easeType = 'linear',
   } = props;
   const transition = `all ${duration}s ${easeType} ${delay}s`;
-  const [style, setStyle] = useState({ ...start, transition });
+  const [style, setStyle] = useState<Style>({ ...start, transition });
   const [isPlaying, setIsPlaying] = useState(false);
   const onCompleteTimeRef = useRef<number>(0);
 
@@ -40,8 +42,7 @@ export default function useAnimate(
 
     if (isPlay && (complete || onComplete)) {
       // @ts-ignore
-      onCompleteTimeRef.current = setTimeout(() => {
-        // @ts-ignore
+      onCompleteTimeRef.current = setTimeout((): void => {
         complete && setStyle(complete);
         onComplete && onComplete();
       }, msToSec(delay + duration));

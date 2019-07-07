@@ -38,7 +38,7 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   const { register, animationStates = {} } = useContext(AnimateContext);
   const forceUpdate = useState(false)[1];
 
-  useEffect(() => {
+  useEffect((): any => {
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
@@ -56,8 +56,14 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
 
     if (play) forceUpdate(true);
     return (): void => {
-      deleteRule(styleTagRef.current.forward.sheet, animationNameRef.current.forward);
-      deleteRule(styleTagRef.current.reverse.sheet, animationNameRef.current.reverse);
+      deleteRule(
+        styleTagRef.current.forward.sheet,
+        animationNameRef.current.forward,
+      );
+      deleteRule(
+        styleTagRef.current.reverse.sheet,
+        animationNameRef.current.reverse,
+      );
     };
   }, []);
 
@@ -73,7 +79,9 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
 
   const style = {
     animation: `${duration}s ${easeType} ${animateState.delay ||
-      delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(pauseValue)} ${((animateState.controlled
+      delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
+      pauseValue,
+    )} ${((animateState.controlled
     ? animateState.play
     : play)
       ? animationNameRef.current.forward

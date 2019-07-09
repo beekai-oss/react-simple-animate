@@ -20,10 +20,14 @@ export default function useAnimate(
     duration = 0.3,
     easeType = 'linear',
   } = props;
-  const transition = `all ${duration}s ${easeType} ${delay}s`;
+  const transition = React.useMemo(
+    () => `all ${duration}s ${easeType} ${delay}s`,
+    [duration, easeType, delay],
+  );
   const [style, setStyle] = useState<Style>({ ...start, transition });
   const [isPlaying, setIsPlaying] = useState(false);
-  const onCompleteTimeRef = useRef<number>(0);
+  const onCompleteTimeRef = useRef<NodeJS.Timeout>();
+  const playRef = useRef<(isPlay: boolean) => void>();
 
   useEffect(
     (): any => (): void => {
@@ -32,26 +36,28 @@ export default function useAnimate(
     [],
   );
 
-  const play = (isPlay: boolean) => {
-    setStyle({
-      ...(isPlay ? end : start),
-      transition,
-    });
+  if (!playRef.current) {
+    playRef.current = (isPlay: boolean) => {
+      setStyle({
+        ...(isPlay ? end : start),
+        transition,
+      });
 
-    setIsPlaying(isPlay);
+      setIsPlaying(true);
 
-    if (isPlay && (complete || onComplete)) {
-      // @ts-ignore
       onCompleteTimeRef.current = setTimeout((): void => {
-        complete && setStyle(complete);
-        onComplete && onComplete();
+        if (isPlay && (complete || onComplete)) {
+          complete && setStyle(complete);
+          onComplete && onComplete();
+        }
+        setIsPlaying(false);
       }, msToSec(delay + duration));
-    }
-  };
+    };
+  }
 
   return {
     isPlaying,
     style,
-    play,
+    play: playRef.current,
   };
 }

@@ -34,6 +34,7 @@ export default function useAnimateKeyframes(
   const { register } = useContext(AnimateContext);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
+  const playRef = useRef<(isPlay: boolean) => void>();
 
   useEffect((): any => {
     animationNameRef.current.forward = createRandomName();
@@ -63,7 +64,7 @@ export default function useAnimateKeyframes(
     };
   }, []);
 
-  const play = (isPlay: boolean): void => {
+  playRef.current = playRef.current ? playRef.current: (isPlay: boolean): void => {
     setIsPlaying(isPlay);
   };
 
@@ -81,7 +82,7 @@ export default function useAnimateKeyframes(
 
   return {
     style,
-    play,
+    play: playRef.current,
     pause,
     isPlaying,
   };

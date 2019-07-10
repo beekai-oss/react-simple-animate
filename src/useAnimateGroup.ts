@@ -26,6 +26,7 @@ export default function useAnimateGroup(
     { forward: string; reverse: string; animationName }[]
   >([]);
   const styleTagRef = useRef<{ forward?: string; reverse?: string }[]>([]);
+  const playRef = useRef<(isPlay: boolean) => void>();
 
   useEffect((): any => {
     sequences.forEach(
@@ -64,7 +65,7 @@ export default function useAnimateGroup(
     };
   }, []);
 
-  const play = (isPlay: boolean): void => {
+  playRef.current = playRef.current ? playRef.current:  (isPlay: boolean): void => {
     let totalDuration = 0;
     const animationRefWithOrder = isPlay
       ? animationNamesRef.current
@@ -108,5 +109,5 @@ export default function useAnimateGroup(
     setPlaying(!isPlaying);
   };
 
-  return { styles, play, isPlaying };
+  return { styles, play: playRef.current, isPlaying };
 }

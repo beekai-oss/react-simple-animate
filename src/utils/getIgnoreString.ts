@@ -1,3 +1,3 @@
 import camelCaseToDash from './camelCaseToDash';
 
-export default (list: string[]): string => list.reduce((acc, curr) => `, ${camelCaseToDash(curr)} 0s`, '');
+export default (list: string[]): string => list.reduce((acc, curr) => `${acc}, ${camelCaseToDash(curr)} 0s`, '');

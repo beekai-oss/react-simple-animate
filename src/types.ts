@@ -38,7 +38,7 @@ export type HookSequences = {
   easeType?: string;
 }[];
 
-export type Keyframes = string[] | { [key: number]: string }[];
+export type Keyframes = string[] | { [key: number]: string }[] | { [key: string]: string }[];
 
 export interface AnimationProps extends AnimationType {
   onComplete?: () => void;

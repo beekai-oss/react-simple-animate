@@ -7,7 +7,6 @@ describe('camelCaseToDash', () => {
 
   it('should return empty when given null or undefined or empty string', () => {
     expect(camelCaseToDash('')).toEqual('');
-    expect(camelCaseToDash(null)).toEqual('');
     expect(camelCaseToDash()).toEqual('');
   });
 });

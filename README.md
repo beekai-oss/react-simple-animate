@@ -8,6 +8,8 @@
 
 </div>
 
+## Features
+
 - Animation from style A to B
 - CSS keyframes animation
 - Chain up animation sequences

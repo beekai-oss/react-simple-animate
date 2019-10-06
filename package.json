@@ -25,9 +25,6 @@
     "testw": "yarn test -- --watchAll",
     "prepublish": "yarn test && yarn run clean && yarn build"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@bluebill1049"
-  },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",
   "homepage": "https://react-simple-animate.now.sh",
   "author": "beier luo",

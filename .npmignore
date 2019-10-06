@@ -24,3 +24,6 @@ tsconfig.jest.json
 .eslintrc.js
 jest.config.js
 logo.png
+.rpt2_cache
+.github
+.prettierrc

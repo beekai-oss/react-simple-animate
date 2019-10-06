@@ -1,7 +1,3 @@
-interface CSSProperties {
-  [key: string]: number | string;
-}
-
 export interface Style {
   [key: string]: string | number;
 }
@@ -46,7 +42,7 @@ export type Keyframes =
 export interface AnimationProps extends AnimationType {
   onComplete?: () => void;
   start?: Style;
-  end: Style;
+  end?: Style;
   complete?: Style;
   animationStates?: AnimationStateType;
 }

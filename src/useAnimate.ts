@@ -1,5 +1,5 @@
 import * as React from 'react';
-import msToSec from './utils/secToMs';
+import secToMs from './utils/secToMs';
 import { AnimationProps, Style } from './types';
 
 const { useState, useEffect, useRef } = React;
@@ -51,7 +51,7 @@ export default function useAnimate(
           onComplete && onComplete();
         }
         setIsPlaying(false);
-      }, msToSec(delay + duration));
+      }, secToMs(delay + duration));
     };
   }
 

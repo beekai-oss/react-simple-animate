@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
-import msToSec from './utils/secToMs';
+import secToMs from './utils/secToMs';
 import { AnimationProps } from './types';
 import getSequenceId from "./utils/getSequenceId";
 
@@ -42,7 +42,7 @@ export default function Animate(props: AnimationProps) {
         onCompleteTimeRef.current = setTimeout((): void => {
           complete && setStyle(complete);
           onComplete && onComplete();
-        }, msToSec(parseFloat((animationStates[id] || {}).delay || delay) + duration));
+        }, secToMs(parseFloat((animationStates[id] || {}).delay || delay) + duration));
       }
 
       return (): void => {

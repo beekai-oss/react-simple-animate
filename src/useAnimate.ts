@@ -27,7 +27,12 @@ export default function useAnimate(
   const [style, setStyle] = useState<Style>({ ...start, transition });
   const [isPlaying, setIsPlaying] = useState(false);
   const onCompleteTimeRef = useRef<NodeJS.Timeout>();
+  const onCompleteCallbackRef = useRef<(() => void) | undefined>(onComplete);
   const playRef = useRef<(isPlay: boolean) => void>();
+
+  useEffect(() => {
+    onCompleteCallbackRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(
     (): any => (): void => {
@@ -48,7 +53,7 @@ export default function useAnimate(
       onCompleteTimeRef.current = setTimeout((): void => {
         if (isPlay && (complete || onComplete)) {
           complete && setStyle(complete);
-          onComplete && onComplete();
+          onCompleteCallbackRef.current && onCompleteCallbackRef.current();
         }
         setIsPlaying(false);
       }, secToMs(delay + duration));

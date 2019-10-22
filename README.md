@@ -107,10 +107,17 @@ export const useAnimateGroup = () => {
 };
 ```
 
-## Contributors
+## Contributors 
+Thanks goes to these wonderful people:
 
-Thanks goes to these wonderful people. [[Become a contributor](CONTRIBUTING.md)].
-
-<a href="https://github.com/bluebill1049/react-simple-animate/graphs/contributors">
-    <img src="https://opencollective.com/react-simple-animate/contributors.svg?width=950" />
-</a>
+<p float="left">
+    <a href="https://github.com/blyszcz"><img src="https://avatars3.githubusercontent.com/u/16595589?s=400&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/tiaanduplessis"><img src="https://avatars0.githubusercontent.com/u/18066992?s=460&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/3stacks"><img src="https://avatars2.githubusercontent.com/u/14143193?s=60&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/willmcpo"><img src="https://avatars1.githubusercontent.com/u/13824314?s=60&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/atuttle"><img src="https://avatars2.githubusercontent.com/u/46990?s=460&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/vdekov"><img src="https://avatars1.githubusercontent.com/u/11061132?s=460&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/wle8300"><img src="https://avatars1.githubusercontent.com/u/150245?s=460&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/yusinto"><img src="https://avatars1.githubusercontent.com/u/1593077?s=460&v=4" width="50" height="50" /></a>
+    <a href="https://github.com/pangpang1987"><img src="https://avatars1.githubusercontent.com/u/2181579?s=460&v=4" width="50" height="50" /></a>
+</p>

@@ -19,7 +19,9 @@ export const AnimateContext = React.createContext({
 export default function AnimateGroup(props: Props) {
   const { play, sequences = [], children } = props;
   const [animationStates, setAnimationStates] = useState();
-  const animationsRef = useRef<{ [key: string]: AnimationProps | AnimateKeyframesProps }>({});
+  const animationsRef = useRef<{
+    [key: string]: AnimationProps | AnimateKeyframesProps;
+  }>({});
 
   const register = (data: AnimationProps | AnimateKeyframesProps) => {
     const { sequenceIndex, sequenceId } = data;
@@ -28,32 +30,40 @@ export default function AnimateGroup(props: Props) {
     animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
   };
 
-  useEffect(
-    (): void => {
-      const sequencesToAnimate =
-        Array.isArray(sequences) && sequences.length ? sequences : Object.values(animationsRef.current);
-      const localAnimationState = {};
+  useEffect((): void => {
+    const sequencesToAnimate =
+      Array.isArray(sequences) && sequences.length
+        ? sequences
+        : Object.values(animationsRef.current);
+    const localAnimationState = {};
 
-      (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce((previous, current, currentIndex) => {
+    (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
+      (previous, current, currentIndex) => {
         const { sequenceId, sequenceIndex, ...restAttributes } = current;
         const { duration, delay, overlay } = restAttributes;
         const id = getSequenceId(sequenceIndex, sequenceId, currentIndex);
-        const totalDuration = calculateTotalDuration({ duration, delay, overlay }) + previous;
+        const totalDuration =
+          calculateTotalDuration({ duration, delay, overlay }) + previous;
 
         localAnimationState[id] = {
           play,
           pause: !play,
-          delay: currentIndex === 0 ? delay || 0 : previous,
+          delay:
+            currentIndex === 0
+              ? delay || 0
+              : delay
+              ? previous + delay
+              : previous,
           controlled: true,
         };
 
         return totalDuration;
-      }, 0);
+      },
+      0,
+    );
 
-      setAnimationStates(localAnimationState);
-    },
-    [play],
-  );
+    setAnimationStates(localAnimationState);
+  }, [play]);
 
   // @ts-ignore
   return (

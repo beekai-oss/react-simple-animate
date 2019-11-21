@@ -40,10 +40,16 @@ export default function AnimateGroup(props: Props) {
     (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
       (previous, current, currentIndex) => {
         const { sequenceId, sequenceIndex, ...restAttributes } = current;
-        const { duration, delay, overlay } = restAttributes;
+        const { duration: defaultDuration, delay, overlay } = restAttributes;
         const id = getSequenceId(sequenceIndex, sequenceId, currentIndex);
-        const totalDuration =
-          calculateTotalDuration({ duration, delay, overlay }) + previous;
+        const duration = defaultDuration || 0.3;
+        const currentTotalDuration = calculateTotalDuration({
+          duration,
+          delay,
+          overlay,
+        });
+
+        const totalDuration = currentTotalDuration + previous;
 
         localAnimationState[id] = {
           play,
@@ -52,7 +58,7 @@ export default function AnimateGroup(props: Props) {
             currentIndex === 0
               ? delay || 0
               : delay
-              ? previous + delay
+              ? currentTotalDuration
               : previous,
           controlled: true,
         };
@@ -65,10 +71,8 @@ export default function AnimateGroup(props: Props) {
     setAnimationStates(localAnimationState);
   }, [play]);
 
-  // @ts-ignore
   return (
     <AnimateContext.Provider value={{ animationStates, register }}>
-      {/* @ts-ignore */}
       {children}
     </AnimateContext.Provider>
   );

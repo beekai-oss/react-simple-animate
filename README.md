@@ -6,7 +6,7 @@
 
 <div align="center">
     
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=React+UI+animation+made+simple&url=https://react-simple-animate.now.sh/) [![CircleCI](https://circleci.com/gh/bluebill1049/react-simple-animate.svg?style=svg)](https://circleci.com/gh/bluebill1049/react-simple-animate) [![Coverage Status](https://coveralls.io/repos/github/bluebill1049/react-simple-animate/badge.svg?branch=master)](https://coveralls.io/github/bluebill1049/react-simple-animate?branch=master) [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://badgen.net/bundlephobia/minzip/react-simple-animate)](https://badgen.net/bundlephobia/minzip/react-simple-animate)
+[![Financial Contributors on Open Collective](https://opencollective.com/react-simple-animate/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-simple-animate) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=React+UI+animation+made+simple&url=https://react-simple-animate.now.sh/) [![CircleCI](https://circleci.com/gh/bluebill1049/react-simple-animate.svg?style=svg)](https://circleci.com/gh/bluebill1049/react-simple-animate) [![Coverage Status](https://coveralls.io/repos/github/bluebill1049/react-simple-animate/badge.svg?branch=master)](https://coveralls.io/github/bluebill1049/react-simple-animate?branch=master) [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://badgen.net/bundlephobia/minzip/react-simple-animate)](https://badgen.net/bundlephobia/minzip/react-simple-animate)
 
 </div>
 
@@ -121,3 +121,33 @@ Thanks goes to these wonderful people:
     <a href="https://github.com/yusinto"><img src="https://avatars1.githubusercontent.com/u/1593077?s=460&v=4" width="50" height="50" /></a>
     <a href="https://github.com/pangpang1987"><img src="https://avatars1.githubusercontent.com/u/2181579?s=460&v=4" width="50" height="50" /></a>
 </p>
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/bluebill1049/react-simple-animate/graphs/contributors"><img src="https://opencollective.com/react-simple-animate/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/react-simple-animate/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/react-simple-animate"><img src="https://opencollective.com/react-simple-animate/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/react-simple-animate/contribute)]
+
+<a href="https://opencollective.com/react-simple-animate/organization/0/website"><img src="https://opencollective.com/react-simple-animate/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/1/website"><img src="https://opencollective.com/react-simple-animate/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/2/website"><img src="https://opencollective.com/react-simple-animate/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/3/website"><img src="https://opencollective.com/react-simple-animate/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/4/website"><img src="https://opencollective.com/react-simple-animate/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/5/website"><img src="https://opencollective.com/react-simple-animate/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/6/website"><img src="https://opencollective.com/react-simple-animate/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/7/website"><img src="https://opencollective.com/react-simple-animate/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/8/website"><img src="https://opencollective.com/react-simple-animate/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/react-simple-animate/organization/9/website"><img src="https://opencollective.com/react-simple-animate/organization/9/avatar.svg"></a>

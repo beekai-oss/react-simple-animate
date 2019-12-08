@@ -6,7 +6,7 @@
 
 <div align="center">
     
-[![Financial Contributors on Open Collective](https://opencollective.com/react-simple-animate/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-simple-animate) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=React+UI+animation+made+simple&url=https://react-simple-animate.now.sh/) [![CircleCI](https://circleci.com/gh/bluebill1049/react-simple-animate.svg?style=svg)](https://circleci.com/gh/bluebill1049/react-simple-animate) [![Coverage Status](https://coveralls.io/repos/github/bluebill1049/react-simple-animate/badge.svg?branch=master)](https://coveralls.io/github/bluebill1049/react-simple-animate?branch=master) [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://badgen.net/bundlephobia/minzip/react-simple-animate)](https://badgen.net/bundlephobia/minzip/react-simple-animate)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=React+UI+animation+made+simple&url=https://react-simple-animate.now.sh/) [![CircleCI](https://circleci.com/gh/bluebill1049/react-simple-animate.svg?style=svg)](https://circleci.com/gh/bluebill1049/react-simple-animate) [![Coverage Status](https://coveralls.io/repos/github/bluebill1049/react-simple-animate/badge.svg?branch=master)](https://coveralls.io/github/bluebill1049/react-simple-animate?branch=master) [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=flat-square)](https://www.npmjs.com/package/react-simple-animate) [![npm](https://badgen.net/bundlephobia/minzip/react-simple-animate)](https://badgen.net/bundlephobia/minzip/react-simple-animate)
 
 </div>
 
@@ -106,21 +106,6 @@ export const useAnimateGroup = () => {
   return {styles.map(style => <div style={style}>useAnimateGroup</div>)};
 };
 ```
-
-## Contributors 
-Thanks goes to these wonderful people:
-
-<p float="left">
-    <a href="https://github.com/blyszcz"><img src="https://avatars3.githubusercontent.com/u/16595589?s=400&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/tiaanduplessis"><img src="https://avatars0.githubusercontent.com/u/18066992?s=460&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/3stacks"><img src="https://avatars2.githubusercontent.com/u/14143193?s=60&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/willmcpo"><img src="https://avatars1.githubusercontent.com/u/13824314?s=60&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/atuttle"><img src="https://avatars2.githubusercontent.com/u/46990?s=460&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/vdekov"><img src="https://avatars1.githubusercontent.com/u/11061132?s=460&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/wle8300"><img src="https://avatars1.githubusercontent.com/u/150245?s=460&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/yusinto"><img src="https://avatars1.githubusercontent.com/u/1593077?s=460&v=4" width="50" height="50" /></a>
-    <a href="https://github.com/pangpang1987"><img src="https://avatars1.githubusercontent.com/u/2181579?s=460&v=4" width="50" height="50" /></a>
-</p>
 
 ## Contributors
 

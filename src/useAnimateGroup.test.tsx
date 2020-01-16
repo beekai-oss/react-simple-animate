@@ -38,7 +38,12 @@ describe('useAnimateGroup', () => {
       });
       return UseAnimateGroup;
     });
-    expect(componentStyle).toEqual([null, null, null, null]);
+    expect(componentStyle).toEqual([
+      { opacity: 0 },
+      undefined,
+      { opacity: 0 },
+      undefined,
+    ]);
 
     act(() => {
       UseAnimateGroup.play(true);
@@ -46,7 +51,10 @@ describe('useAnimateGroup', () => {
         { opacity: 1, transition: 'all 0.3s linear 0s' },
         { animation: '0.3s linear 0.3s 1 normal none running test' },
         { opacity: 1, transition: 'all 0.3s linear 0.6s' },
-        { animation: '0.3s linear 0.8999999999999999s 1 normal none running test' },
+        {
+          animation:
+            '0.3s linear 0.8999999999999999s 1 normal none running test',
+        },
       ]);
     });
   });

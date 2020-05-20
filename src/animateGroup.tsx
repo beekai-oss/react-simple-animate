@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import getSequenceId from './utils/getSequenceId';
+import isUndefined from './utils/isUndefined';
 
 const { useState, useRef, useEffect } = React;
 
@@ -18,14 +19,14 @@ export const AnimateContext = React.createContext({
 
 export default function AnimateGroup(props: Props) {
   const { play, sequences = [], children } = props;
-  const [animationStates, setAnimationStates] = useState();
+  const [animationStates, setAnimationStates] = useState({});
   const animationsRef = useRef<{
     [key: string]: AnimationProps | AnimateKeyframesProps;
   }>({});
 
   const register = (data: AnimationProps | AnimateKeyframesProps) => {
     const { sequenceIndex, sequenceId } = data;
-    if (sequenceId === undefined && sequenceIndex === undefined) return;
+    if (isUndefined(sequenceId) && isUndefined(sequenceIndex)) return;
 
     animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
   };

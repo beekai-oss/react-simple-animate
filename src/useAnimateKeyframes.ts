@@ -36,7 +36,7 @@ export default function useAnimateKeyframes(
   const [isPaused, setIsPaused] = useState(false);
   const playRef = useRef<(isPlay: boolean) => void>();
 
-  useEffect((): any => {
+  useEffect(() => {
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
@@ -52,7 +52,7 @@ export default function useAnimateKeyframes(
     styleTagRef.current.reverse = result.styleTag;
     register(props);
 
-    return (): void => {
+    return () => {
       deleteRules(
         styleTagRef.current.forward.sheet,
         animationNameRef.current.forward,
@@ -64,13 +64,9 @@ export default function useAnimateKeyframes(
     };
   }, []);
 
-  playRef.current = playRef.current ? playRef.current: (isPlay: boolean): void => {
-    setIsPlaying(isPlay);
-  };
-
-  const pause = (isPaused: boolean): void => {
-    setIsPaused(isPaused);
-  };
+  playRef.current = playRef.current
+    ? playRef.current
+    : (isPlay: boolean) => setIsPlaying(isPlay);
 
   const style = {
     animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
@@ -83,7 +79,7 @@ export default function useAnimateKeyframes(
   return {
     style,
     play: playRef.current,
-    pause,
+    pause: setIsPaused,
     isPlaying,
   };
 }

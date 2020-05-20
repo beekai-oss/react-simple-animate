@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
 import secToMs from './utils/secToMs';
-import { AnimationProps } from './types';
 import getSequenceId from './utils/getSequenceId';
+import isUndefined from './utils/isUndefined';
+import { AnimationProps } from './types';
 
 const { useEffect, useState, useRef, useContext } = React;
 
@@ -21,33 +22,34 @@ export default function Animate(props: AnimationProps) {
     sequenceId,
     sequenceIndex,
   } = props;
-  const onCompleteTimeRef = useRef({});
+  const onCompleteTimeRef = useRef<any>();
   const [style, setStyle] = useState(start || {});
   const { register, animationStates = {} } = useContext(AnimateContext);
   const id = getSequenceId(sequenceIndex, sequenceId);
 
-  useEffect((): void => {
-    if ((sequenceIndex !== undefined && sequenceIndex >= 0) || sequenceId)
+  useEffect(() => {
+    if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId)
       register(props);
   }, []);
 
-  useEffect((): any => {
+  useEffect(() => {
+    const animationState = animationStates[id] || {};
+
     setStyle({
-      ...(play || (animationStates[id] || {}).play ? end : start),
+      ...(play || animationState.play ? end : start),
       transition: `all ${duration}s ${easeType} ${parseFloat(
-        (animationStates[id] || {}).delay || delay,
+        animationState.delay || delay,
       )}s`,
     });
 
     if (play && (complete || onComplete)) {
-      onCompleteTimeRef.current = setTimeout((): void => {
+      onCompleteTimeRef.current = setTimeout(() => {
         complete && setStyle(complete);
         onComplete && onComplete();
-      }, secToMs(parseFloat((animationStates[id] || {}).delay || delay) + duration));
+      }, secToMs(parseFloat(animationState.delay || delay) + duration));
     }
 
-    return (): void => {
-      // @ts-ignore
+    return () => {
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
     };
   }, [

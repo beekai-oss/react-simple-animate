@@ -35,7 +35,7 @@ export default function useAnimate(
   }, [onComplete]);
 
   useEffect(
-    (): any => (): void => {
+    () => () => {
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
     },
     [],

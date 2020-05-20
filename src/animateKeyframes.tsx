@@ -1,11 +1,11 @@
 import * as React from 'react';
-import createTag from './logic/createTag';
-import createRandomName from './utils/createRandomName';
-import deleteRule from './logic/deleteRules';
 import { AnimateContext } from './animateGroup';
+import createTag from './logic/createTag';
+import deleteRule from './logic/deleteRules';
+import createRandomName from './utils/createRandomName';
 import getSequenceId from './utils/getSequenceId';
-import { AnimateKeyframesProps } from './types';
 import getPlayState from './utils/getPauseState';
+import { AnimateKeyframesProps } from './types';
 
 const { useRef, useEffect, useContext, useState } = React;
 
@@ -25,6 +25,7 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     keyframes,
     sequenceId,
   } = props;
+  let pauseValue;
   const animationNameRef = useRef({
     forward: '',
     reverse: '',
@@ -36,9 +37,9 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   });
   const id = getSequenceId(sequenceIndex, sequenceId);
   const { register, animationStates = {} } = useContext(AnimateContext);
-  const forceUpdate = useState(false)[1];
+  const [, forceUpdate] = useState(false);
 
-  useEffect((): any => {
+  useEffect(() => {
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
@@ -55,7 +56,8 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     register(props);
 
     if (play) forceUpdate(true);
-    return (): void => {
+
+    return () => {
       deleteRule(
         styleTagRef.current.forward.sheet,
         animationNameRef.current.forward,
@@ -68,7 +70,6 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   }, []);
 
   const animateState = animationStates[id] || {};
-  let pauseValue = false;
 
   if (animateState.controlled && !controlled.current) {
     pauseValue = animateState.pause;

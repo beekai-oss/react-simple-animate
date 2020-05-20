@@ -4,8 +4,6 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
 
-const { useState, useRef, useEffect } = React;
-
 export interface Props {
   play: boolean;
   sequences?: Sequences;
@@ -19,8 +17,8 @@ export const AnimateContext = React.createContext({
 
 export default function AnimateGroup(props: Props) {
   const { play, sequences = [], children } = props;
-  const [animationStates, setAnimationStates] = useState({});
-  const animationsRef = useRef<{
+  const [animationStates, setAnimationStates] = React.useState({});
+  const animationsRef = React.useRef<{
     [key: string]: AnimationProps | AnimateKeyframesProps;
   }>({});
 
@@ -31,7 +29,7 @@ export default function AnimateGroup(props: Props) {
     animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
   };
 
-  useEffect((): void => {
+  React.useEffect((): void => {
     const sequencesToAnimate =
       Array.isArray(sequences) && sequences.length
         ? sequences

@@ -5,8 +5,6 @@ import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
 import { AnimationProps } from './types';
 
-const { useEffect, useState, useRef, useContext } = React;
-
 export default function Animate(props: AnimationProps) {
   const {
     play,
@@ -22,17 +20,17 @@ export default function Animate(props: AnimationProps) {
     sequenceId,
     sequenceIndex,
   } = props;
-  const onCompleteTimeRef = useRef<any>();
-  const [style, setStyle] = useState(start || {});
-  const { register, animationStates = {} } = useContext(AnimateContext);
+  const onCompleteTimeRef = React.useRef<any>();
+  const [style, setStyle] = React.useState(start || {});
+  const { register, animationStates = {} } = React.useContext(AnimateContext);
   const id = getSequenceId(sequenceIndex, sequenceId);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId)
       register(props);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const animationState = animationStates[id] || {};
 
     setStyle({

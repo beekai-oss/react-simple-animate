@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import * as React from 'react';
 import createRandomName from './utils/createRandomName';
 import createTag from './logic/createTag';
 import { AnimateContext } from './animateGroup';
@@ -23,20 +23,20 @@ export default function useAnimateKeyframes(
     iterationCount = 1,
     keyframes,
   } = props;
-  const animationNameRef = useRef({
+  const animationNameRef = React.useRef({
     forward: '',
     reverse: '',
   });
-  const styleTagRef = useRef({
+  const styleTagRef = React.useRef({
     forward: { sheet: {} },
     reverse: { sheet: {} },
   });
-  const { register } = useContext(AnimateContext);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
-  const playRef = useRef<(isPlay: boolean) => void>();
+  const { register } = React.useContext(AnimateContext);
+  const [isPlaying, setIsPlaying] = React.useState(true);
+  const [isPaused, setIsPaused] = React.useState(false);
+  const playRef = React.useRef<(isPlay: boolean) => void>();
 
-  useEffect(() => {
+  React.useEffect(() => {
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,

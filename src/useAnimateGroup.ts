@@ -1,18 +1,13 @@
 import * as React from 'react';
 import createRandomName from './utils/createRandomName';
+import createArrayWithNumbers from './utils/createArrayWithNumbers';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { HookSequences, Style } from './types';
 
-const { useEffect, useState, useRef } = React;
-
 interface Props {
   sequences: HookSequences;
-}
-
-function createArrayWithNumbers(length: number): null[] {
-  return Array.from({ length }, (): null => null);
 }
 
 export default function useAnimateGroup(
@@ -22,15 +17,17 @@ export default function useAnimateGroup(
   const defaultArray = createArrayWithNumbers(sequences.length).map(
     (_, index) => props.sequences[index].start,
   ) as (Style)[];
-  const [styles, setStyles] = useState(defaultArray);
-  const [isPlaying, setPlaying] = useState(false);
-  const animationNamesRef = useRef<
+  const [styles, setStyles] = React.useState(defaultArray);
+  const [isPlaying, setPlaying] = React.useState(false);
+  const animationNamesRef = React.useRef<
     { forward: string; reverse: string; animationName }[]
   >([]);
-  const styleTagRef = useRef<{ forward?: string; reverse?: string }[]>([]);
-  const playRef = useRef<(isPlay: boolean) => void>();
+  const styleTagRef = React.useRef<{ forward?: string; reverse?: string }[]>(
+    [],
+  );
+  const playRef = React.useRef<(isPlay: boolean) => void>();
 
-  useEffect((): any => {
+  React.useEffect(() => {
     sequences.forEach(({ keyframes = false }, i): void => {
       if (!Array.isArray(keyframes)) return;
 
@@ -54,7 +51,7 @@ export default function useAnimateGroup(
       styleTagRef.current[i].reverse = result.styleTag;
     });
 
-    return (): void => {
+    return () =>
       Object.values(animationNamesRef).forEach(
         ({ forward, reverse }, i): void => {
           if (!styleTagRef[i]) return;
@@ -62,12 +59,11 @@ export default function useAnimateGroup(
           deleteRules(styleTagRef[i].sheet, reverse);
         },
       );
-    };
   }, []);
 
   playRef.current = playRef.current
     ? playRef.current
-    : (isPlay: boolean): void => {
+    : (isPlay: boolean) => {
         let totalDuration = 0;
         const animationRefWithOrder = isPlay
           ? animationNamesRef.current

@@ -2,8 +2,6 @@ import * as React from 'react';
 import secToMs from './utils/secToMs';
 import { AnimationProps, Style } from './types';
 
-const { useState, useEffect, useRef } = React;
-
 export default function useAnimate(
   props: AnimationProps,
 ): {
@@ -24,17 +22,19 @@ export default function useAnimate(
     () => `all ${duration}s ${easeType} ${delay}s`,
     [duration, easeType, delay],
   );
-  const [style, setStyle] = useState<Style>({ ...start, transition });
-  const [isPlaying, setIsPlaying] = useState(false);
-  const onCompleteTimeRef = useRef<NodeJS.Timeout>();
-  const onCompleteCallbackRef = useRef<(() => void) | undefined>(onComplete);
-  const playRef = useRef<(isPlay: boolean) => void>();
+  const [style, setStyle] = React.useState<Style>({ ...start, transition });
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const onCompleteTimeRef = React.useRef<NodeJS.Timeout>();
+  const onCompleteCallbackRef = React.useRef<(() => void) | undefined>(
+    onComplete,
+  );
+  const playRef = React.useRef<(isPlay: boolean) => void>();
 
-  useEffect(() => {
+  React.useEffect(() => {
     onCompleteCallbackRef.current = onComplete;
   }, [onComplete]);
 
-  useEffect(
+  React.useEffect(
     () => () => {
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
     },

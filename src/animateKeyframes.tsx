@@ -7,8 +7,6 @@ import getSequenceId from './utils/getSequenceId';
 import getPlayState from './utils/getPauseState';
 import { AnimateKeyframesProps } from './types';
 
-const { useRef, useEffect, useContext, useState } = React;
-
 export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   const {
     children,
@@ -26,20 +24,20 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     sequenceId,
   } = props;
   let pauseValue;
-  const animationNameRef = useRef({
+  const animationNameRef = React.useRef({
     forward: '',
     reverse: '',
   });
-  const controlled = useRef(false);
-  const styleTagRef = useRef({
+  const controlled = React.useRef(false);
+  const styleTagRef = React.useRef({
     forward: { sheet: {} },
     reverse: { sheet: {} },
   });
   const id = getSequenceId(sequenceIndex, sequenceId);
-  const { register, animationStates = {} } = useContext(AnimateContext);
-  const [, forceUpdate] = useState(false);
+  const { register, animationStates = {} } = React.useContext(AnimateContext);
+  const [, forceUpdate] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,

@@ -8,5 +8,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/indent': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    "@typescript-eslint/ban-ts-ignore": "warn"
   },
 };

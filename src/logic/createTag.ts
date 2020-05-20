@@ -12,7 +12,7 @@ export default function createTag({
   index: number;
 } {
   let styleTag = document.querySelector('style[data-id=rsi]');
-  let index = 0;
+  let index;
 
   if (!styleTag) {
     styleTag = document.createElement('style');

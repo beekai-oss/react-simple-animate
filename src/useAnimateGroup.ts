@@ -16,7 +16,7 @@ export default function useAnimateGroup(
   const { sequences = [] } = props;
   const defaultArray = createArrayWithNumbers(sequences.length).map(
     (_, index) => props.sequences[index].start,
-  ) as (Style)[];
+  ) as Style[];
   const [styles, setStyles] = React.useState(defaultArray);
   const [isPlaying, setPlaying] = React.useState(false);
   const animationNamesRef = React.useRef<
@@ -103,7 +103,6 @@ export default function useAnimateGroup(
           },
         );
 
-        // @ts-ignore
         setStyles(isPlay ? styles : [...styles].reverse());
         setPlaying(!isPlaying);
       };

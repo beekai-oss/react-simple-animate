@@ -3,6 +3,7 @@ import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
+import { DEFAULT_DURATION } from './constants';
 
 export interface Props {
   play: boolean;
@@ -15,21 +16,27 @@ export const AnimateContext = React.createContext({
   register: (data: AnimationProps | AnimateKeyframesProps): void => {},
 });
 
-export default function AnimateGroup(props: Props) {
-  const { play, sequences = [], children } = props;
+export default function AnimateGroup({
+  play,
+  sequences = [],
+  children,
+}: Props) {
   const [animationStates, setAnimationStates] = React.useState({});
   const animationsRef = React.useRef<{
     [key: string]: AnimationProps | AnimateKeyframesProps;
   }>({});
 
-  const register = (data: AnimationProps | AnimateKeyframesProps) => {
-    const { sequenceIndex, sequenceId } = data;
-    if (isUndefined(sequenceId) && isUndefined(sequenceIndex)) return;
+  const register = React.useCallback(
+    (data: AnimationProps | AnimateKeyframesProps) => {
+      const { sequenceIndex, sequenceId } = data;
+      if (isUndefined(sequenceId) && isUndefined(sequenceIndex)) return;
 
-    animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
-  };
+      animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
+    },
+    [],
+  );
 
-  React.useEffect((): void => {
+  React.useEffect(() => {
     const sequencesToAnimate =
       Array.isArray(sequences) && sequences.length
         ? sequences
@@ -37,11 +44,18 @@ export default function AnimateGroup(props: Props) {
     const localAnimationState = {};
 
     (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
-      (previous, current, currentIndex) => {
-        const { sequenceId, sequenceIndex, ...restAttributes } = current;
-        const { duration: defaultDuration, delay, overlay } = restAttributes;
+      (
+        previous,
+        {
+          sequenceId,
+          sequenceIndex,
+          duration = DEFAULT_DURATION,
+          delay,
+          overlay,
+        },
+        currentIndex,
+      ) => {
         const id = getSequenceId(sequenceIndex, sequenceId, currentIndex);
-        const duration = defaultDuration || 0.3;
         const currentTotalDuration = calculateTotalDuration({
           duration,
           delay,

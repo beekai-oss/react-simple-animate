@@ -5,7 +5,12 @@ import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 import { AnimateKeyframesProps, Style } from './types';
 import getPlayState from './utils/getPauseState';
-import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
+import {
+  DEFAULT_DIRECTION,
+  DEFAULT_DURATION,
+  DEFAULT_EASE_TYPE,
+  DEFAULT_FILLMODE,
+} from './constants';
 
 export default function useAnimateKeyframes(
   props: AnimateKeyframesProps,
@@ -19,8 +24,8 @@ export default function useAnimateKeyframes(
     duration = DEFAULT_DURATION,
     delay = 0,
     easeType = DEFAULT_EASE_TYPE,
-    direction = 'normal',
-    fillMode = 'none',
+    direction = DEFAULT_DIRECTION,
+    fillMode = DEFAULT_FILLMODE,
     iterationCount = 1,
     keyframes,
   } = props;

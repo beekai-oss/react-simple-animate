@@ -30,7 +30,9 @@ export default function useAnimateGroup(
 
   React.useEffect(() => {
     sequences.forEach(({ keyframes = false }, i): void => {
-      if (!Array.isArray(keyframes)) return;
+      if (!Array.isArray(keyframes)) {
+        return;
+      }
 
       if (!animationNamesRef.current[i]) {
         animationNamesRef.current[i] = {} as any;
@@ -55,12 +57,14 @@ export default function useAnimateGroup(
     return () =>
       Object.values(animationNamesRef).forEach(
         ({ forward, reverse }, i): void => {
-          if (!styleTagRef[i]) return;
+          if (!styleTagRef[i]) {
+            return;
+          }
           deleteRules(styleTagRef[i].sheet, forward);
           deleteRules(styleTagRef[i].sheet, reverse);
         },
       );
-  }, []);
+  }, [sequences]);
 
   playRef.current = playRef.current
     ? playRef.current

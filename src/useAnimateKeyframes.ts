@@ -5,6 +5,7 @@ import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 import { AnimateKeyframesProps, Style } from './types';
 import getPlayState from './utils/getPauseState';
+import { DEFAULT_DURATION } from './constants';
 
 export default function useAnimateKeyframes(
   props: AnimateKeyframesProps,
@@ -15,7 +16,7 @@ export default function useAnimateKeyframes(
   isPlaying: boolean;
 } {
   const {
-    duration = 0.3,
+    duration = DEFAULT_DURATION,
     delay = 0,
     easeType = 'linear',
     direction = 'normal',
@@ -71,9 +72,11 @@ export default function useAnimateKeyframes(
   const style = {
     animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
       isPaused,
-    )} ${(isPlaying
-      ? animationNameRef.current.forward
-      : animationNameRef.current.reverse) || ''}`,
+    )} ${
+      (isPlaying
+        ? animationNameRef.current.forward
+        : animationNameRef.current.reverse) || ''
+    }`,
   };
 
   return {

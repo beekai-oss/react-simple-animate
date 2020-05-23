@@ -1,6 +1,7 @@
 import * as React from 'react';
 import secToMs from './utils/secToMs';
 import { AnimationProps, Style } from './types';
+import { DEFAULT_DURATION } from './constants';
 
 export default function useAnimate(
   props: AnimationProps,
@@ -15,7 +16,7 @@ export default function useAnimate(
     complete,
     onComplete,
     delay = 0,
-    duration = 0.3,
+    duration = DEFAULT_DURATION,
     easeType = 'linear',
   } = props;
   const transition = React.useMemo(

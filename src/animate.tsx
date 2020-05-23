@@ -4,6 +4,7 @@ import secToMs from './utils/secToMs';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
 import { AnimationProps } from './types';
+import { DEFAULT_DURATION } from './constants';
 
 export default function Animate(props: AnimationProps) {
   const {
@@ -15,7 +16,7 @@ export default function Animate(props: AnimationProps) {
     complete = '',
     onComplete,
     delay = 0,
-    duration = 0.3,
+    duration = DEFAULT_DURATION,
     easeType = 'linear',
     sequenceId,
     sequenceIndex,

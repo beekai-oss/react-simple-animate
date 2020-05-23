@@ -5,6 +5,7 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { HookSequences, Style } from './types';
+import { DEFAULT_DURATION } from './constants';
 
 interface Props {
   sequences: HookSequences;
@@ -71,7 +72,7 @@ export default function useAnimateGroup(
         const styles = (isPlay ? sequences : [...sequences].reverse()).map(
           (current, currentIndex): Style => {
             const {
-              duration = 0.3,
+              duration = DEFAULT_DURATION,
               delay = 0,
               overlay,
               keyframes,

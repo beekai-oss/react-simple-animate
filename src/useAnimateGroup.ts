@@ -5,7 +5,7 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { HookSequences, Style } from './types';
-import { DEFAULT_DURATION } from './constants';
+import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 
 interface Props {
   sequences: HookSequences;
@@ -81,7 +81,7 @@ export default function useAnimateGroup(
               overlay,
               keyframes,
               iterationCount = 1,
-              easeType = 'linear',
+              easeType = DEFAULT_EASE_TYPE,
               direction = 'normal',
               fillMode = 'none',
               end = {},

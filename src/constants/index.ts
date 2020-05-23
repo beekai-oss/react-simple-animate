@@ -1,3 +1,4 @@
 const DEFAULT_DURATION = 0.3;
+const DEFAULT_EASE_TYPE = 'linear';
 
-export { DEFAULT_DURATION };
+export { DEFAULT_DURATION, DEFAULT_EASE_TYPE };

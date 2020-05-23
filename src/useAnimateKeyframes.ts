@@ -5,7 +5,7 @@ import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 import { AnimateKeyframesProps, Style } from './types';
 import getPlayState from './utils/getPauseState';
-import { DEFAULT_DURATION } from './constants';
+import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 
 export default function useAnimateKeyframes(
   props: AnimateKeyframesProps,
@@ -18,7 +18,7 @@ export default function useAnimateKeyframes(
   const {
     duration = DEFAULT_DURATION,
     delay = 0,
-    easeType = 'linear',
+    easeType = DEFAULT_EASE_TYPE,
     direction = 'normal',
     fillMode = 'none',
     iterationCount = 1,
@@ -38,6 +38,9 @@ export default function useAnimateKeyframes(
   const playRef = React.useRef<(isPlay: boolean) => void>();
 
   React.useEffect(() => {
+    const styleTag = styleTagRef.current;
+    const animationName = animationNameRef.current;
+
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
@@ -54,16 +57,10 @@ export default function useAnimateKeyframes(
     register(props);
 
     return () => {
-      deleteRules(
-        styleTagRef.current.forward.sheet,
-        animationNameRef.current.forward,
-      );
-      deleteRules(
-        styleTagRef.current.reverse.sheet,
-        animationNameRef.current.reverse,
-      );
+      deleteRules(styleTag.forward.sheet, animationName.forward);
+      deleteRules(styleTag.reverse.sheet, animationName.reverse);
     };
-  }, []);
+  }, [keyframes, props, register]);
 
   playRef.current = playRef.current
     ? playRef.current

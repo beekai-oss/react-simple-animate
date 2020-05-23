@@ -5,7 +5,7 @@ import deleteRule from './logic/deleteRules';
 import createRandomName from './utils/createRandomName';
 import getSequenceId from './utils/getSequenceId';
 import getPlayState from './utils/getPauseState';
-import { DEFAULT_DURATION } from './constants';
+import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import { AnimateKeyframesProps } from './types';
 
 export default function AnimateKeyframes(props: AnimateKeyframesProps) {
@@ -16,7 +16,7 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     render,
     duration = DEFAULT_DURATION,
     delay = 0,
-    easeType = 'linear',
+    easeType = DEFAULT_EASE_TYPE,
     direction = 'normal',
     fillMode = 'none',
     iterationCount = 1,

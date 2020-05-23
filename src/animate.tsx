@@ -3,7 +3,7 @@ import { AnimateContext } from './animateGroup';
 import secToMs from './utils/secToMs';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
-import { DEFAULT_DURATION } from './constants';
+import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import { AnimationProps } from './types';
 
 export default function Animate(props: AnimationProps) {
@@ -17,7 +17,7 @@ export default function Animate(props: AnimationProps) {
     onComplete,
     delay = 0,
     duration = DEFAULT_DURATION,
-    easeType = 'linear',
+    easeType = DEFAULT_EASE_TYPE,
     sequenceId,
     sequenceIndex,
   } = props;

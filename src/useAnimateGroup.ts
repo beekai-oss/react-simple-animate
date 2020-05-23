@@ -71,7 +71,8 @@ export default function useAnimateGroup(
           deleteRules(styleTagRef[i].sheet, reverse);
         },
       );
-  }, [sequences]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   playRef.current = playRef.current
     ? playRef.current

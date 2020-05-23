@@ -81,7 +81,8 @@ export default function AnimateGroup({
     );
 
     setAnimationStates(localAnimationState);
-  }, [play, sequences]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [play]);
 
   return (
     <AnimateContext.Provider value={{ animationStates, register }}>

@@ -57,7 +57,8 @@
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.3",
-    "uglify-es": "^3.3.9"
+    "uglify-es": "^3.3.9",
+    "eslint-plugin-react": "^7.20.0"
   },
   "peerDependencies": {
     "react": "^16.8.0",
@@ -71,11 +72,7 @@
   "lint-staged": {
     "*.{tsx,ts}": [
       "eslint --fix",
-      "prettier --config ./.prettierrc --write",
-      "git add"
+      "prettier --config ./.prettierrc --write"
     ]
-  },
-  "dependencies": {
-    "eslint-plugin-react": "^7.20.0"
   }
 }

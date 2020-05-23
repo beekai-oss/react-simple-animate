@@ -30,7 +30,8 @@ export default function Animate(props: AnimationProps) {
     if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId) {
       register(props);
     }
-  }, [sequenceIndex, sequenceId, register, props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   React.useEffect(() => {
     const animationState = animationStates[id] || {};

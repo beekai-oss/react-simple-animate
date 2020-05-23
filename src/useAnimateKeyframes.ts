@@ -65,7 +65,8 @@ export default function useAnimateKeyframes(
       deleteRules(styleTag.forward.sheet, animationName.forward);
       deleteRules(styleTag.reverse.sheet, animationName.reverse);
     };
-  }, [keyframes, props, register]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   playRef.current = playRef.current
     ? playRef.current

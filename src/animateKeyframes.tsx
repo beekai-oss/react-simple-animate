@@ -71,7 +71,8 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
       deleteRule(styleTag.forward.sheet, animationName.forward);
       deleteRule(styleTag.reverse.sheet, animationName.reverse);
     };
-  }, [keyframes, play, props, register]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (animateState.controlled && !controlled.current) {
     pauseValue = animateState.pause;

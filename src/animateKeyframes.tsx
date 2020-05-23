@@ -5,6 +5,7 @@ import deleteRule from './logic/deleteRules';
 import createRandomName from './utils/createRandomName';
 import getSequenceId from './utils/getSequenceId';
 import getPlayState from './utils/getPauseState';
+import { DEFAULT_DURATION } from './constants';
 import { AnimateKeyframesProps } from './types';
 
 export default function AnimateKeyframes(props: AnimateKeyframesProps) {
@@ -13,7 +14,7 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     play = false,
     pause = false,
     render,
-    duration = 0.3,
+    duration = DEFAULT_DURATION,
     delay = 0,
     easeType = 'linear',
     direction = 'normal',
@@ -38,6 +39,8 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   const [, forceUpdate] = React.useState(false);
 
   React.useEffect(() => {
+    const styleTag = styleTagRef.current;
+    const animationName = animationNameRef.current;
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
@@ -53,38 +56,35 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     styleTagRef.current.reverse = result.styleTag;
     register(props);
 
-    if (play) forceUpdate(true);
+    if (play) {
+      forceUpdate(true);
+    }
 
     return () => {
-      deleteRule(
-        styleTagRef.current.forward.sheet,
-        animationNameRef.current.forward,
-      );
-      deleteRule(
-        styleTagRef.current.reverse.sheet,
-        animationNameRef.current.reverse,
-      );
+      deleteRule(styleTag.forward.sheet, animationName.forward);
+      deleteRule(styleTag.reverse.sheet, animationName.reverse);
     };
-  }, []);
+  }, [keyframes, play, props, register]);
 
   const animateState = animationStates[id] || {};
 
   if (animateState.controlled && !controlled.current) {
     pauseValue = animateState.pause;
-    if (!animateState.pause) controlled.current = true;
+    if (!animateState.pause) {
+      controlled.current = true;
+    }
   } else {
     pauseValue = pause;
   }
 
   const style = {
-    animation: `${duration}s ${easeType} ${animateState.delay ||
-      delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
-      pauseValue,
-    )} ${((animateState.controlled
-    ? animateState.play
-    : play)
-      ? animationNameRef.current.forward
-      : animationNameRef.current.reverse) || ''}`,
+    animation: `${duration}s ${easeType} ${
+      animateState.delay || delay
+    }s ${iterationCount} ${direction} ${fillMode} ${getPlayState(pauseValue)} ${
+      ((animateState.controlled ? animateState.play : play)
+        ? animationNameRef.current.forward
+        : animationNameRef.current.reverse) || ''
+    }`,
   };
 
   return render ? render({ style }) : <div style={style || {}}>{children}</div>;

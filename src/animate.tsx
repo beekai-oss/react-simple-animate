@@ -3,8 +3,8 @@ import { AnimateContext } from './animateGroup';
 import secToMs from './utils/secToMs';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
-import { AnimationProps } from './types';
 import { DEFAULT_DURATION } from './constants';
+import { AnimationProps } from './types';
 
 export default function Animate(props: AnimationProps) {
   const {
@@ -27,9 +27,10 @@ export default function Animate(props: AnimationProps) {
   const id = getSequenceId(sequenceIndex, sequenceId);
 
   React.useEffect(() => {
-    if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId)
+    if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId) {
       register(props);
-  }, []);
+    }
+  }, [sequenceIndex, sequenceId, register, props]);
 
   React.useEffect(() => {
     const animationState = animationStates[id] || {};
@@ -48,9 +49,8 @@ export default function Animate(props: AnimationProps) {
       }, secToMs(parseFloat(animationState.delay || delay) + duration));
     }
 
-    return () => {
+    return () =>
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-    };
   }, [
     id,
     animationStates,

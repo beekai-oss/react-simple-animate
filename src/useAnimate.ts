@@ -1,6 +1,7 @@
 import * as React from 'react';
 import secToMs from './utils/secToMs';
 import { AnimationProps, Style } from './types';
+import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 
 export default function useAnimate(
   props: AnimationProps,
@@ -15,11 +16,11 @@ export default function useAnimate(
     complete,
     onComplete,
     delay = 0,
-    duration = 0.3,
-    easeType = 'linear',
+    duration = DEFAULT_DURATION,
+    easeType = DEFAULT_EASE_TYPE,
   } = props;
   const transition = React.useMemo(
-    () => `all ${duration}s ${easeType} ${delay}s`,
+    () => `${ALL} ${duration}s ${easeType} ${delay}s`,
     [duration, easeType, delay],
   );
   const [style, setStyle] = React.useState<Style>({ ...start, transition });

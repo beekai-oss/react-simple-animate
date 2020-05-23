@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
+import { DEFAULT_DURATION } from './constants';
+import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
 
 export interface Props {
   play: boolean;
@@ -15,21 +16,27 @@ export const AnimateContext = React.createContext({
   register: (data: AnimationProps | AnimateKeyframesProps): void => {},
 });
 
-export default function AnimateGroup(props: Props) {
-  const { play, sequences = [], children } = props;
+export default function AnimateGroup({
+  play,
+  sequences = [],
+  children,
+}: Props) {
   const [animationStates, setAnimationStates] = React.useState({});
   const animationsRef = React.useRef<{
     [key: string]: AnimationProps | AnimateKeyframesProps;
   }>({});
 
-  const register = (data: AnimationProps | AnimateKeyframesProps) => {
-    const { sequenceIndex, sequenceId } = data;
-    if (isUndefined(sequenceId) && isUndefined(sequenceIndex)) return;
+  const register = React.useCallback(
+    (data: AnimationProps | AnimateKeyframesProps) => {
+      const { sequenceIndex, sequenceId } = data;
+      if (!isUndefined(sequenceId) || !isUndefined(sequenceIndex)) {
+        animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
+      }
+    },
+    [],
+  );
 
-    animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
-  };
-
-  React.useEffect((): void => {
+  React.useEffect(() => {
     const sequencesToAnimate =
       Array.isArray(sequences) && sequences.length
         ? sequences
@@ -37,17 +44,23 @@ export default function AnimateGroup(props: Props) {
     const localAnimationState = {};
 
     (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
-      (previous, current, currentIndex) => {
-        const { sequenceId, sequenceIndex, ...restAttributes } = current;
-        const { duration: defaultDuration, delay, overlay } = restAttributes;
+      (
+        previous,
+        {
+          sequenceId,
+          sequenceIndex,
+          duration = DEFAULT_DURATION,
+          delay,
+          overlay,
+        },
+        currentIndex,
+      ) => {
         const id = getSequenceId(sequenceIndex, sequenceId, currentIndex);
-        const duration = defaultDuration || 0.3;
         const currentTotalDuration = calculateTotalDuration({
           duration,
           delay,
           overlay,
         });
-
         const totalDuration = currentTotalDuration + previous;
 
         localAnimationState[id] = {
@@ -68,6 +81,7 @@ export default function AnimateGroup(props: Props) {
     );
 
     setAnimationStates(localAnimationState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [play]);
 
   return (

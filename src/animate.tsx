@@ -3,6 +3,7 @@ import { AnimateContext } from './animateGroup';
 import secToMs from './utils/secToMs';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
+import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import { AnimationProps } from './types';
 
 export default function Animate(props: AnimationProps) {
@@ -15,8 +16,8 @@ export default function Animate(props: AnimationProps) {
     complete = '',
     onComplete,
     delay = 0,
-    duration = 0.3,
-    easeType = 'linear',
+    duration = DEFAULT_DURATION,
+    easeType = DEFAULT_EASE_TYPE,
     sequenceId,
     sequenceIndex,
   } = props;
@@ -26,8 +27,10 @@ export default function Animate(props: AnimationProps) {
   const id = getSequenceId(sequenceIndex, sequenceId);
 
   React.useEffect(() => {
-    if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId)
+    if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId) {
       register(props);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -35,7 +38,7 @@ export default function Animate(props: AnimationProps) {
 
     setStyle({
       ...(play || animationState.play ? end : start),
-      transition: `all ${duration}s ${easeType} ${parseFloat(
+      transition: `${ALL} ${duration}s ${easeType} ${parseFloat(
         animationState.delay || delay,
       )}s`,
     });
@@ -47,9 +50,8 @@ export default function Animate(props: AnimationProps) {
       }, secToMs(parseFloat(animationState.delay || delay) + duration));
     }
 
-    return () => {
+    return () =>
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-    };
   }, [
     id,
     animationStates,

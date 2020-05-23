@@ -5,6 +5,14 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { HookSequences, Style } from './types';
+import {
+  ALL,
+  DEFAULT_DIRECTION,
+  DEFAULT_DURATION,
+  DEFAULT_EASE_TYPE,
+  DEFAULT_FILLMODE,
+  RUNNING,
+} from './constants';
 
 interface Props {
   sequences: HookSequences;
@@ -29,7 +37,9 @@ export default function useAnimateGroup(
 
   React.useEffect(() => {
     sequences.forEach(({ keyframes = false }, i): void => {
-      if (!Array.isArray(keyframes)) return;
+      if (!Array.isArray(keyframes)) {
+        return;
+      }
 
       if (!animationNamesRef.current[i]) {
         animationNamesRef.current[i] = {} as any;
@@ -54,11 +64,14 @@ export default function useAnimateGroup(
     return () =>
       Object.values(animationNamesRef).forEach(
         ({ forward, reverse }, i): void => {
-          if (!styleTagRef[i]) return;
+          if (!styleTagRef[i]) {
+            return;
+          }
           deleteRules(styleTagRef[i].sheet, forward);
           deleteRules(styleTagRef[i].sheet, reverse);
         },
       );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   playRef.current = playRef.current
@@ -71,26 +84,26 @@ export default function useAnimateGroup(
         const styles = (isPlay ? sequences : [...sequences].reverse()).map(
           (current, currentIndex): Style => {
             const {
-              duration = 0.3,
+              duration = DEFAULT_DURATION,
               delay = 0,
               overlay,
               keyframes,
               iterationCount = 1,
-              easeType = 'linear',
-              direction = 'normal',
-              fillMode = 'none',
+              easeType = DEFAULT_EASE_TYPE,
+              direction = DEFAULT_DIRECTION,
+              fillMode = DEFAULT_FILLMODE,
               end = {},
               start = {},
             } = current;
             const delayDuration = currentIndex === 0 ? delay : totalDuration;
-            const transition = `all ${duration}s ${easeType} ${delayDuration}s`;
+            const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
             totalDuration =
               calculateTotalDuration({ duration, delay, overlay }) +
               totalDuration;
 
             return keyframes
               ? {
-                  animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} running ${
+                  animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${RUNNING} ${
                     isPlay
                       ? animationRefWithOrder[currentIndex].forward
                       : animationRefWithOrder[currentIndex].reverse

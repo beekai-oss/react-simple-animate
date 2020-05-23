@@ -5,6 +5,12 @@ import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
 import { AnimateKeyframesProps, Style } from './types';
 import getPlayState from './utils/getPauseState';
+import {
+  DEFAULT_DIRECTION,
+  DEFAULT_DURATION,
+  DEFAULT_EASE_TYPE,
+  DEFAULT_FILLMODE,
+} from './constants';
 
 export default function useAnimateKeyframes(
   props: AnimateKeyframesProps,
@@ -15,11 +21,11 @@ export default function useAnimateKeyframes(
   isPlaying: boolean;
 } {
   const {
-    duration = 0.3,
+    duration = DEFAULT_DURATION,
     delay = 0,
-    easeType = 'linear',
-    direction = 'normal',
-    fillMode = 'none',
+    easeType = DEFAULT_EASE_TYPE,
+    direction = DEFAULT_DIRECTION,
+    fillMode = DEFAULT_FILLMODE,
     iterationCount = 1,
     keyframes,
   } = props;
@@ -37,6 +43,9 @@ export default function useAnimateKeyframes(
   const playRef = React.useRef<(isPlay: boolean) => void>();
 
   React.useEffect(() => {
+    const styleTag = styleTagRef.current;
+    const animationName = animationNameRef.current;
+
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
@@ -53,15 +62,10 @@ export default function useAnimateKeyframes(
     register(props);
 
     return () => {
-      deleteRules(
-        styleTagRef.current.forward.sheet,
-        animationNameRef.current.forward,
-      );
-      deleteRules(
-        styleTagRef.current.reverse.sheet,
-        animationNameRef.current.reverse,
-      );
+      deleteRules(styleTag.forward.sheet, animationName.forward);
+      deleteRules(styleTag.reverse.sheet, animationName.reverse);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   playRef.current = playRef.current
@@ -71,9 +75,11 @@ export default function useAnimateKeyframes(
   const style = {
     animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
       isPaused,
-    )} ${(isPlaying
-      ? animationNameRef.current.forward
-      : animationNameRef.current.reverse) || ''}`,
+    )} ${
+      (isPlaying
+        ? animationNameRef.current.forward
+        : animationNameRef.current.reverse) || ''
+    }`,
   };
 
   return {

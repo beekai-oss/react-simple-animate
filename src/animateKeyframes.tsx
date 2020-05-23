@@ -41,6 +41,7 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   });
   const id = getSequenceId(sequenceIndex, sequenceId);
   const { register, animationStates = {} } = React.useContext(AnimateContext);
+  const animateState = animationStates[id] || {};
   const [, forceUpdate] = React.useState(false);
 
   React.useEffect(() => {
@@ -51,14 +52,15 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
       animationName: animationNameRef.current.forward,
       keyframes,
     });
-    styleTagRef.current.forward = result.styleTag;
 
     animationNameRef.current.reverse = createRandomName();
+    styleTagRef.current.forward = result.styleTag;
     result = createTag({
       animationName: animationNameRef.current.reverse,
       keyframes: keyframes.reverse(),
     });
     styleTagRef.current.reverse = result.styleTag;
+
     register(props);
 
     if (play) {
@@ -70,8 +72,6 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
       deleteRule(styleTag.reverse.sheet, animationName.reverse);
     };
   }, [keyframes, play, props, register]);
-
-  const animateState = animationStates[id] || {};
 
   if (animateState.controlled && !controlled.current) {
     pauseValue = animateState.pause;

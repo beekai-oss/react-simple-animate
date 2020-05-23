@@ -25,7 +25,7 @@ export type HookSequences = {
   keyframes?: Keyframes;
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
-  iterationCount?: string | number;
+  iterationCount?: number;
   start?: Style;
   end?: Style;
   overlay?: number;

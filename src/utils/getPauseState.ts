@@ -1,1 +1,3 @@
-export default (pause: boolean): string => pause ? 'paused' : 'running';
+import { RUNNING } from '../constants';
+
+export default (pause: boolean): string => (pause ? 'paused' : RUNNING);

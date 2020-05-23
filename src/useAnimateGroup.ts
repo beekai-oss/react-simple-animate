@@ -5,7 +5,14 @@ import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
 import { HookSequences, Style } from './types';
-import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
+import {
+  ALL,
+  DEFAULT_DIRECTION,
+  DEFAULT_DURATION,
+  DEFAULT_EASE_TYPE,
+  DEFAULT_FILLMODE,
+  RUNNING,
+} from './constants';
 
 interface Props {
   sequences: HookSequences;
@@ -82,20 +89,20 @@ export default function useAnimateGroup(
               keyframes,
               iterationCount = 1,
               easeType = DEFAULT_EASE_TYPE,
-              direction = 'normal',
-              fillMode = 'none',
+              direction = DEFAULT_DIRECTION,
+              fillMode = DEFAULT_FILLMODE,
               end = {},
               start = {},
             } = current;
             const delayDuration = currentIndex === 0 ? delay : totalDuration;
-            const transition = `all ${duration}s ${easeType} ${delayDuration}s`;
+            const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
             totalDuration =
               calculateTotalDuration({ duration, delay, overlay }) +
               totalDuration;
 
             return keyframes
               ? {
-                  animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} running ${
+                  animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${RUNNING} ${
                     isPlay
                       ? animationRefWithOrder[currentIndex].forward
                       : animationRefWithOrder[currentIndex].reverse

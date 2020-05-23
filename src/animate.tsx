@@ -3,7 +3,7 @@ import { AnimateContext } from './animateGroup';
 import secToMs from './utils/secToMs';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
-import { DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
+import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import { AnimationProps } from './types';
 
 export default function Animate(props: AnimationProps) {
@@ -37,7 +37,7 @@ export default function Animate(props: AnimationProps) {
 
     setStyle({
       ...(play || animationState.play ? end : start),
-      transition: `all ${duration}s ${easeType} ${parseFloat(
+      transition: `${ALL} ${duration}s ${easeType} ${parseFloat(
         animationState.delay || delay,
       )}s`,
     });

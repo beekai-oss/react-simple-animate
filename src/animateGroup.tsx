@@ -70,7 +70,7 @@ export default function AnimateGroup({
             currentIndex === 0
               ? delay || 0
               : delay
-              ? currentTotalDuration
+              ? previous + delay
               : previous,
           controlled: true,
         };

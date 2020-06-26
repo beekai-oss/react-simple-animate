@@ -1,6 +1,6 @@
 {
   "name": "react-simple-animate",
-  "version": "3.3.8",
+  "version": "3.3.9-beta.1",
   "description": "react simple animate",
   "main": "dist/index.js",
   "keywords": [

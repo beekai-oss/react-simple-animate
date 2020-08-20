@@ -44,7 +44,7 @@ export default function useAnimate(
 
     if ((onCompleteTimeRef.current || complete) && isPlaying) {
       onCompleteTimeRef.current = setTimeout((): void => {
-        if (isPlaying && onComplete) {
+        if (onComplete) {
           onComplete();
         }
 

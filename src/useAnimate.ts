@@ -34,14 +34,6 @@ export default function useAnimate(
   const onCompleteTimeRef = React.useRef<NodeJS.Timeout>();
 
   React.useEffect(() => {
-    setAnimate({
-      ...animate,
-      style: {
-        ...(isPlaying ? end : start),
-        transition,
-      },
-    });
-
     if ((onCompleteTimeRef.current || complete) && isPlaying) {
       onCompleteTimeRef.current = setTimeout((): void => {
         if (onComplete) {
@@ -57,9 +49,8 @@ export default function useAnimate(
       }, secToMs(delay + duration));
     }
 
-    return () => {
+    return () =>
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-    };
   }, [isPlaying]);
 
   return {
@@ -68,6 +59,10 @@ export default function useAnimate(
     play: React.useCallback((isPlaying: boolean) => {
       setAnimate({
         ...animate,
+        style: {
+          ...(isPlaying ? end : start),
+          transition,
+        },
         isPlaying,
       });
     }, []),

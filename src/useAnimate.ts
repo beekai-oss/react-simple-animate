@@ -23,47 +23,48 @@ export default function useAnimate(
     () => `${ALL} ${duration}s ${easeType} ${delay}s`,
     [duration, easeType, delay],
   );
-  const [style, setStyle] = React.useState<Style>({ ...start, transition });
-  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [animate, setAnimate] = React.useState<{
+    isPlaying: boolean;
+    style: Style;
+  }>({
+    isPlaying: false,
+    style: { ...start, transition },
+  });
+  const { isPlaying, style } = animate;
   const onCompleteTimeRef = React.useRef<NodeJS.Timeout>();
-  const onCompleteCallbackRef = React.useRef<(() => void) | undefined>(
-    onComplete,
-  );
-  const playRef = React.useRef<(isPlay: boolean) => void>();
 
   React.useEffect(() => {
-    onCompleteCallbackRef.current = onComplete;
-  }, [onComplete]);
-
-  React.useEffect(
-    () => () => {
-      onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-    },
-    [],
-  );
-
-  if (!playRef.current) {
-    playRef.current = (isPlay: boolean) => {
-      setStyle({
-        ...(isPlay ? end : start),
-        transition,
-      });
-
-      setIsPlaying(true);
-
+    if ((onCompleteTimeRef.current || complete) && isPlaying) {
       onCompleteTimeRef.current = setTimeout((): void => {
-        if (isPlay && (complete || onComplete)) {
-          complete && setStyle(complete);
-          onCompleteCallbackRef.current && onCompleteCallbackRef.current();
+        if (onComplete) {
+          onComplete();
         }
-        setIsPlaying(false);
+
+        if (complete) {
+          setAnimate({
+            ...animate,
+            style: complete,
+          });
+        }
       }, secToMs(delay + duration));
-    };
-  }
+    }
+
+    return () =>
+      onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
+  }, [isPlaying]);
 
   return {
     isPlaying,
     style,
-    play: playRef.current,
+    play: React.useCallback((isPlaying: boolean) => {
+      setAnimate({
+        ...animate,
+        style: {
+          ...(isPlaying ? end : start),
+          transition,
+        },
+        isPlaying,
+      });
+    }, []),
   };
 }

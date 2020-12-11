@@ -38,7 +38,7 @@ export default function useAnimateKeyframes(
     reverse: { sheet: {} },
   });
   const { register } = React.useContext(AnimateContext);
-  const [isPlaying, setIsPlaying] = React.useState(true);
+  const [isPlaying, setIsPlaying] = React.useState<boolean | null>(null);
   const [isPaused, setIsPaused] = React.useState(false);
   const playRef = React.useRef<(isPlay: boolean) => void>();
 
@@ -76,9 +76,11 @@ export default function useAnimateKeyframes(
     animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
       isPaused,
     )} ${
-      (isPlaying
+      isPlaying === null
+        ? ''
+        : isPlaying
         ? animationNameRef.current.forward
-        : animationNameRef.current.reverse) || ''
+        : animationNameRef.current.reverse
     }`,
   };
 
@@ -86,6 +88,6 @@ export default function useAnimateKeyframes(
     style,
     play: playRef.current,
     pause: setIsPaused,
-    isPlaying,
+    isPlaying: !!isPlaying,
   };
 }

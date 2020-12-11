@@ -12,19 +12,21 @@ let UseAnimate;
 describe('useAnimateKeyframes', () => {
   let componentStyle;
 
-  const TestHook = ({ callback }) => {
+  const TestHook = ({ callback }: any) => {
     const { style } = callback();
     componentStyle = style;
     return <div style={style}>errors</div>;
   };
 
-  const TestComponent = callback => {
+  const TestComponent = (callback) => {
     mount(<TestHook callback={callback} />);
   };
 
   beforeEach(() => {
     TestComponent(() => {
-      UseAnimate = useAnimateKeyframes({ keyframes: ['opacity: 0', 'opacity: 1'] });
+      UseAnimate = useAnimateKeyframes({
+        keyframes: ['opacity: 0', 'opacity: 1'],
+      });
       return UseAnimate;
     });
 
@@ -34,11 +36,13 @@ describe('useAnimateKeyframes', () => {
   it('should toggle style correctly', () => {
     act(() => {
       expect(UseAnimate.play(true)).toBeUndefined();
-      expect(componentStyle).toEqual({ animation: '0.3s linear 0s 1 normal none running ' });
+      expect(componentStyle).toEqual({
+        animation: '0.3s linear 0s 1 normal none running ',
+      });
     });
 
     expect(componentStyle).toEqual({
-      animation: '0.3s linear 0s 1 normal none running ',
+      animation: '0.3s linear 0s 1 normal none running test',
     });
   });
 });

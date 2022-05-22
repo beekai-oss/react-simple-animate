@@ -4,7 +4,7 @@ import createArrayWithNumbers from './utils/createArrayWithNumbers';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import createTag from './logic/createTag';
 import deleteRules from './logic/deleteRules';
-import { HookSequences, Style } from './types';
+import { HookSequences } from './types';
 import {
   ALL,
   DEFAULT_DIRECTION,
@@ -18,13 +18,15 @@ interface Props {
   sequences: HookSequences;
 }
 
-export default function useAnimateGroup(
-  props: Props,
-): { styles: (Style | null)[]; play: (boolean) => void; isPlaying: boolean } {
+export default function useAnimateGroup(props: Props): {
+  styles: (React.CSSProperties | null)[];
+  play: (boolean) => void;
+  isPlaying: boolean;
+} {
   const { sequences = [] } = props;
   const defaultArray = createArrayWithNumbers(sequences.length).map(
     (_, index) => props.sequences[index].start,
-  ) as Style[];
+  ) as React.CSSProperties[];
   const [styles, setStyles] = React.useState(defaultArray);
   const [isPlaying, setPlaying] = React.useState(false);
   const animationNamesRef = React.useRef<
@@ -82,7 +84,7 @@ export default function useAnimateGroup(
           ? animationNamesRef.current
           : [...animationNamesRef.current].reverse();
         const styles = (isPlay ? sequences : [...sequences].reverse()).map(
-          (current, currentIndex): Style => {
+          (current, currentIndex): React.CSSProperties => {
             const {
               duration = DEFAULT_DURATION,
               delay = 0,

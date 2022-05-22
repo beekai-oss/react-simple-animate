@@ -12,13 +12,17 @@ let UseAnimateGroup;
 describe('useAnimateGroup', () => {
   let componentStyle;
 
-  const TestHook = ({ callback }) => {
+  const TestHook = ({
+    callback,
+  }: {
+    callback: () => { styles: React.CSSProperties };
+  }) => {
     const { styles } = callback();
     componentStyle = styles;
     return <div>errors</div>;
   };
 
-  const TestComponent = callback => {
+  const TestComponent = (callback) => {
     mount(<TestHook callback={callback} />);
   };
 

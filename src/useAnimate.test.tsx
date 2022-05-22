@@ -8,13 +8,17 @@ let UseAnimate;
 describe('useAnimate', () => {
   let componentStyle;
 
-  const TestHook = ({ callback }) => {
+  const TestHook = ({
+    callback,
+  }: {
+    callback: () => { style: React.CSSProperties };
+  }) => {
     const { style } = callback();
     componentStyle = style;
     return <div style={style}>errors</div>;
   };
 
-  const TestComponent = callback => {
+  const TestComponent = (callback) => {
     mount(<TestHook callback={callback} />);
   };
 

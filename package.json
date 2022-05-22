@@ -22,7 +22,7 @@
     "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "postrelease": "yarn publish && git push --follow-tags",
     "test": "jest --coverage",
-    "testw": "yarn test -- --watchAll",
+    "test:watch": "yarn test -- --watchAll",
     "prepublish": "yarn test && yarn run clean && yarn build"
   },
   "repository": "https://github.com/bluebill1049/react-simple-animation.git",

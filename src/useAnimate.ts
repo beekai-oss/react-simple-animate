@@ -1,13 +1,11 @@
 import * as React from 'react';
 import secToMs from './utils/secToMs';
-import { AnimationProps, Style } from './types';
+import { AnimationProps } from './types';
 import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 
-export default function useAnimate(
-  props: AnimationProps,
-): {
+export default function useAnimate(props: AnimationProps): {
   isPlaying: boolean;
-  style: Style;
+  style: React.CSSProperties;
   play: (boolean) => void;
 } {
   const {
@@ -25,7 +23,7 @@ export default function useAnimate(
   );
   const [animate, setAnimate] = React.useState<{
     isPlaying: boolean;
-    style: Style;
+    style: React.CSSProperties;
   }>({
     isPlaying: false,
     style: { ...start, transition },

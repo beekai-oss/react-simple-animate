@@ -3,7 +3,7 @@ import createRandomName from './utils/createRandomName';
 import createTag from './logic/createTag';
 import { AnimateContext } from './animateGroup';
 import deleteRules from './logic/deleteRules';
-import { AnimateKeyframesProps, Style } from './types';
+import { AnimateKeyframesProps } from './types';
 import getPlayState from './utils/getPauseState';
 import {
   DEFAULT_DIRECTION,
@@ -12,10 +12,8 @@ import {
   DEFAULT_FILLMODE,
 } from './constants';
 
-export default function useAnimateKeyframes(
-  props: AnimateKeyframesProps,
-): {
-  style: Style;
+export default function useAnimateKeyframes(props: AnimateKeyframesProps): {
+  style: React.CSSProperties;
   play: (boolean) => void;
   pause: (boolean) => void;
   isPlaying: boolean;

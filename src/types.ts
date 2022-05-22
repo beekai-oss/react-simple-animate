@@ -1,6 +1,4 @@
-export interface Style {
-  [key: string]: string | number;
-}
+import * as React from 'react';
 
 export interface AnimationType {
   play?: boolean;
@@ -10,7 +8,7 @@ export interface AnimationType {
   easeType?: string;
   children?: any;
   register?: (data: any) => void;
-  render?: (data: { style: Style | null }) => any;
+  render?: (data: { style: React.CSSProperties | null }) => any;
   sequenceId?: string | number;
   sequenceIndex?: number;
 }
@@ -26,8 +24,8 @@ export type HookSequences = {
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   iterationCount?: number;
-  start?: Style;
-  end?: Style;
+  start?: React.CSSProperties;
+  end?: React.CSSProperties;
   overlay?: number;
   duration?: number;
   delay?: number;
@@ -41,9 +39,9 @@ export type Keyframes =
 
 export interface AnimationProps extends AnimationType {
   onComplete?: () => void;
-  start?: Style;
-  end?: Style;
-  complete?: Style;
+  start?: React.CSSProperties;
+  end?: React.CSSProperties;
+  complete?: React.CSSProperties;
   animationStates?: AnimationStateType;
 }
 

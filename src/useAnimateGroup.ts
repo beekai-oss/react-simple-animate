@@ -35,7 +35,6 @@ export default function useAnimateGroup(props: Props): {
   const styleTagRef = React.useRef<{ forward?: string; reverse?: string }[]>(
     [],
   );
-  const playRef = React.useRef<(isPlay: boolean) => void>();
 
   React.useEffect(() => {
     sequences.forEach(({ keyframes = false }, i): void => {
@@ -76,51 +75,48 @@ export default function useAnimateGroup(props: Props): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  playRef.current = playRef.current
-    ? playRef.current
-    : (isPlay: boolean) => {
-        let totalDuration = 0;
-        const animationRefWithOrder = isPlay
-          ? animationNamesRef.current
-          : [...animationNamesRef.current].reverse();
-        const styles = (isPlay ? sequences : [...sequences].reverse()).map(
-          (current, currentIndex): React.CSSProperties => {
-            const {
-              duration = DEFAULT_DURATION,
-              delay = 0,
-              overlay,
-              keyframes,
-              iterationCount = 1,
-              easeType = DEFAULT_EASE_TYPE,
-              direction = DEFAULT_DIRECTION,
-              fillMode = DEFAULT_FILLMODE,
-              end = {},
-              start = {},
-            } = current;
-            const delayDuration = currentIndex === 0 ? delay : totalDuration;
-            const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
-            totalDuration =
-              calculateTotalDuration({ duration, delay, overlay }) +
-              totalDuration;
+  const play = React.useCallback((isPlay: boolean) => {
+    let totalDuration = 0;
+    const animationRefWithOrder = isPlay
+      ? animationNamesRef.current
+      : [...animationNamesRef.current].reverse();
+    const styles = (isPlay ? sequences : [...sequences].reverse()).map(
+      (current, currentIndex): React.CSSProperties => {
+        const {
+          duration = DEFAULT_DURATION,
+          delay = 0,
+          overlay,
+          keyframes,
+          iterationCount = 1,
+          easeType = DEFAULT_EASE_TYPE,
+          direction = DEFAULT_DIRECTION,
+          fillMode = DEFAULT_FILLMODE,
+          end = {},
+          start = {},
+        } = current;
+        const delayDuration = currentIndex === 0 ? delay : totalDuration;
+        const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
+        totalDuration =
+          calculateTotalDuration({ duration, delay, overlay }) + totalDuration;
 
-            return keyframes
-              ? {
-                  animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${RUNNING} ${
-                    isPlay
-                      ? animationRefWithOrder[currentIndex].forward
-                      : animationRefWithOrder[currentIndex].reverse
-                  }`,
-                }
-              : {
-                  ...(isPlay ? end : start),
-                  transition,
-                };
-          },
-        );
+        return keyframes
+          ? {
+              animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${RUNNING} ${
+                isPlay
+                  ? animationRefWithOrder[currentIndex].forward
+                  : animationRefWithOrder[currentIndex].reverse
+              }`,
+            }
+          : {
+              ...(isPlay ? end : start),
+              transition,
+            };
+      },
+    );
 
-        setStyles(isPlay ? styles : [...styles].reverse());
-        setPlaying(!isPlaying);
-      };
+    setStyles(isPlay ? styles : [...styles].reverse());
+    setPlaying(isPlay);
+  }, []);
 
-  return { styles, play: playRef.current, isPlaying };
+  return { styles, play, isPlaying };
 }

@@ -49,17 +49,37 @@ describe('useAnimateGroup', () => {
       undefined,
     ]);
 
+    const forwardStyles = [
+      { opacity: 1, transition: 'all 0.3s linear 0s' },
+      { animation: '0.3s linear 0.3s 1 normal none running test' },
+      { opacity: 1, transition: 'all 0.3s linear 0.6s' },
+      {
+        animation: '0.3s linear 0.8999999999999999s 1 normal none running test',
+      },
+    ];
+    const reverseStyles = [
+      { opacity: 0, transition: 'all 0.3s linear 0.8999999999999999s' },
+      { animation: '0.3s linear 0.6s 1 normal none running test' },
+      { opacity: 0, transition: 'all 0.3s linear 0.3s' },
+      {
+        animation: '0.3s linear 0s 1 normal none running test',
+      },
+    ];
+
     act(() => {
-      UseAnimateGroup.play(true);
-      expect(componentStyle).toEqual([
-        { opacity: 1, transition: 'all 0.3s linear 0s' },
-        { animation: '0.3s linear 0.3s 1 normal none running test' },
-        { opacity: 1, transition: 'all 0.3s linear 0.6s' },
-        {
-          animation:
-            '0.3s linear 0.8999999999999999s 1 normal none running test',
-        },
-      ]);
+      UseAnimateGroup.play(!UseAnimateGroup.isPlaying);
+      expect(componentStyle).toEqual(forwardStyles);
+    });
+
+    // NOTE: the next two assertions are added to make sure styles are generated correctly when "play" is called repeatedly
+    act(() => {
+      UseAnimateGroup.play(!UseAnimateGroup.isPlaying);
+      expect(componentStyle).toEqual(reverseStyles);
+    });
+
+    act(() => {
+      UseAnimateGroup.play(!UseAnimateGroup.isPlaying);
+      expect(componentStyle).toEqual(forwardStyles);
     });
   });
 });

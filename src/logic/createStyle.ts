@@ -1,13 +1,11 @@
 import { Keyframes } from '../types';
 import camelCaseToDash from '../utils/camelCaseToDash';
 
-const generateKeyframes = keyframes => {
+const generateKeyframes = (keyframes) => {
   const animationLength = keyframes.length;
   return keyframes.reduce((previous, keyframe, currentIndex) => {
     const keyframePercentage =
-      animationLength === 2
-        ? currentIndex * 100
-        : parseFloat((100 / (animationLength - 1)).toFixed(2)) * currentIndex;
+      parseFloat((100 / (animationLength - 1)).toFixed(2)) * currentIndex;
 
     if (typeof keyframe === 'string') {
       return `${previous} ${keyframePercentage}% {${keyframe}}`;
@@ -21,9 +19,7 @@ const generateKeyframes = keyframes => {
       );
       return `${previous} ${keyframePercentage}% {${keyframeContent}}`;
     }
-    return `${previous} ${Object.keys(keyframe)[0]}% {${
-      Object.values(keyframe)[0]
-    }}`;
+    return `${previous} ${keys[0]}% {${keyframe[keys[0]]}}`;
   }, '');
 };
 

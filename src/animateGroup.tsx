@@ -34,7 +34,7 @@ export default function AnimateGroup({
   play,
   sequences = [],
   children,
-}: Props): React.ReactNode {
+}: Props): React.ReactElement {
   const [animationStates, setAnimationStates] = React.useState<AnimationStates>(
     {},
   );

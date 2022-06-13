@@ -6,7 +6,7 @@ import isUndefined from './utils/isUndefined';
 import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import { AnimationProps } from './types';
 
-export default function Animate(props: AnimationProps): React.ReactNode {
+export default function Animate(props: AnimationProps): React.ReactElement {
   const {
     play,
     children,

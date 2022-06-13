@@ -15,7 +15,7 @@ import { AnimateKeyframesProps } from './types';
 
 export default function AnimateKeyframes(
   props: AnimateKeyframesProps,
-): React.ReactNode {
+): React.ReactElement {
   const {
     children,
     play = false,

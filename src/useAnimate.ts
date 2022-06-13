@@ -3,10 +3,20 @@ import secToMs from './utils/secToMs';
 import { AnimationProps } from './types';
 import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 
-export default function useAnimate(props: AnimationProps): {
+type UseAnimateProps = Pick<
+  AnimationProps,
+  | 'start'
+  | 'end'
+  | 'complete'
+  | 'onComplete'
+  | 'delay'
+  | 'duration'
+  | 'easeType'
+>;
+export default function useAnimate(props: UseAnimateProps): {
   isPlaying: boolean;
   style: React.CSSProperties;
-  play: (boolean) => void;
+  play: (isPlaying: boolean) => void;
 } {
   const {
     start,
@@ -33,7 +43,7 @@ export default function useAnimate(props: AnimationProps): {
 
   React.useEffect(() => {
     if ((onCompleteTimeRef.current || complete) && isPlaying) {
-      onCompleteTimeRef.current = setTimeout((): void => {
+      onCompleteTimeRef.current = setTimeout(() => {
         if (onComplete) {
           onComplete();
         }
@@ -54,7 +64,7 @@ export default function useAnimate(props: AnimationProps): {
   return {
     isPlaying,
     style,
-    play: React.useCallback((isPlaying: boolean) => {
+    play: React.useCallback((isPlaying) => {
       setAnimate({
         ...animate,
         style: {

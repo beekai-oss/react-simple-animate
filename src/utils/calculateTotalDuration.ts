@@ -1,5 +1,7 @@
+import { DEFAULT_DURATION } from '../constants';
+
 export default ({
-  duration = 0.3,
+  duration = DEFAULT_DURATION,
   delay = 0,
   overlay = 0,
 }: {

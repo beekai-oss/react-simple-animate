@@ -3,6 +3,7 @@ const DEFAULT_EASE_TYPE = 'linear';
 const DEFAULT_DIRECTION = 'normal';
 const DEFAULT_FILLMODE = 'none';
 const RUNNING = 'running';
+const PAUSED = 'paused';
 const ALL = 'all';
 
 export {
@@ -11,5 +12,6 @@ export {
   DEFAULT_DIRECTION,
   DEFAULT_FILLMODE,
   RUNNING,
+  PAUSED,
   ALL,
 };

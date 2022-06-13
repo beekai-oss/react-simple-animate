@@ -30,14 +30,14 @@ export default function useAnimateGroup(props: Props): {
   const [styles, setStyles] = React.useState(defaultArray);
   const [isPlaying, setPlaying] = React.useState(false);
   const animationNamesRef = React.useRef<
-    { forward: string; reverse: string; animationName }[]
+    { forward: string; reverse: string }[]
   >([]);
-  const styleTagRef = React.useRef<{ forward?: string; reverse?: string }[]>(
-    [],
-  );
+  const styleTagRef = React.useRef<
+    { forward?: HTMLStyleElement; reverse?: HTMLStyleElement }[]
+  >([]);
 
   React.useEffect(() => {
-    sequences.forEach(({ keyframes = false }, i): void => {
+    sequences.forEach(({ keyframes }, i) => {
       if (!Array.isArray(keyframes)) {
         return;
       }

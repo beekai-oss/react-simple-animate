@@ -1,6 +1,12 @@
-export default (sheet: any, deleteName: string): void => {
+export default (
+  sheet: CSSStyleSheet | null | undefined,
+  deleteName: string,
+): void => {
+  if (!sheet) {
+    return;
+  }
   const index = Object.values(sheet.cssRules).findIndex(
-    ({ name }: { name: string }) => name === deleteName,
+    ({ name }: CSSKeyframesRule) => name === deleteName,
   );
   if (index >= 0) {
     sheet.deleteRule(index);

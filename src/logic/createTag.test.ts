@@ -1,6 +1,8 @@
 import createTag from './createTag';
 
-jest.mock('./createStyle', () => () => 'test');
+jest.mock('./createStyle', () => ({
+  default: () => '.test {}',
+}));
 
 const documentCreateOriginal = document.createElement;
 const appendChildOriginal = document.head.appendChild;
@@ -19,7 +21,10 @@ describe('createTag', () => {
   it('should the tag and total length of css rules', () => {
     const insertRule = jest.fn();
     // @ts-ignore
-    document.createElement.mockReturnValue({ sheet: { cssRules: [1, 2], insertRule }, setAttribute: () => {} });
+    document.createElement.mockReturnValue({
+      sheet: { cssRules: [1, 2], insertRule },
+      setAttribute: () => {},
+    });
     // @ts-ignore
     const output = createTag({ keyframes: {}, animationName: 'test' });
 
@@ -31,7 +36,10 @@ describe('createTag', () => {
       throw new Error('failed');
     };
     // @ts-ignore
-    document.createElement.mockReturnValue({ sheet: { cssRules: [1, 2], insertRule }, setAttribute: () => {} });
+    document.createElement.mockReturnValue({
+      sheet: { cssRules: [1, 2], insertRule },
+      setAttribute: () => {},
+    });
     // @ts-ignore
     const output = createTag({ keyframes: '', animationName: 'test' });
 

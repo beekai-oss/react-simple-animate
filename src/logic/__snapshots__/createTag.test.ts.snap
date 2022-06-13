@@ -26,7 +26,20 @@ Object {
         1,
         2,
       ],
-      "insertRule": [MockFunction],
+      "insertRule": [MockFunction] {
+        "calls": Array [
+          Array [
+            ".test {}",
+            2,
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      },
     },
   },
 }

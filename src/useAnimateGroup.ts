@@ -62,8 +62,8 @@ export default function useAnimateGroup(props: Props): {
       styleTagRef.current[i].reverse = result.styleTag;
     });
 
-    const styleTags = [...styleTagRef.current];
-    const animationNames = [...animationNamesRef.current];
+    const styleTags = styleTagRef.current;
+    const animationNames = animationNamesRef.current;
 
     return () =>
       Object.values(animationNames).forEach(({ forward, reverse }, i) => {

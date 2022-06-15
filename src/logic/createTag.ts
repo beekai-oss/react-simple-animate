@@ -19,7 +19,7 @@ export default function createTag({
     document.head.appendChild(styleTag);
   }
 
-  const index = styleTag.sheet?.cssRules.length ?? 0;
+  const index = styleTag.sheet?.cssRules?.length ?? 0;
 
   try {
     styleTag.sheet?.insertRule(

@@ -8,11 +8,10 @@ export default function createTag({
   keyframes: Keyframes;
   animationName: string;
 }): {
-  styleTag: any;
+  styleTag: HTMLStyleElement;
   index: number;
 } {
-  let styleTag = document.querySelector('style[data-id=rsi]');
-  let index;
+  let styleTag = document.querySelector<HTMLStyleElement>('style[data-id=rsi]');
 
   if (!styleTag) {
     styleTag = document.createElement('style');
@@ -20,16 +19,10 @@ export default function createTag({
     document.head.appendChild(styleTag);
   }
 
-  try {
-    // @ts-ignore
-    index = styleTag.sheet.cssRules.length;
-  } catch (e) {
-    index = 0;
-  }
+  const index = styleTag.sheet?.cssRules?.length ?? 0;
 
   try {
-    // @ts-ignore
-    styleTag.sheet.insertRule(
+    styleTag.sheet?.insertRule(
       createStyle({
         keyframes,
         animationName,

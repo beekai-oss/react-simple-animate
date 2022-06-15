@@ -30,14 +30,14 @@ export default function useAnimateGroup(props: Props): {
   const [styles, setStyles] = React.useState(defaultArray);
   const [isPlaying, setPlaying] = React.useState(false);
   const animationNamesRef = React.useRef<
-    { forward: string; reverse: string; animationName }[]
+    { forward: string; reverse: string }[]
   >([]);
-  const styleTagRef = React.useRef<{ forward?: string; reverse?: string }[]>(
-    [],
-  );
+  const styleTagRef = React.useRef<
+    { forward?: HTMLStyleElement; reverse?: HTMLStyleElement }[]
+  >([]);
 
   React.useEffect(() => {
-    sequences.forEach(({ keyframes = false }, i): void => {
+    sequences.forEach(({ keyframes }, i) => {
       if (!Array.isArray(keyframes)) {
         return;
       }
@@ -62,16 +62,14 @@ export default function useAnimateGroup(props: Props): {
       styleTagRef.current[i].reverse = result.styleTag;
     });
 
+    const styleTags = styleTagRef.current;
+    const animationNames = animationNamesRef.current;
+
     return () =>
-      Object.values(animationNamesRef).forEach(
-        ({ forward, reverse }, i): void => {
-          if (!styleTagRef[i]) {
-            return;
-          }
-          deleteRules(styleTagRef[i].sheet, forward);
-          deleteRules(styleTagRef[i].sheet, reverse);
-        },
-      );
+      Object.values(animationNames).forEach(({ forward, reverse }, i) => {
+        deleteRules(styleTags[i].forward?.sheet, forward);
+        deleteRules(styleTags[i].reverse?.sheet, reverse);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

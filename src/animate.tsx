@@ -6,7 +6,7 @@ import isUndefined from './utils/isUndefined';
 import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import { AnimationProps } from './types';
 
-export default function Animate(props: AnimationProps) {
+export default function Animate(props: AnimationProps): React.ReactElement {
   const {
     play,
     children,
@@ -38,16 +38,16 @@ export default function Animate(props: AnimationProps) {
 
     setStyle({
       ...(play || animationState.play ? end : start),
-      transition: `${ALL} ${duration}s ${easeType} ${parseFloat(
-        animationState.delay || delay,
-      )}s`,
+      transition: `${ALL} ${duration}s ${easeType} ${
+        animationState.delay || delay
+      }s`,
     });
 
     if (play && (complete || onComplete)) {
       onCompleteTimeRef.current = setTimeout(() => {
         complete && setStyle(complete);
         onComplete && onComplete();
-      }, secToMs(parseFloat(animationState.delay || delay) + duration));
+      }, secToMs((animationState.delay || delay) + duration));
     }
 
     return () =>

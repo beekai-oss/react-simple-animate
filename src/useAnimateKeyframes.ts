@@ -12,10 +12,22 @@ import {
   DEFAULT_FILLMODE,
 } from './constants';
 
-export default function useAnimateKeyframes(props: AnimateKeyframesProps): {
+type UseAnimationKeyframesProps = Pick<
+  AnimateKeyframesProps,
+  | 'duration'
+  | 'delay'
+  | 'easeType'
+  | 'direction'
+  | 'fillMode'
+  | 'iterationCount'
+  | 'keyframes'
+>;
+export default function useAnimateKeyframes(
+  props: UseAnimationKeyframesProps,
+): {
   style: React.CSSProperties;
-  play: (boolean) => void;
-  pause: (boolean) => void;
+  play: (isPlaying: boolean) => void;
+  pause: (isPaused: boolean) => void;
   isPlaying: boolean;
 } {
   const {
@@ -31,14 +43,15 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps): {
     forward: '',
     reverse: '',
   });
-  const styleTagRef = React.useRef({
-    forward: { sheet: {} },
-    reverse: { sheet: {} },
+  const styleTagRef = React.useRef<
+    Record<'forward' | 'reverse', HTMLStyleElement | null>
+  >({
+    forward: null,
+    reverse: null,
   });
   const { register } = React.useContext(AnimateContext);
   const [isPlaying, setIsPlaying] = React.useState<boolean | null>(null);
   const [isPaused, setIsPaused] = React.useState(false);
-  const playRef = React.useRef<(isPlay: boolean) => void>();
 
   React.useEffect(() => {
     const styleTag = styleTagRef.current;
@@ -57,18 +70,15 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps): {
       keyframes: keyframes.reverse(),
     });
     styleTagRef.current.reverse = result.styleTag;
+
     register(props);
 
     return () => {
-      deleteRules(styleTag.forward.sheet, animationName.forward);
-      deleteRules(styleTag.reverse.sheet, animationName.reverse);
+      deleteRules(styleTag.forward?.sheet, animationName.forward);
+      deleteRules(styleTag.reverse?.sheet, animationName.reverse);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  playRef.current = playRef.current
-    ? playRef.current
-    : (isPlay: boolean) => setIsPlaying(isPlay);
 
   const style = {
     animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
@@ -84,7 +94,7 @@ export default function useAnimateKeyframes(props: AnimateKeyframesProps): {
 
   return {
     style,
-    play: playRef.current,
+    play: setIsPlaying,
     pause: setIsPaused,
     isPlaying: !!isPlaying,
   };

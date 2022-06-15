@@ -6,7 +6,7 @@ describe('deleteRules', () => {
     const data = {
       cssRules: {},
       deleteRule,
-    };
+    } as any;
     deleteRules(data, 'whatever');
     expect(deleteRule).not.toBeCalled();
   });
@@ -20,7 +20,7 @@ describe('deleteRules', () => {
           name: 'bill',
         },
       },
-    };
+    } as any;
     deleteRules(data, 'bill');
     expect(deleteRule).toBeCalled();
   });

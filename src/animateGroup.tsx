@@ -11,37 +11,50 @@ export interface Props {
   children?: any;
 }
 
-export const AnimateContext = React.createContext({
+type SequenceId = number | string;
+type PartialSequence = {
+  play: boolean;
+  pause: boolean;
+  delay: number;
+  controlled: boolean;
+};
+type AnimationStates = Record<SequenceId, PartialSequence>;
+type Register = (data: AnimationProps | AnimateKeyframesProps) => void;
+
+interface IAnimationContext {
+  animationStates: AnimationStates;
+  register: Register;
+}
+export const AnimateContext = React.createContext<IAnimationContext>({
   animationStates: {},
-  register: (data: AnimationProps | AnimateKeyframesProps): void => {},
+  register: () => {},
 });
 
 export default function AnimateGroup({
   play,
   sequences = [],
   children,
-}: Props) {
-  const [animationStates, setAnimationStates] = React.useState({});
+}: Props): React.ReactElement {
+  const [animationStates, setAnimationStates] = React.useState<AnimationStates>(
+    {},
+  );
   const animationsRef = React.useRef<{
     [key: string]: AnimationProps | AnimateKeyframesProps;
   }>({});
 
-  const register = React.useCallback(
-    (data: AnimationProps | AnimateKeyframesProps) => {
-      const { sequenceIndex, sequenceId } = data;
-      if (!isUndefined(sequenceId) || !isUndefined(sequenceIndex)) {
-        animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
-      }
-    },
-    [],
-  );
+  const register: Register = React.useCallback((data) => {
+    const { sequenceIndex, sequenceId } = data;
+    if (!isUndefined(sequenceId) || !isUndefined(sequenceIndex)) {
+      animationsRef.current[getSequenceId(sequenceIndex, sequenceId)] = data;
+    }
+  }, []);
 
   React.useEffect(() => {
     const sequencesToAnimate =
       Array.isArray(sequences) && sequences.length
         ? sequences
         : Object.values(animationsRef.current);
-    const localAnimationState = {};
+    const localAnimationState: AnimationStates = {};
 
     (play ? sequencesToAnimate : [...sequencesToAnimate].reverse()).reduce(
       (
@@ -66,12 +79,7 @@ export default function AnimateGroup({
         localAnimationState[id] = {
           play,
           pause: !play,
-          delay:
-            currentIndex === 0
-              ? delay || 0
-              : delay
-              ? previous + delay
-              : previous,
+          delay: (delay || 0) + previous,
           controlled: true,
         };
 

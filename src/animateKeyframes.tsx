@@ -13,7 +13,9 @@ import {
 } from './constants';
 import { AnimateKeyframesProps } from './types';
 
-export default function AnimateKeyframes(props: AnimateKeyframesProps) {
+export default function AnimateKeyframes(
+  props: AnimateKeyframesProps,
+): React.ReactElement {
   const {
     children,
     play = false,
@@ -35,9 +37,11 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     reverse: '',
   });
   const controlled = React.useRef(false);
-  const styleTagRef = React.useRef({
-    forward: { sheet: {} },
-    reverse: { sheet: {} },
+  const styleTagRef = React.useRef<
+    Record<'forward' | 'reverse', HTMLStyleElement | null>
+  >({
+    forward: null,
+    reverse: null,
   });
   const id = getSequenceId(sequenceIndex, sequenceId);
   const { register, animationStates = {} } = React.useContext(AnimateContext);
@@ -47,14 +51,15 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
   React.useEffect(() => {
     const styleTag = styleTagRef.current;
     const animationName = animationNameRef.current;
+
     animationNameRef.current.forward = createRandomName();
     let result = createTag({
       animationName: animationNameRef.current.forward,
       keyframes,
     });
+    styleTagRef.current.forward = result.styleTag;
 
     animationNameRef.current.reverse = createRandomName();
-    styleTagRef.current.forward = result.styleTag;
     result = createTag({
       animationName: animationNameRef.current.reverse,
       keyframes: keyframes.reverse(),
@@ -68,8 +73,8 @@ export default function AnimateKeyframes(props: AnimateKeyframesProps) {
     }
 
     return () => {
-      deleteRule(styleTag.forward.sheet, animationName.forward);
-      deleteRule(styleTag.reverse.sheet, animationName.reverse);
+      deleteRule(styleTag.forward?.sheet, animationName.forward);
+      deleteRule(styleTag.reverse?.sheet, animationName.reverse);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

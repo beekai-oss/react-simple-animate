@@ -8,7 +8,7 @@ export interface AnimationType {
   easeType?: string;
   children?: any;
   register?: (data: any) => void;
-  render?: (data: { style: React.CSSProperties | null }) => any;
+  render?: (data: { style: React.CSSProperties | undefined }) => any;
   sequenceId?: string | number;
   sequenceIndex?: number;
 }

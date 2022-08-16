@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function useAnimateGroup(props: Props): {
-  styles: (React.CSSProperties | null)[];
+  styles: (React.CSSProperties | undefined)[];
   play: (boolean) => void;
   isPlaying: boolean;
 } {

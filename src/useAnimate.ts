@@ -49,30 +49,33 @@ export default function useAnimate(props: UseAnimateProps): {
         }
 
         if (complete) {
-          setAnimate({
+          setAnimate((animate) => ({
             ...animate,
             style: complete,
-          });
+          }));
         }
       }, secToMs(delay + duration));
     }
 
     return () =>
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-  }, [isPlaying, onComplete]);
+  }, [animate, complete, delay, duration, isPlaying, onComplete]);
 
   return {
     isPlaying,
     style,
-    play: React.useCallback((isPlaying) => {
-      setAnimate({
-        ...animate,
-        style: {
-          ...(isPlaying ? end : start),
-          transition,
-        },
-        isPlaying,
-      });
-    }, []),
+    play: React.useCallback(
+      (isPlaying) => {
+        setAnimate((animate) => ({
+          ...animate,
+          style: {
+            ...(isPlaying ? end : start),
+            transition,
+          },
+          isPlaying,
+        }));
+      },
+      [end, start, transition],
+    ),
   };
 }

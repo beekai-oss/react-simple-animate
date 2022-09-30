@@ -42,7 +42,7 @@ export default function useAnimate(props: UseAnimateProps): {
   const onCompleteTimeRef = React.useRef<NodeJS.Timeout>();
 
   React.useEffect(() => {
-    if ((onCompleteTimeRef.current || complete) && isPlaying) {
+    if ((onComplete || complete) && isPlaying) {
       onCompleteTimeRef.current = setTimeout(() => {
         if (onComplete) {
           onComplete();
@@ -59,7 +59,7 @@ export default function useAnimate(props: UseAnimateProps): {
 
     return () =>
       onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-  }, [isPlaying]);
+  }, [isPlaying, onComplete]);
 
   return {
     isPlaying,

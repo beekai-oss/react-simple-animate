@@ -3,10 +3,12 @@ import useAnimate from './useAnimate';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 
+jest.useFakeTimers('modern');
+
 let UseAnimate;
 
 describe('useAnimate', () => {
-  let componentStyle;
+  let componentStyle, onComplete;
 
   const TestHook = ({
     callback,
@@ -23,8 +25,13 @@ describe('useAnimate', () => {
   };
 
   beforeEach(() => {
+    onComplete = jest.fn();
+
     TestComponent(() => {
-      UseAnimate = useAnimate({ end: { opacity: 1 } });
+      UseAnimate = useAnimate({
+        end: { opacity: 1 },
+        onComplete: () => onComplete(),
+      });
       return UseAnimate;
     });
 
@@ -43,5 +50,25 @@ describe('useAnimate', () => {
       opacity: 1,
       transition: 'all 0.3s linear 0s',
     });
+  });
+
+  it('should call onComplete only when isPlaying', () => {
+    onComplete.mockImplementation(() => {
+      act(() => {
+        UseAnimate.play(false);
+      });
+    });
+
+    act(() => {
+      UseAnimate.play(true);
+    });
+
+    jest.runOnlyPendingTimers();
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
+
+    jest.runOnlyPendingTimers();
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
   });
 });

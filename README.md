@@ -110,7 +110,6 @@ export const useAnimateGroup = () => {
 };
 ```
 
-## Contributors
+## By the makers of BEEKAI
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/bluebill1049/react-simple-animate/graphs/contributors"><img src="https://opencollective.com/react-simple-animate/contributors.svg?width=890&button=false" /></a>
+We also make [BEEKAI](https://www.beekai.com/). Build the next-generation forms with modern technology and best in class user experience and accessibility.

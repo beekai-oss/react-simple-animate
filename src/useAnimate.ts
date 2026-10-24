@@ -1,7 +1,7 @@
 import * as React from 'react';
-import secToMs from './utils/secToMs';
-import { AnimationProps } from './types';
 import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
+import type { AnimationProps } from './types';
+import secToMs from './utils/secToMs';
 
 type UseAnimateProps = Pick<
   AnimationProps,
@@ -39,27 +39,35 @@ export default function useAnimate(props: UseAnimateProps): {
     style: { ...start, transition },
   });
   const { isPlaying, style } = animate;
-  const onCompleteTimeRef = React.useRef<NodeJS.Timeout>();
+  const onCompleteTimeRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
 
   React.useEffect(() => {
     if ((onComplete || complete) && isPlaying) {
-      onCompleteTimeRef.current = setTimeout(() => {
-        if (onComplete) {
-          onComplete();
-        }
+      onCompleteTimeRef.current = setTimeout(
+        () => {
+          if (onComplete) {
+            onComplete();
+          }
 
-        if (complete) {
-          setAnimate((animate) => ({
-            ...animate,
-            style: complete,
-          }));
-        }
-      }, secToMs(delay + duration));
+          if (complete) {
+            setAnimate((animate) => ({
+              ...animate,
+              style: complete,
+            }));
+          }
+        },
+        secToMs(delay + duration),
+      );
     }
 
-    return () =>
-      onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
-  }, [animate, complete, delay, duration, isPlaying, onComplete]);
+    return () => {
+      if (onCompleteTimeRef.current) {
+        clearTimeout(onCompleteTimeRef.current);
+      }
+    };
+  }, [complete, delay, duration, isPlaying, onComplete]);
 
   return {
     isPlaying,

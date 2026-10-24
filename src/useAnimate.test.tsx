@@ -1,73 +1,54 @@
-import * as React from 'react';
+import { act, renderHook } from '@testing-library/react';
 import useAnimate from './useAnimate';
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
 
-jest.useFakeTimers('modern');
-
-let UseAnimate;
+vi.useFakeTimers();
 
 describe('useAnimate', () => {
-  let componentStyle, onComplete;
-
-  const TestHook = ({
-    callback,
-  }: {
-    callback: () => { style: React.CSSProperties };
-  }) => {
-    const { style } = callback();
-    componentStyle = style;
-    return <div style={style}>errors</div>;
-  };
-
-  const TestComponent = (callback) => {
-    mount(<TestHook callback={callback} />);
-  };
+  let onComplete: ReturnType<typeof vi.fn<() => void>>;
 
   beforeEach(() => {
-    onComplete = jest.fn();
-
-    TestComponent(() => {
-      UseAnimate = useAnimate({
-        end: { opacity: 1 },
-        onComplete: () => onComplete(),
-      });
-      return UseAnimate;
-    });
-
-    jest.resetAllMocks();
+    onComplete = vi.fn<() => void>();
   });
 
   it('should toggle style correctly', () => {
-    act(() => {
-      expect(UseAnimate.play(true)).toBeUndefined();
-      expect(componentStyle).toEqual({
-        transition: 'all 0.3s linear 0s',
-      });
+    const { result } = renderHook(() =>
+      useAnimate({ end: { opacity: 1 }, onComplete }),
+    );
+
+    expect(result.current.style).toEqual({
+      transition: 'all 0.3s linear 0s',
     });
 
-    expect(componentStyle).toEqual({
+    act(() => {
+      expect(result.current.play(true)).toBeUndefined();
+    });
+
+    expect(result.current.style).toEqual({
       opacity: 1,
       transition: 'all 0.3s linear 0s',
     });
   });
 
   it('should call onComplete only when isPlaying', () => {
+    const { result } = renderHook(() =>
+      useAnimate({ end: { opacity: 1 }, onComplete }),
+    );
+
     onComplete.mockImplementation(() => {
       act(() => {
-        UseAnimate.play(false);
+        result.current.play(false);
       });
     });
 
     act(() => {
-      UseAnimate.play(true);
+      result.current.play(true);
     });
 
-    jest.runOnlyPendingTimers();
+    act(() => vi.runOnlyPendingTimers());
 
     expect(onComplete).toHaveBeenCalledTimes(1);
 
-    jest.runOnlyPendingTimers();
+    act(() => vi.runOnlyPendingTimers());
 
     expect(onComplete).toHaveBeenCalledTimes(1);
   });

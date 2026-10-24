@@ -7,11 +7,11 @@ const PAUSED = 'paused';
 const ALL = 'all';
 
 export {
+  ALL,
+  DEFAULT_DIRECTION,
   DEFAULT_DURATION,
   DEFAULT_EASE_TYPE,
-  DEFAULT_DIRECTION,
   DEFAULT_FILLMODE,
-  RUNNING,
   PAUSED,
-  ALL,
+  RUNNING,
 };

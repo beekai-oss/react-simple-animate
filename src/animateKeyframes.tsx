@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
-import createTag from './logic/createTag';
-import deleteRule from './logic/deleteRules';
-import createRandomName from './utils/createRandomName';
-import getSequenceId from './utils/getSequenceId';
-import getPlayState from './utils/getPauseState';
 import {
   DEFAULT_DIRECTION,
   DEFAULT_DURATION,
   DEFAULT_EASE_TYPE,
   DEFAULT_FILLMODE,
 } from './constants';
-import { AnimateKeyframesProps } from './types';
+import createTag from './logic/createTag';
+import deleteRule from './logic/deleteRules';
+import type { AnimateKeyframesProps } from './types';
+import createRandomName from './utils/createRandomName';
+import getPlayState from './utils/getPauseState';
+import getSequenceId from './utils/getSequenceId';
 
 export default function AnimateKeyframes(
   props: AnimateKeyframesProps,
@@ -31,7 +31,7 @@ export default function AnimateKeyframes(
     keyframes,
     sequenceId,
   } = props;
-  let pauseValue;
+  let pauseValue: boolean | undefined;
   const animationNameRef = React.useRef({
     forward: '',
     reverse: '',
@@ -48,6 +48,7 @@ export default function AnimateKeyframes(
   const animateState = animationStates[id] || {};
   const [, forceUpdate] = React.useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: animation style tags are created once on mount
   React.useEffect(() => {
     const styleTag = styleTagRef.current;
     const animationName = animationNameRef.current;
@@ -62,7 +63,7 @@ export default function AnimateKeyframes(
     animationNameRef.current.reverse = createRandomName();
     result = createTag({
       animationName: animationNameRef.current.reverse,
-      keyframes: keyframes.reverse(),
+      keyframes: [...keyframes].reverse() as typeof keyframes,
     });
     styleTagRef.current.reverse = result.styleTag;
 
@@ -76,7 +77,6 @@ export default function AnimateKeyframes(
       deleteRule(styleTag.forward?.sheet, animationName.forward);
       deleteRule(styleTag.reverse?.sheet, animationName.reverse);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (animateState.controlled && !controlled.current) {

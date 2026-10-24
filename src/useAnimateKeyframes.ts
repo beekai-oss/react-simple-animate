@@ -1,16 +1,16 @@
 import * as React from 'react';
-import createRandomName from './utils/createRandomName';
-import createTag from './logic/createTag';
 import { AnimateContext } from './animateGroup';
-import deleteRules from './logic/deleteRules';
-import { AnimateKeyframesProps } from './types';
-import getPlayState from './utils/getPauseState';
 import {
   DEFAULT_DIRECTION,
   DEFAULT_DURATION,
   DEFAULT_EASE_TYPE,
   DEFAULT_FILLMODE,
 } from './constants';
+import createTag from './logic/createTag';
+import deleteRules from './logic/deleteRules';
+import type { AnimateKeyframesProps } from './types';
+import createRandomName from './utils/createRandomName';
+import getPlayState from './utils/getPauseState';
 
 type UseAnimationKeyframesProps = Pick<
   AnimateKeyframesProps,
@@ -53,6 +53,7 @@ export default function useAnimateKeyframes(
   const [isPlaying, setIsPlaying] = React.useState<boolean | null>(null);
   const [isPaused, setIsPaused] = React.useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: animation style tags are created once on mount
   React.useEffect(() => {
     const styleTag = styleTagRef.current;
     const animationName = animationNameRef.current;
@@ -67,7 +68,7 @@ export default function useAnimateKeyframes(
     animationNameRef.current.reverse = createRandomName();
     result = createTag({
       animationName: animationNameRef.current.reverse,
-      keyframes: keyframes.reverse(),
+      keyframes: [...keyframes].reverse() as typeof keyframes,
     });
     styleTagRef.current.reverse = result.styleTag;
 
@@ -77,7 +78,6 @@ export default function useAnimateKeyframes(
       deleteRules(styleTag.forward?.sheet, animationName.forward);
       deleteRules(styleTag.reverse?.sheet, animationName.reverse);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const style = {
@@ -87,8 +87,8 @@ export default function useAnimateKeyframes(
       isPlaying === null
         ? ''
         : isPlaying
-        ? animationNameRef.current.forward
-        : animationNameRef.current.reverse
+          ? animationNameRef.current.forward
+          : animationNameRef.current.reverse
     }`,
   };
 

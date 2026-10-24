@@ -1,5 +1,5 @@
+import type { Keyframes } from '../types';
 import createStyle from './createStyle';
-import { Keyframes } from '../types';
 
 export default function createTag({
   keyframes,
@@ -30,7 +30,8 @@ export default function createTag({
       index,
     );
   } catch (e) {
-    console.error('react simple animate, error found during insert style ', e); // eslint-disable-line no-console
+    // biome-ignore lint/suspicious/noConsole: surface invalid generated CSS to consumers
+    console.error('react simple animate, error found during insert style ', e);
   }
 
   return {

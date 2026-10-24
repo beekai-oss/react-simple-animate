@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`createTag should still return tag and index even insertRule thow error 1`] = `
-Object {
+exports[`createTag > should still return tag and index even insertRule thow error 1`] = `
+{
   "index": 2,
-  "styleTag": Object {
+  "styleTag": {
     "setAttribute": [Function],
-    "sheet": Object {
-      "cssRules": Array [
+    "sheet": {
+      "cssRules": [
         1,
         2,
       ],
@@ -16,25 +16,25 @@ Object {
 }
 `;
 
-exports[`createTag should the tag and total length of css rules 1`] = `
-Object {
+exports[`createTag > should the tag and total length of css rules 1`] = `
+{
   "index": 2,
-  "styleTag": Object {
+  "styleTag": {
     "setAttribute": [Function],
-    "sheet": Object {
-      "cssRules": Array [
+    "sheet": {
+      "cssRules": [
         1,
         2,
       ],
       "insertRule": [MockFunction] {
-        "calls": Array [
-          Array [
+        "calls": [
+          [
             ".test {}",
             2,
           ],
         ],
-        "results": Array [
-          Object {
+        "results": [
+          {
             "type": "return",
             "value": undefined,
           },

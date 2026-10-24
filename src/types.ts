@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 export interface AnimationType {
   play?: boolean;
@@ -6,9 +6,11 @@ export interface AnimationType {
   duration?: number;
   delay?: number;
   easeType?: string;
-  children?: any;
-  register?: (data: any) => void;
-  render?: (data: { style: React.CSSProperties | undefined }) => any;
+  children?: React.ReactNode;
+  register?: (data: AnimationType) => void;
+  render?: (data: {
+    style: React.CSSProperties | undefined;
+  }) => React.ReactElement;
   sequenceId?: string | number;
   sequenceIndex?: number;
 }

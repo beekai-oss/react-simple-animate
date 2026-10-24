@@ -1,14 +1,16 @@
 import * as React from 'react';
+import { DEFAULT_DURATION } from './constants';
+import type { AnimateKeyframesProps, AnimationProps, Sequences } from './types';
 import calculateTotalDuration from './utils/calculateTotalDuration';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
-import { DEFAULT_DURATION } from './constants';
-import { Sequences, AnimationProps, AnimateKeyframesProps } from './types';
+
+const EMPTY_SEQUENCES: Sequences = [];
 
 export interface Props {
   play: boolean;
   sequences?: Sequences;
-  children?: any;
+  children?: React.ReactNode;
 }
 
 type SequenceId = number | string;
@@ -32,7 +34,7 @@ export const AnimateContext = React.createContext<IAnimationContext>({
 
 export default function AnimateGroup({
   play,
-  sequences = [],
+  sequences = EMPTY_SEQUENCES,
   children,
 }: Props): React.ReactElement {
   const [animationStates, setAnimationStates] = React.useState<AnimationStates>(
@@ -89,8 +91,7 @@ export default function AnimateGroup({
     );
 
     setAnimationStates(localAnimationState);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [play]);
+  }, [play, sequences]);
 
   return (
     <AnimateContext.Provider value={{ animationStates, register }}>

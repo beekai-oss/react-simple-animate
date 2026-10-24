@@ -1,48 +1,24 @@
-import * as React from 'react';
-import { mount } from 'enzyme';
+import { act, renderHook } from '@testing-library/react';
 import useAnimateGroup from './useAnimateGroup';
-import { act } from 'react-dom/test-utils';
 
-jest.mock('./utils/createRandomName', () => ({
+vi.mock('./utils/createRandomName', () => ({
   default: () => 'test',
 }));
 
-let UseAnimateGroup;
-
 describe('useAnimateGroup', () => {
-  let componentStyle;
-
-  const TestHook = ({
-    callback,
-  }: {
-    callback: () => { styles: React.CSSProperties };
-  }) => {
-    const { styles } = callback();
-    componentStyle = styles;
-    return <div>errors</div>;
-  };
-
-  const TestComponent = (callback) => {
-    mount(<TestHook callback={callback} />);
-  };
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
   it('should generate correct styles', () => {
-    TestComponent(() => {
-      UseAnimateGroup = useAnimateGroup({
+    const { result } = renderHook(() =>
+      useAnimateGroup({
         sequences: [
           { start: { opacity: 0 }, end: { opacity: 1 } },
           { keyframes: ['opacity: 0', 'opacity: 1'] },
           { start: { opacity: 0 }, end: { opacity: 1 } },
           { keyframes: ['opacity: 0', 'opacity: 1'] },
         ],
-      });
-      return UseAnimateGroup;
-    });
-    expect(componentStyle).toEqual([
+      }),
+    );
+
+    expect(result.current.styles).toEqual([
       { opacity: 0 },
       undefined,
       { opacity: 0 },
@@ -67,37 +43,32 @@ describe('useAnimateGroup', () => {
     ];
 
     act(() => {
-      UseAnimateGroup.play(true);
+      result.current.play(true);
     });
-    expect(componentStyle).toEqual(forwardStyles);
+    expect(result.current.styles).toEqual(forwardStyles);
 
     act(() => {
-      UseAnimateGroup.play(false);
+      result.current.play(false);
     });
-    expect(componentStyle).toEqual(reverseStyles);
+    expect(result.current.styles).toEqual(reverseStyles);
   });
 
   it('should update isPlaying after calling play', () => {
-    TestComponent(() => {
-      UseAnimateGroup = useAnimateGroup({
-        sequences: [],
-      });
-      return UseAnimateGroup;
-    });
+    const { result } = renderHook(() => useAnimateGroup({ sequences: [] }));
 
     act(() => {
-      UseAnimateGroup.play(true);
+      result.current.play(true);
     });
-    expect(UseAnimateGroup.isPlaying).toEqual(true);
+    expect(result.current.isPlaying).toEqual(true);
 
     act(() => {
-      UseAnimateGroup.play(false);
+      result.current.play(false);
     });
-    expect(UseAnimateGroup.isPlaying).toEqual(false);
+    expect(result.current.isPlaying).toEqual(false);
 
     act(() => {
-      UseAnimateGroup.play(true);
+      result.current.play(true);
     });
-    expect(UseAnimateGroup.isPlaying).toEqual(true);
+    expect(result.current.isPlaying).toEqual(true);
   });
 });

@@ -6,6 +6,7 @@ export interface AnimationType {
   duration?: number;
   delay?: number;
   easeType?: string;
+  transitionProperty?: string;
   children?: React.ReactNode;
   register?: (data: AnimationType) => void;
   render?: (data: {
@@ -41,6 +42,7 @@ export type HookSequences = {
   duration?: number;
   delay?: number;
   easeType?: string;
+  transitionProperty?: string;
 }[];
 
 export type Keyframes =

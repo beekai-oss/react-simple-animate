@@ -27,6 +27,14 @@ describe('useAnimate', () => {
     });
   });
 
+  it('should use the configured transition property', () => {
+    const { result } = renderHook(() =>
+      useAnimate({ end: { opacity: 1 }, transitionProperty: 'opacity' }),
+    );
+
+    expect(result.current.style.transition).toBe('opacity 0.3s linear 0s');
+  });
+
   it('should call onComplete only when isPlaying', () => {
     const { result } = renderHook(() =>
       useAnimate({ end: { opacity: 1 }, onComplete }),

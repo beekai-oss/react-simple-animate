@@ -20,6 +20,7 @@ export default function Animate(props: AnimationProps): React.ReactElement {
     delay = 0,
     duration = DEFAULT_DURATION,
     easeType = DEFAULT_EASE_TYPE,
+    transitionProperty = ALL,
     sequenceId,
     sequenceIndex,
   } = props;
@@ -49,7 +50,7 @@ export default function Animate(props: AnimationProps): React.ReactElement {
       ...(play || animationState.play ? end : start),
       transition: isCancelled
         ? 'none'
-        : `${ALL} ${duration}s ${easeType} ${animationState.delay || delay}s`,
+        : `${transitionProperty} ${duration}s ${easeType} ${animationState.delay || delay}s`,
     });
   }, [
     id,
@@ -57,6 +58,7 @@ export default function Animate(props: AnimationProps): React.ReactElement {
     play,
     duration,
     easeType,
+    transitionProperty,
     delay,
     start,
     end,

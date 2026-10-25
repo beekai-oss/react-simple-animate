@@ -13,6 +13,7 @@ type UseAnimateProps = Pick<
   | 'delay'
   | 'duration'
   | 'easeType'
+  | 'transitionProperty'
 >;
 export default function useAnimate(props: UseAnimateProps): {
   isPlaying: boolean;
@@ -33,10 +34,11 @@ export default function useAnimate(props: UseAnimateProps): {
     delay = 0,
     duration = DEFAULT_DURATION,
     easeType = DEFAULT_EASE_TYPE,
+    transitionProperty = ALL,
   } = props;
   const transition = React.useMemo(
-    () => `${ALL} ${duration}s ${easeType} ${delay}s`,
-    [duration, easeType, delay],
+    () => `${transitionProperty} ${duration}s ${easeType} ${delay}s`,
+    [transitionProperty, duration, easeType, delay],
   );
   const [animate, setAnimate] = React.useState<{
     isPlaying: boolean;

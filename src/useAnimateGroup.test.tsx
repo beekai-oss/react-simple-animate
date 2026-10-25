@@ -71,4 +71,26 @@ describe('useAnimateGroup', () => {
     });
     expect(result.current.isPlaying).toEqual(true);
   });
+
+  it('should use each sequence transition property', () => {
+    const { result } = renderHook(() =>
+      useAnimateGroup({
+        sequences: [
+          {
+            start: { opacity: 0 },
+            end: { opacity: 1 },
+            transitionProperty: 'opacity',
+          },
+        ],
+      }),
+    );
+
+    act(() => {
+      result.current.play(true);
+    });
+
+    expect(result.current.styles).toEqual([
+      { opacity: 1, transition: 'opacity 0.3s linear 0s' },
+    ]);
+  });
 });

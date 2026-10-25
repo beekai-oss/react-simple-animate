@@ -11,6 +11,18 @@ describe('Animate', () => {
     expect(element.style.opacity).toBe('');
   });
 
+  it('should use the configured transition property', () => {
+    render(
+      <Animate transitionProperty="opacity" end={{ opacity: 1 }}>
+        configured transition
+      </Animate>,
+    );
+
+    expect(screen.getByText('configured transition')).toHaveStyle({
+      transition: 'opacity 0.3s linear 0s',
+    });
+  });
+
   it('should end with end style', () => {
     render(
       <Animate play start={{ opacity: 1 }} end={{ opacity: 0 }}>

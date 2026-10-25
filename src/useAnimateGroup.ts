@@ -117,13 +117,14 @@ export default function useAnimateGroup(props: Props): {
             keyframes,
             iterationCount = 1,
             easeType = DEFAULT_EASE_TYPE,
+            transitionProperty = ALL,
             direction = DEFAULT_DIRECTION,
             fillMode = DEFAULT_FILLMODE,
             end = {},
             start = {},
           } = current;
           const delayDuration = currentIndex === 0 ? delay : totalDuration;
-          const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
+          const transition = `${transitionProperty} ${duration}s ${easeType} ${delayDuration}s`;
           totalDuration =
             calculateTotalDuration({ duration, delay, overlay }) +
             totalDuration;

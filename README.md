@@ -46,3 +46,18 @@ function App() {
   );
 }
 ```
+
+`Animate`, `useAnimate`, and transition entries in `useAnimateGroup` accept a
+`transitionProperty` option. It defaults to `all`; set it to a CSS property or
+comma-separated properties to limit what transitions, for example:
+
+```jsx
+<Animate
+  play
+  start={{ opacity: 0 }}
+  end={{ opacity: 1, transform: 'translateY(0)' }}
+  transitionProperty="opacity, transform"
+>
+  <h1>Hello, animation!</h1>
+</Animate>
+```

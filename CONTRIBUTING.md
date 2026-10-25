@@ -9,10 +9,10 @@ Welcome your pull requests for documentation and code. 🙏
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes.
 5. Make sure your code lints.
-6. Make sure your code pass flow type check.
+6. Make sure the TypeScript type check passes.
 
 ## Coding Style
 
-* 2 spaces for indentation rather than tabs
-* See .eslintrc for the gory details.
-* Run prettier if you can :)
+- Install dependencies with `pnpm install`.
+- Run `pnpm lint`, `pnpm typecheck`, and `pnpm test` before opening a PR.
+- Use `pnpm format` to apply the Biome formatting rules.

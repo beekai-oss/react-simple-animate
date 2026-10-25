@@ -6,7 +6,7 @@ export default (
     return;
   }
   const index = Object.values(sheet.cssRules).findIndex(
-    ({ name }: CSSKeyframesRule) => name === deleteName,
+    (rule) => 'name' in rule && rule.name === deleteName,
   );
   if (index >= 0) {
     sheet.deleteRule(index);

@@ -1,40 +1,25 @@
-import AnimateGroup from './animateGroup';
-import * as ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
+import { render, screen } from '@testing-library/react';
 import * as React from 'react';
-import { Animate } from './index';
+import AnimateGroup from './animateGroup';
 import AnimateKeyframes from './animateKeyframes';
+import { Animate } from './index';
 
 describe('AnimateGroup', () => {
-  let container;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-    container = null;
-  });
-
   it('should render correctly', () => {
-    act(() => {
-      ReactDOM.render(
-        <AnimateGroup play>
-          <Animate sequenceIndex={0} end={{ opacity: 0 }}>
-            test
-          </Animate>
-          <AnimateKeyframes sequenceIndex={1} keyframes={['opacity: 0', 'opacity: 1']}>
-            what
-          </AnimateKeyframes>
-        </AnimateGroup>,
-        container,
-      );
-    });
+    render(
+      <AnimateGroup play>
+        <Animate sequenceIndex={0} end={{ opacity: 0 }}>
+          test
+        </Animate>
+        <AnimateKeyframes
+          sequenceIndex={1}
+          keyframes={['opacity: 0', 'opacity: 1']}
+        >
+          what
+        </AnimateKeyframes>
+      </AnimateGroup>,
+    );
 
-    act(() => {
-      expect(container.querySelectorAll('div')[0].style.opacity).toEqual('0');
-    });
+    expect(screen.getByText('test')).toHaveStyle({ opacity: '0' });
   });
 });

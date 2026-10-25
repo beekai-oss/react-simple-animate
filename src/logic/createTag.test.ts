@@ -1,6 +1,6 @@
 import createTag from './createTag';
 
-jest.mock('./createStyle', () => ({
+vi.mock('./createStyle', () => ({
   default: () => '.test {}',
 }));
 
@@ -9,8 +9,8 @@ const appendChildOriginal = document.head.appendChild;
 
 describe('createTag', () => {
   beforeEach(() => {
-    document.createElement = jest.fn();
-    document.head.appendChild = jest.fn();
+    document.createElement = vi.fn();
+    document.head.appendChild = vi.fn();
   });
 
   afterEach(() => {
@@ -19,13 +19,13 @@ describe('createTag', () => {
   });
 
   it('should the tag and total length of css rules', () => {
-    const insertRule = jest.fn();
-    // @ts-ignore
+    const insertRule = vi.fn();
+    // @ts-expect-error
     document.createElement.mockReturnValue({
       sheet: { cssRules: [1, 2], insertRule },
       setAttribute: () => {},
     });
-    // @ts-ignore
+    // @ts-expect-error
     const output = createTag({ keyframes: {}, animationName: 'test' });
 
     expect(output).toMatchSnapshot();
@@ -35,12 +35,12 @@ describe('createTag', () => {
     const insertRule = () => {
       throw new Error('failed');
     };
-    // @ts-ignore
+    // @ts-expect-error
     document.createElement.mockReturnValue({
       sheet: { cssRules: [1, 2], insertRule },
       setAttribute: () => {},
     });
-    // @ts-ignore
+    // @ts-expect-error
     const output = createTag({ keyframes: '', animationName: 'test' });
 
     expect(output).toMatchSnapshot();

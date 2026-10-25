@@ -1,10 +1,4 @@
 import * as React from 'react';
-import createRandomName from './utils/createRandomName';
-import createArrayWithNumbers from './utils/createArrayWithNumbers';
-import calculateTotalDuration from './utils/calculateTotalDuration';
-import createTag from './logic/createTag';
-import deleteRules from './logic/deleteRules';
-import { HookSequences } from './types';
 import {
   ALL,
   DEFAULT_DIRECTION,
@@ -13,6 +7,12 @@ import {
   DEFAULT_FILLMODE,
   RUNNING,
 } from './constants';
+import createTag from './logic/createTag';
+import deleteRules from './logic/deleteRules';
+import type { HookSequences } from './types';
+import calculateTotalDuration from './utils/calculateTotalDuration';
+import createArrayWithNumbers from './utils/createArrayWithNumbers';
+import createRandomName from './utils/createRandomName';
 
 interface Props {
   sequences: HookSequences;
@@ -20,7 +20,7 @@ interface Props {
 
 export default function useAnimateGroup(props: Props): {
   styles: (React.CSSProperties | undefined)[];
-  play: (boolean) => void;
+  play: (isPlaying: boolean) => void;
   isPlaying: boolean;
 } {
   const { sequences = [] } = props;
@@ -36,6 +36,7 @@ export default function useAnimateGroup(props: Props): {
     { forward?: HTMLStyleElement; reverse?: HTMLStyleElement }[]
   >([]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: animation style tags are created once on mount
   React.useEffect(() => {
     sequences.forEach(({ keyframes }, i) => {
       if (!Array.isArray(keyframes)) {
@@ -43,7 +44,7 @@ export default function useAnimateGroup(props: Props): {
       }
 
       if (!animationNamesRef.current[i]) {
-        animationNamesRef.current[i] = {} as any;
+        animationNamesRef.current[i] = { forward: '', reverse: '' };
         styleTagRef.current[i] = {};
       }
 
@@ -57,7 +58,7 @@ export default function useAnimateGroup(props: Props): {
       animationNamesRef.current[i].reverse = createRandomName();
       result = createTag({
         animationName: animationNamesRef.current[i].reverse,
-        keyframes: keyframes.reverse(),
+        keyframes: [...keyframes].reverse() as typeof keyframes,
       });
       styleTagRef.current[i].reverse = result.styleTag;
     });
@@ -66,55 +67,58 @@ export default function useAnimateGroup(props: Props): {
     const animationNames = animationNamesRef.current;
 
     return () =>
-      Object.values(animationNames).forEach(({ forward, reverse }, i) => {
-        deleteRules(styleTags[i].forward?.sheet, forward);
-        deleteRules(styleTags[i].reverse?.sheet, reverse);
+      animationNames.forEach(({ forward, reverse }, i) => {
+        deleteRules(styleTags[i]?.forward?.sheet, forward);
+        deleteRules(styleTags[i]?.reverse?.sheet, reverse);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const play = React.useCallback((isPlay: boolean) => {
-    let totalDuration = 0;
-    const animationRefWithOrder = isPlay
-      ? animationNamesRef.current
-      : [...animationNamesRef.current].reverse();
-    const styles = (isPlay ? sequences : [...sequences].reverse()).map(
-      (current, currentIndex): React.CSSProperties => {
-        const {
-          duration = DEFAULT_DURATION,
-          delay = 0,
-          overlay,
-          keyframes,
-          iterationCount = 1,
-          easeType = DEFAULT_EASE_TYPE,
-          direction = DEFAULT_DIRECTION,
-          fillMode = DEFAULT_FILLMODE,
-          end = {},
-          start = {},
-        } = current;
-        const delayDuration = currentIndex === 0 ? delay : totalDuration;
-        const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
-        totalDuration =
-          calculateTotalDuration({ duration, delay, overlay }) + totalDuration;
+  const play = React.useCallback(
+    (isPlay: boolean) => {
+      let totalDuration = 0;
+      const animationRefWithOrder = isPlay
+        ? animationNamesRef.current
+        : [...animationNamesRef.current].reverse();
+      const styles = (isPlay ? sequences : [...sequences].reverse()).map(
+        (current, currentIndex): React.CSSProperties => {
+          const {
+            duration = DEFAULT_DURATION,
+            delay = 0,
+            overlay,
+            keyframes,
+            iterationCount = 1,
+            easeType = DEFAULT_EASE_TYPE,
+            direction = DEFAULT_DIRECTION,
+            fillMode = DEFAULT_FILLMODE,
+            end = {},
+            start = {},
+          } = current;
+          const delayDuration = currentIndex === 0 ? delay : totalDuration;
+          const transition = `${ALL} ${duration}s ${easeType} ${delayDuration}s`;
+          totalDuration =
+            calculateTotalDuration({ duration, delay, overlay }) +
+            totalDuration;
 
-        return keyframes
-          ? {
-              animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${RUNNING} ${
-                isPlay
-                  ? animationRefWithOrder[currentIndex].forward
-                  : animationRefWithOrder[currentIndex].reverse
-              }`,
-            }
-          : {
-              ...(isPlay ? end : start),
-              transition,
-            };
-      },
-    );
+          return keyframes
+            ? {
+                animation: `${duration}s ${easeType} ${delayDuration}s ${iterationCount} ${direction} ${fillMode} ${RUNNING} ${
+                  isPlay
+                    ? animationRefWithOrder[currentIndex].forward
+                    : animationRefWithOrder[currentIndex].reverse
+                }`,
+              }
+            : {
+                ...(isPlay ? end : start),
+                transition,
+              };
+        },
+      );
 
-    setStyles(isPlay ? styles : [...styles].reverse());
-    setPlaying(isPlay);
-  }, []);
+      setStyles(isPlay ? styles : [...styles].reverse());
+      setPlaying(isPlay);
+    },
+    [sequences],
+  );
 
   return { styles, play, isPlaying };
 }

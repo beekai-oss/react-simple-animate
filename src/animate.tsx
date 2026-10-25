@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { AnimateContext } from './animateGroup';
-import secToMs from './utils/secToMs';
+import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
+import type { AnimationProps } from './types';
 import getSequenceId from './utils/getSequenceId';
 import isUndefined from './utils/isUndefined';
-import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
-import { AnimationProps } from './types';
+import secToMs from './utils/secToMs';
 
 export default function Animate(props: AnimationProps): React.ReactElement {
   const {
@@ -21,16 +21,18 @@ export default function Animate(props: AnimationProps): React.ReactElement {
     sequenceId,
     sequenceIndex,
   } = props;
-  const onCompleteTimeRef = React.useRef<any>();
+  const onCompleteTimeRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
   const [style, setStyle] = React.useState(start || {});
   const { register, animationStates = {} } = React.useContext(AnimateContext);
   const id = getSequenceId(sequenceIndex, sequenceId);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: registration only happens on mount
   React.useEffect(() => {
     if ((!isUndefined(sequenceIndex) && sequenceIndex >= 0) || sequenceId) {
       register(props);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -44,14 +46,20 @@ export default function Animate(props: AnimationProps): React.ReactElement {
     });
 
     if (play && (complete || onComplete)) {
-      onCompleteTimeRef.current = setTimeout(() => {
-        complete && setStyle(complete);
-        onComplete && onComplete();
-      }, secToMs((animationState.delay || delay) + duration));
+      onCompleteTimeRef.current = setTimeout(
+        () => {
+          complete && setStyle(complete);
+          onComplete?.();
+        },
+        secToMs((animationState.delay || delay) + duration),
+      );
     }
 
-    return () =>
-      onCompleteTimeRef.current && clearTimeout(onCompleteTimeRef.current);
+    return () => {
+      if (onCompleteTimeRef.current) {
+        clearTimeout(onCompleteTimeRef.current);
+      }
+    };
   }, [
     id,
     animationStates,

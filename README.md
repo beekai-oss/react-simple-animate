@@ -1,4 +1,4 @@
-<div align="center"><p align="center"><a href="https://react-simple-animate.now.sh"><img src="https://raw.githubusercontent.com/bluebill1049/react-simple-animate/master/logo.png" alt="React Simple Animate Logo - UI Animation Made Simple" width="140px" /></a></p></div>
+<div align="center"><p align="center"><a href="https://react-simple-animate.bluebill1049.dev/"><img src="https://react-simple-animate.bluebill1049.dev/logo.png" alt="React Simple Animate Logo - UI Animation Made Simple" width="140px" /></a></p></div>
 
 <h1 align="center">React Simple Animate</h1>
 
@@ -24,14 +24,14 @@
 
     $ npm install react-simple-animate
 
-## [Docs](https://react-simple-animate.now.sh/)
+## [Docs](https://react-simple-animate.bluebill1049.dev/)
 
-- [Getting started](https://react-simple-animate.now.sh/basics)
-- [Animate](https://react-simple-animate.now.sh/animate)
-- [AnimateKeyframes](https://react-simple-animate.now.sh/animate-keyframes)
-- [AnimateGroup](https://react-simple-animate.now.sh/animate-group)
-- [Custom Hooks](https://react-simple-animate.now.sh/hooks)
-- [Advanced](https://react-simple-animate.now.sh/advanced)
+- [Getting started](https://react-simple-animate.bluebill1049.dev/basics)
+- [Animate](https://react-simple-animate.bluebill1049.dev/animate)
+- [AnimateKeyframes](https://react-simple-animate.bluebill1049.dev/animate-keyframes)
+- [AnimateGroup](https://react-simple-animate.bluebill1049.dev/animate-group)
+- [Custom Hooks](https://react-simple-animate.bluebill1049.dev/hooks)
+- [Advanced](https://react-simple-animate.bluebill1049.dev/advanced)
 
 ## Animation lifecycle callbacks
 

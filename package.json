@@ -32,6 +32,7 @@
     "build": "rollup -c",
     "watch": "rollup -c --watch",
     "release": "npm version",
+    "postversion": "git push && git push origin v$npm_package_version",
     "lint": "biome check src setup.ts vitest.config.mts rollup.config.mjs biome.json package.json",
     "format": "biome format --write src setup.ts vitest.config.mts rollup.config.mjs biome.json package.json",
     "format:check": "biome format src setup.ts vitest.config.mts rollup.config.mjs biome.json package.json",

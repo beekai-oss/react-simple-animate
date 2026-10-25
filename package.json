@@ -39,6 +39,7 @@
     "coverage": "vitest run --coverage",
     "postrelease": "pnpm publish && git push --follow-tags",
     "test": "vitest run",
+    "postversion": "git push && git push --tags",
     "test:watch": "vitest",
     "prepare": "husky",
     "prepublishOnly": "pnpm test && pnpm clean && pnpm build"

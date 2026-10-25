@@ -9,6 +9,7 @@ const EMPTY_SEQUENCES: Sequences = [];
 
 export interface Props {
   play: boolean;
+  cancel?: boolean;
   sequences?: Sequences;
   children?: React.ReactNode;
 }
@@ -17,6 +18,7 @@ type SequenceId = number | string;
 type PartialSequence = {
   play: boolean;
   pause: boolean;
+  cancel: boolean;
   delay: number;
   controlled: boolean;
 };
@@ -34,6 +36,7 @@ export const AnimateContext = React.createContext<IAnimationContext>({
 
 export default function AnimateGroup({
   play,
+  cancel = false,
   sequences = EMPTY_SEQUENCES,
   children,
 }: Props): React.ReactElement {
@@ -81,6 +84,7 @@ export default function AnimateGroup({
         localAnimationState[id] = {
           play,
           pause: !play,
+          cancel,
           delay: (delay || 0) + previous,
           controlled: true,
         };
@@ -91,7 +95,7 @@ export default function AnimateGroup({
     );
 
     setAnimationStates(localAnimationState);
-  }, [play, sequences]);
+  }, [play, cancel, sequences]);
 
   return (
     <AnimateContext.Provider value={{ animationStates, register }}>

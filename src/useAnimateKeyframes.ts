@@ -21,6 +21,7 @@ type UseAnimationKeyframesProps = Pick<
   | 'fillMode'
   | 'iterationCount'
   | 'keyframes'
+  | 'onCancel'
 >;
 export default function useAnimateKeyframes(
   props: UseAnimationKeyframesProps,
@@ -28,6 +29,7 @@ export default function useAnimateKeyframes(
   style: React.CSSProperties;
   play: (isPlaying: boolean) => void;
   pause: (isPaused: boolean) => void;
+  cancel: () => void;
   isPlaying: boolean;
 } {
   const {
@@ -38,6 +40,7 @@ export default function useAnimateKeyframes(
     fillMode = DEFAULT_FILLMODE,
     iterationCount = 1,
     keyframes,
+    onCancel,
   } = props;
   const animationNameRef = React.useRef({
     forward: '',
@@ -52,6 +55,9 @@ export default function useAnimateKeyframes(
   const { register } = React.useContext(AnimateContext);
   const [isPlaying, setIsPlaying] = React.useState<boolean | null>(null);
   const [isPaused, setIsPaused] = React.useState(false);
+  const [isCancelled, setIsCancelled] = React.useState(false);
+  const isActiveRef = React.useRef(false);
+  const hasCancelledRef = React.useRef(false);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: animation style tags are created once on mount
   React.useEffect(() => {
@@ -81,21 +87,41 @@ export default function useAnimateKeyframes(
   }, []);
 
   const style = {
-    animation: `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
-      isPaused,
-    )} ${
-      isPlaying === null
-        ? ''
-        : isPlaying
-          ? animationNameRef.current.forward
-          : animationNameRef.current.reverse
-    }`,
+    animation: isCancelled
+      ? 'none'
+      : `${duration}s ${easeType} ${delay}s ${iterationCount} ${direction} ${fillMode} ${getPlayState(
+          isPaused,
+        )} ${
+          isPlaying === null
+            ? ''
+            : isPlaying
+              ? animationNameRef.current.forward
+              : animationNameRef.current.reverse
+        }`,
   };
+
+  const play = React.useCallback((shouldPlay: boolean) => {
+    isActiveRef.current = true;
+    hasCancelledRef.current = false;
+    setIsCancelled(false);
+    setIsPlaying(shouldPlay);
+  }, []);
+
+  const cancel = React.useCallback(() => {
+    if (isActiveRef.current && !hasCancelledRef.current) {
+      hasCancelledRef.current = true;
+      onCancel?.();
+    }
+    isActiveRef.current = false;
+    setIsCancelled(true);
+    setIsPlaying(false);
+  }, [onCancel]);
 
   return {
     style,
-    play: setIsPlaying,
+    play,
     pause: setIsPaused,
+    cancel,
     isPlaying: !!isPlaying,
   };
 }

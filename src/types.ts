@@ -49,6 +49,7 @@ export interface AnimationProps extends AnimationType {
   onStart?: () => void;
   onComplete?: () => void;
   onCancel?: () => void;
+  cancel?: boolean;
   start?: React.CSSProperties;
   end?: React.CSSProperties;
   complete?: React.CSSProperties;
@@ -60,6 +61,7 @@ export interface AnimateKeyframesProps extends AnimationType {
   onStart?: () => void;
   onComplete?: () => void;
   onCancel?: () => void;
+  cancel?: boolean;
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   iterationCount?: string | number;

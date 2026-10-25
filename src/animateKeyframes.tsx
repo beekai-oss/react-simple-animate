@@ -24,6 +24,7 @@ export default function AnimateKeyframes(
     onStart,
     onComplete,
     onCancel,
+    cancel = false,
     duration = DEFAULT_DURATION,
     delay = 0,
     easeType = DEFAULT_EASE_TYPE,
@@ -53,6 +54,7 @@ export default function AnimateKeyframes(
   const id = getSequenceId(sequenceIndex, sequenceId);
   const { register, animationStates = {} } = React.useContext(AnimateContext);
   const animateState = animationStates[id] || {};
+  const isCancelled = cancel || animateState.cancel;
   const [, forceUpdate] = React.useState(false);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: animation style tags are created once on mount
@@ -95,20 +97,20 @@ export default function AnimateKeyframes(
     pauseValue = pause;
   }
 
-  const activeAnimationName = (
-    animateState.controlled
-      ? animateState.play
-      : play
-  )
-    ? animationNameRef.current.forward
-    : animationNameRef.current.reverse;
+  const activeAnimationName = isCancelled
+    ? ''
+    : (animateState.controlled ? animateState.play : play)
+      ? animationNameRef.current.forward
+      : animationNameRef.current.reverse;
 
   const style = {
-    animation: `${duration}s ${easeType} ${
-      animateState.delay || delay
-    }s ${iterationCount} ${direction} ${fillMode} ${getPlayState(pauseValue)} ${
-      activeAnimationName || ''
-    }`,
+    animation: isCancelled
+      ? 'none'
+      : `${duration}s ${easeType} ${
+          animateState.delay || delay
+        }s ${iterationCount} ${direction} ${fillMode} ${getPlayState(pauseValue)} ${
+          activeAnimationName || ''
+        }`,
   };
 
   const handleAnimationStart: React.AnimationEventHandler<HTMLElement> = (

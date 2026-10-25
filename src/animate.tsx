@@ -12,6 +12,7 @@ export default function Animate(props: AnimationProps): React.ReactElement {
     render,
     onStart,
     onCancel,
+    cancel = false,
     start,
     end,
     complete = '',
@@ -38,6 +39,7 @@ export default function Animate(props: AnimationProps): React.ReactElement {
 
   React.useEffect(() => {
     const animationState = animationStates[id] || {};
+    const isCancelled = cancel || animationState.cancel;
 
     hasStartedRef.current = false;
     hasCompletedRef.current = false;
@@ -45,11 +47,21 @@ export default function Animate(props: AnimationProps): React.ReactElement {
 
     setStyle({
       ...(play || animationState.play ? end : start),
-      transition: `${ALL} ${duration}s ${easeType} ${
-        animationState.delay || delay
-      }s`,
+      transition: isCancelled
+        ? 'none'
+        : `${ALL} ${duration}s ${easeType} ${animationState.delay || delay}s`,
     });
-  }, [id, animationStates, play, duration, easeType, delay, start, end]);
+  }, [
+    id,
+    animationStates,
+    play,
+    duration,
+    easeType,
+    delay,
+    start,
+    end,
+    cancel,
+  ]);
 
   const handleTransitionStart: React.TransitionEventHandler<HTMLElement> = (
     event,

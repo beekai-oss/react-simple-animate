@@ -1,6 +1,6 @@
 {
   "name": "react-simple-animate",
-  "version": "3.5.3",
+  "version": "3.6.0",
   "packageManager": "pnpm@12.14.0",
   "description": "react simple animate",
   "main": "dist/index.js",

@@ -41,6 +41,14 @@ CSS animation events. Each callback runs at most once for the current run, and
 events bubbling from child elements are ignored. An infinite keyframe animation
 does not naturally reach `onComplete`; stopping it triggers `onCancel` instead.
 
+Set the `cancel` prop to `true` to stop a component's current run. Clear it
+before starting another run. For hooks, call the returned `cancel()` method.
+`play={false}` / `play(false)` selects the start or reverse path; cancelling does
+not start that path. Cancelling a transition applies its target style without a
+transition; cancelling keyframes removes the animation effect and restores the
+underlying style. Hooks accept an `onCancel` callback, which runs once per
+cancellation until the next `play()`.
+
 When using the `render` prop, forward the event handlers it receives to the
 element that owns the animation:
 

@@ -8,6 +8,7 @@ type UseAnimateProps = Pick<
   | 'start'
   | 'end'
   | 'complete'
+  | 'onCancel'
   | 'onComplete'
   | 'delay'
   | 'duration'
@@ -17,11 +18,13 @@ export default function useAnimate(props: UseAnimateProps): {
   isPlaying: boolean;
   style: React.CSSProperties;
   play: (isPlaying: boolean) => void;
+  cancel: () => void;
 } {
   const {
     start,
     end,
     complete,
+    onCancel,
     onComplete,
     delay = 0,
     duration = DEFAULT_DURATION,
@@ -39,6 +42,7 @@ export default function useAnimate(props: UseAnimateProps): {
     style: { ...start, transition },
   });
   const { isPlaying, style } = animate;
+  const hasCancelledRef = React.useRef(false);
   const onCompleteTimeRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -74,6 +78,7 @@ export default function useAnimate(props: UseAnimateProps): {
     style,
     play: React.useCallback(
       (isPlaying) => {
+        hasCancelledRef.current = false;
         setAnimate((animate) => ({
           ...animate,
           style: {
@@ -85,5 +90,19 @@ export default function useAnimate(props: UseAnimateProps): {
       },
       [end, start, transition],
     ),
+    cancel: React.useCallback(() => {
+      if (!hasCancelledRef.current) {
+        hasCancelledRef.current = true;
+        onCancel?.();
+      }
+      setAnimate((animate) => ({
+        ...animate,
+        isPlaying: false,
+        style: {
+          ...animate.style,
+          transition: 'none',
+        },
+      }));
+    }, [onCancel]),
   };
 }

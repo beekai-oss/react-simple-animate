@@ -16,19 +16,24 @@ import createRandomName from './utils/createRandomName';
 
 interface Props {
   sequences: HookSequences;
+  onCancel?: () => void;
 }
 
 export default function useAnimateGroup(props: Props): {
   styles: (React.CSSProperties | undefined)[];
   play: (isPlaying: boolean) => void;
+  cancel: () => void;
   isPlaying: boolean;
 } {
   const { sequences = [] } = props;
+  const { onCancel } = props;
   const defaultArray = createArrayWithNumbers(sequences.length).map(
     (_, index) => props.sequences[index].start,
   ) as React.CSSProperties[];
   const [styles, setStyles] = React.useState(defaultArray);
   const [isPlaying, setPlaying] = React.useState(false);
+  const isActiveRef = React.useRef(false);
+  const hasCancelledRef = React.useRef(false);
   const animationNamesRef = React.useRef<
     { forward: string; reverse: string }[]
   >([]);
@@ -75,6 +80,8 @@ export default function useAnimateGroup(props: Props): {
 
   const play = React.useCallback(
     (isPlay: boolean) => {
+      isActiveRef.current = true;
+      hasCancelledRef.current = false;
       let totalDuration = 0;
       const animationRefWithOrder = isPlay
         ? animationNamesRef.current
@@ -120,5 +127,24 @@ export default function useAnimateGroup(props: Props): {
     [sequences],
   );
 
-  return { styles, play, isPlaying };
+  const cancel = React.useCallback(() => {
+    if (isActiveRef.current && !hasCancelledRef.current) {
+      hasCancelledRef.current = true;
+      onCancel?.();
+    }
+    isActiveRef.current = false;
+    setStyles((currentStyles) =>
+      currentStyles.map((style) => {
+        if (!style) {
+          return style;
+        }
+        return style.animation
+          ? { ...style, animation: 'none' }
+          : { ...style, transition: 'none' };
+      }),
+    );
+    setPlaying(false);
+  }, [onCancel]);
+
+  return { styles, play, cancel, isPlaying };
 }

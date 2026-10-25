@@ -8,7 +8,6 @@
 
 <div align="center">
 
-[![CI](https://github.com/bluebill1049/react-simple-animate/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/bluebill1049/react-simple-animate/actions/workflows/ci.yml)
 [![npm downloads](https://img.shields.io/npm/dm/react-simple-animate.svg?style=for-the-badge)](https://www.npmjs.com/package/react-simple-animate)
 [![npm](https://img.shields.io/npm/dt/react-simple-animate.svg?style=for-the-badge)](https://www.npmjs.com/package/react-simple-animate)
 [![License](https://img.shields.io/npm/l/react-simple-animate?style=for-the-badge)](https://github.com/bluebill1049/react-simple-animate/blob/master/LICENSE)

@@ -10,6 +10,12 @@ export interface AnimationType {
   register?: (data: AnimationType) => void;
   render?: (data: {
     style: React.CSSProperties | undefined;
+    onTransitionStart?: React.TransitionEventHandler<HTMLElement>;
+    onTransitionEnd?: React.TransitionEventHandler<HTMLElement>;
+    onTransitionCancel?: React.TransitionEventHandler<HTMLElement>;
+    onAnimationStart?: React.AnimationEventHandler<HTMLElement>;
+    onAnimationEnd?: React.AnimationEventHandler<HTMLElement>;
+    onAnimationCancel?: React.AnimationEventHandler<HTMLElement>;
   }) => React.ReactElement;
   sequenceId?: string | number;
   sequenceIndex?: number;
@@ -40,7 +46,9 @@ export type Keyframes =
   | { [key: string]: string | number }[];
 
 export interface AnimationProps extends AnimationType {
+  onStart?: () => void;
   onComplete?: () => void;
+  onCancel?: () => void;
   start?: React.CSSProperties;
   end?: React.CSSProperties;
   complete?: React.CSSProperties;
@@ -49,6 +57,9 @@ export interface AnimationProps extends AnimationType {
 
 export interface AnimateKeyframesProps extends AnimationType {
   keyframes: Keyframes;
+  onStart?: () => void;
+  onComplete?: () => void;
+  onCancel?: () => void;
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   iterationCount?: string | number;

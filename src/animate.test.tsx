@@ -1,8 +1,6 @@
-import { act, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import * as React from 'react';
 import Animate from '../src/animate';
-
-vi.useFakeTimers();
 
 describe('Animate', () => {
   it('should start with start style', () => {
@@ -33,7 +31,7 @@ describe('Animate', () => {
     const element = screen.getByText('bill');
     expect(element).toHaveStyle({ opacity: '0' });
 
-    act(() => vi.runAllTimers());
+    fireEvent.transitionEnd(element);
     expect(element).toHaveStyle({ background: 'red' });
   });
 

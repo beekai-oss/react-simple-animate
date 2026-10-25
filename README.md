@@ -33,6 +33,45 @@
 - [Custom Hooks](https://react-simple-animate.now.sh/hooks)
 - [Advanced](https://react-simple-animate.now.sh/advanced)
 
+## Animation lifecycle callbacks
+
+`Animate` and `AnimateKeyframes` accept `onStart`, `onComplete`, and `onCancel`
+callbacks. `Animate` uses CSS transition events, while `AnimateKeyframes` uses
+CSS animation events. Each callback runs at most once for the current run, and
+events bubbling from child elements are ignored. An infinite keyframe animation
+does not naturally reach `onComplete`; stopping it triggers `onCancel` instead.
+
+When using the `render` prop, forward the event handlers it receives to the
+element that owns the animation:
+
+```jsx
+function Example() {
+  return (
+    <Animate
+      play
+      start={{ opacity: 0 }}
+      end={{ opacity: 1 }}
+      onStart={() => console.log('started')}
+      onComplete={() => console.log('completed')}
+      onCancel={() => console.log('cancelled')}
+      render={({
+        style,
+        onTransitionStart,
+        onTransitionEnd,
+        onTransitionCancel,
+      }) => (
+        <span
+          style={style}
+          onTransitionStart={onTransitionStart}
+          onTransitionEnd={onTransitionEnd}
+          onTransitionCancel={onTransitionCancel}
+        />
+      )}
+    />
+  );
+}
+```
+
 ## Quickstart
 
 #### Components
@@ -47,7 +86,7 @@ export default () => (
     <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
       <h1>React simple animate</h1>
     </Animate>
-    
+
     {/* animate keyframes with individual element. */}
     <AnimateKeyframes
       play
@@ -56,7 +95,7 @@ export default () => (
     >
       <h1>React simple animate with keyframes</h1>
     </AnimateKeyframes>
-    
+
     {/* animate group of animation in sequences */}
     <AnimateGroup play>
       <Animate start={{ opacity: 0 }} end={{ opacity: 1 }} sequenceIndex={0}>

@@ -21,6 +21,8 @@ type UseAnimationKeyframesProps = Pick<
   | 'fillMode'
   | 'iterationCount'
   | 'keyframes'
+  | 'onStart'
+  | 'onComplete'
   | 'onCancel'
 >;
 export default function useAnimateKeyframes(
@@ -31,6 +33,9 @@ export default function useAnimateKeyframes(
   pause: (isPaused: boolean) => void;
   cancel: () => void;
   isPlaying: boolean;
+  onAnimationStart: React.AnimationEventHandler<HTMLElement>;
+  onAnimationEnd: React.AnimationEventHandler<HTMLElement>;
+  onAnimationCancel: React.AnimationEventHandler<HTMLElement>;
 } {
   const {
     duration = DEFAULT_DURATION,
@@ -40,6 +45,8 @@ export default function useAnimateKeyframes(
     fillMode = DEFAULT_FILLMODE,
     iterationCount = 1,
     keyframes,
+    onStart,
+    onComplete,
     onCancel,
   } = props;
   const animationNameRef = React.useRef({
@@ -57,7 +64,10 @@ export default function useAnimateKeyframes(
   const [isPaused, setIsPaused] = React.useState(false);
   const [isCancelled, setIsCancelled] = React.useState(false);
   const isActiveRef = React.useRef(false);
+  const hasStartedRef = React.useRef(false);
+  const hasCompletedRef = React.useRef(false);
   const hasCancelledRef = React.useRef(false);
+  const cancelRequestedRef = React.useRef(false);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: animation style tags are created once on mount
   React.useEffect(() => {
@@ -100,22 +110,74 @@ export default function useAnimateKeyframes(
         }`,
   };
 
+  const activeAnimationName = isCancelled
+    ? ''
+    : isPlaying === null
+      ? ''
+      : isPlaying
+        ? animationNameRef.current.forward
+        : animationNameRef.current.reverse;
+
+  const onAnimationStart: React.AnimationEventHandler<HTMLElement> = (
+    event,
+  ) => {
+    if (
+      event.target === event.currentTarget &&
+      event.animationName === activeAnimationName &&
+      !hasStartedRef.current &&
+      !cancelRequestedRef.current
+    ) {
+      hasStartedRef.current = true;
+      onStart?.();
+    }
+  };
+  const onAnimationEnd: React.AnimationEventHandler<HTMLElement> = (event) => {
+    if (
+      event.target === event.currentTarget &&
+      event.animationName === activeAnimationName &&
+      !hasCompletedRef.current &&
+      !cancelRequestedRef.current
+    ) {
+      hasCompletedRef.current = true;
+      isActiveRef.current = false;
+      onComplete?.();
+    }
+  };
+  const onAnimationCancel: React.AnimationEventHandler<HTMLElement> = (
+    event,
+  ) => {
+    const isOwnedAnimation =
+      event.animationName === animationNameRef.current.forward ||
+      event.animationName === animationNameRef.current.reverse;
+
+    if (
+      event.target === event.currentTarget &&
+      isOwnedAnimation &&
+      !hasCancelledRef.current
+    ) {
+      hasCancelledRef.current = true;
+      isActiveRef.current = false;
+      onCancel?.();
+    }
+  };
+
   const play = React.useCallback((shouldPlay: boolean) => {
     isActiveRef.current = true;
+    hasStartedRef.current = false;
+    hasCompletedRef.current = false;
     hasCancelledRef.current = false;
+    cancelRequestedRef.current = false;
     setIsCancelled(false);
     setIsPlaying(shouldPlay);
   }, []);
 
   const cancel = React.useCallback(() => {
     if (isActiveRef.current && !hasCancelledRef.current) {
-      hasCancelledRef.current = true;
-      onCancel?.();
+      cancelRequestedRef.current = true;
+      setIsCancelled(true);
     }
     isActiveRef.current = false;
-    setIsCancelled(true);
-    setIsPlaying(false);
-  }, [onCancel]);
+  }, []);
 
   return {
     style,
@@ -123,5 +185,8 @@ export default function useAnimateKeyframes(
     pause: setIsPaused,
     cancel,
     isPlaying: !!isPlaying,
+    onAnimationStart,
+    onAnimationEnd,
+    onAnimationCancel,
   };
 }

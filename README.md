@@ -80,6 +80,27 @@ function Example() {
 }
 ```
 
+Hooks return the corresponding handlers for the rendered element. For group
+animations, `handlers` is aligned with `styles`:
+
+```jsx
+const {
+  style,
+  onTransitionStart,
+  onTransitionEnd,
+  onTransitionCancel,
+} = useAnimate({ start: { opacity: 0 }, end: { opacity: 1 } });
+
+return (
+  <div
+    style={style}
+    onTransitionStart={onTransitionStart}
+    onTransitionEnd={onTransitionEnd}
+    onTransitionCancel={onTransitionCancel}
+  />
+);
+```
+
 ## Quickstart
 
 #### Components

@@ -1,8 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import useAnimate from './useAnimate';
 
-vi.useFakeTimers();
-
 describe('useAnimate', () => {
   let onComplete: ReturnType<typeof vi.fn<() => void>>;
 
@@ -44,11 +42,22 @@ describe('useAnimate', () => {
       result.current.play(true);
     });
 
-    act(() => vi.runOnlyPendingTimers());
+    const target = {};
+    act(() => {
+      result.current.onTransitionEnd({
+        target,
+        currentTarget: target,
+      } as React.TransitionEvent<HTMLElement>);
+    });
 
     expect(onComplete).toHaveBeenCalledTimes(1);
 
-    act(() => vi.runOnlyPendingTimers());
+    act(() => {
+      result.current.onTransitionEnd({
+        target,
+        currentTarget: target,
+      } as React.TransitionEvent<HTMLElement>);
+    });
 
     expect(onComplete).toHaveBeenCalledTimes(1);
   });

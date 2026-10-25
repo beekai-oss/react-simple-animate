@@ -69,6 +69,7 @@ export default function useAnimate(props: UseAnimateProps): {
   ) => {
     if (
       event.target === event.currentTarget &&
+      isPlaying &&
       !hasCompletedRef.current &&
       !hasCancelledRef.current &&
       !cancelRequestedRef.current

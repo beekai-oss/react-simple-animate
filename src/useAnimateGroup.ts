@@ -21,6 +21,14 @@ interface Props {
 
 export default function useAnimateGroup(props: Props): {
   styles: (React.CSSProperties | undefined)[];
+  handlers: {
+    onTransitionStart?: React.TransitionEventHandler<HTMLElement>;
+    onTransitionEnd?: React.TransitionEventHandler<HTMLElement>;
+    onTransitionCancel?: React.TransitionEventHandler<HTMLElement>;
+    onAnimationStart?: React.AnimationEventHandler<HTMLElement>;
+    onAnimationEnd?: React.AnimationEventHandler<HTMLElement>;
+    onAnimationCancel?: React.AnimationEventHandler<HTMLElement>;
+  }[];
   play: (isPlaying: boolean) => void;
   cancel: () => void;
   isPlaying: boolean;
@@ -34,6 +42,14 @@ export default function useAnimateGroup(props: Props): {
   const [isPlaying, setPlaying] = React.useState(false);
   const isActiveRef = React.useRef(false);
   const hasCancelledRef = React.useRef(false);
+  const runStatesRef = React.useRef<
+    {
+      started: boolean;
+      completed: boolean;
+      cancelled: boolean;
+      cancelRequested: boolean;
+    }[]
+  >([]);
   const animationNamesRef = React.useRef<
     { forward: string; reverse: string }[]
   >([]);
@@ -82,6 +98,12 @@ export default function useAnimateGroup(props: Props): {
     (isPlay: boolean) => {
       isActiveRef.current = true;
       hasCancelledRef.current = false;
+      runStatesRef.current = sequences.map(() => ({
+        started: false,
+        completed: false,
+        cancelled: false,
+        cancelRequested: false,
+      }));
       let totalDuration = 0;
       const animationRefWithOrder = isPlay
         ? animationNamesRef.current
@@ -127,12 +149,94 @@ export default function useAnimateGroup(props: Props): {
     [sequences],
   );
 
+  const handlers = sequences.map((sequence, index) => {
+    const runState = runStatesRef.current[index] ?? {
+      started: false,
+      completed: false,
+      cancelled: false,
+      cancelRequested: false,
+    };
+    const handleStart = () => {
+      if (!runState.started && !runState.cancelRequested) {
+        runState.started = true;
+        sequence.onStart?.();
+      }
+    };
+    const handleEnd = () => {
+      if (!runState.completed && !runState.cancelRequested) {
+        runState.completed = true;
+        sequence.onComplete?.();
+      }
+    };
+    const handleCancel = () => {
+      if (!runState.cancelled) {
+        runState.cancelled = true;
+        sequence.onCancel?.();
+      }
+    };
+
+    if (sequence.keyframes) {
+      const animationName = isPlaying
+        ? animationNamesRef.current[index]?.forward
+        : animationNamesRef.current[index]?.reverse;
+      return {
+        onAnimationStart: (event: React.AnimationEvent<HTMLElement>) => {
+          if (
+            event.target === event.currentTarget &&
+            event.animationName === animationName
+          ) {
+            handleStart();
+          }
+        },
+        onAnimationEnd: (event: React.AnimationEvent<HTMLElement>) => {
+          if (
+            event.target === event.currentTarget &&
+            event.animationName === animationName
+          ) {
+            handleEnd();
+          }
+        },
+        onAnimationCancel: (event: React.AnimationEvent<HTMLElement>) => {
+          if (
+            event.target === event.currentTarget &&
+            (event.animationName ===
+              animationNamesRef.current[index]?.forward ||
+              event.animationName === animationNamesRef.current[index]?.reverse)
+          ) {
+            handleCancel();
+          }
+        },
+      };
+    }
+
+    return {
+      onTransitionStart: (event: React.TransitionEvent<HTMLElement>) => {
+        if (event.target === event.currentTarget) {
+          handleStart();
+        }
+      },
+      onTransitionEnd: (event: React.TransitionEvent<HTMLElement>) => {
+        if (event.target === event.currentTarget) {
+          handleEnd();
+        }
+      },
+      onTransitionCancel: (event: React.TransitionEvent<HTMLElement>) => {
+        if (event.target === event.currentTarget) {
+          handleCancel();
+        }
+      },
+    };
+  });
+
   const cancel = React.useCallback(() => {
     if (isActiveRef.current && !hasCancelledRef.current) {
       hasCancelledRef.current = true;
       onCancel?.();
     }
     isActiveRef.current = false;
+    runStatesRef.current.forEach((runState) => {
+      runState.cancelRequested = true;
+    });
     setStyles((currentStyles) =>
       currentStyles.map((style) => {
         if (!style) {
@@ -143,8 +247,7 @@ export default function useAnimateGroup(props: Props): {
           : { ...style, transition: 'none' };
       }),
     );
-    setPlaying(false);
   }, [onCancel]);
 
-  return { styles, play, cancel, isPlaying };
+  return { styles, handlers, play, cancel, isPlaying };
 }

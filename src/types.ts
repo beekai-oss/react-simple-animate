@@ -28,6 +28,9 @@ export interface AnimationStateType {
 export type Sequences = AnimationType[];
 
 export type HookSequences = {
+  onStart?: () => void;
+  onComplete?: () => void;
+  onCancel?: () => void;
   keyframes?: Keyframes;
   direction?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
   fillMode?: 'none' | 'forwards' | 'backwards' | 'both';

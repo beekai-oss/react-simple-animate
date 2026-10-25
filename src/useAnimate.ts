@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { ALL, DEFAULT_DURATION, DEFAULT_EASE_TYPE } from './constants';
 import type { AnimationProps } from './types';
-import secToMs from './utils/secToMs';
 
 type UseAnimateProps = Pick<
   AnimationProps,
   | 'start'
   | 'end'
   | 'complete'
+  | 'onStart'
   | 'onCancel'
   | 'onComplete'
   | 'delay'
@@ -19,11 +19,15 @@ export default function useAnimate(props: UseAnimateProps): {
   style: React.CSSProperties;
   play: (isPlaying: boolean) => void;
   cancel: () => void;
+  onTransitionStart: React.TransitionEventHandler<HTMLElement>;
+  onTransitionEnd: React.TransitionEventHandler<HTMLElement>;
+  onTransitionCancel: React.TransitionEventHandler<HTMLElement>;
 } {
   const {
     start,
     end,
     complete,
+    onStart,
     onCancel,
     onComplete,
     delay = 0,
@@ -42,43 +46,62 @@ export default function useAnimate(props: UseAnimateProps): {
     style: { ...start, transition },
   });
   const { isPlaying, style } = animate;
+  const hasStartedRef = React.useRef(false);
+  const hasCompletedRef = React.useRef(false);
   const hasCancelledRef = React.useRef(false);
-  const onCompleteTimeRef = React.useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
+  const cancelRequestedRef = React.useRef(false);
 
-  React.useEffect(() => {
-    if ((onComplete || complete) && isPlaying) {
-      onCompleteTimeRef.current = setTimeout(
-        () => {
-          if (onComplete) {
-            onComplete();
-          }
-
-          if (complete) {
-            setAnimate((animate) => ({
-              ...animate,
-              style: complete,
-            }));
-          }
-        },
-        secToMs(delay + duration),
-      );
+  const onTransitionStart: React.TransitionEventHandler<HTMLElement> = (
+    event,
+  ) => {
+    if (
+      event.target === event.currentTarget &&
+      !hasStartedRef.current &&
+      !hasCancelledRef.current &&
+      !cancelRequestedRef.current
+    ) {
+      hasStartedRef.current = true;
+      onStart?.();
     }
-
-    return () => {
-      if (onCompleteTimeRef.current) {
-        clearTimeout(onCompleteTimeRef.current);
+  };
+  const onTransitionEnd: React.TransitionEventHandler<HTMLElement> = (
+    event,
+  ) => {
+    if (
+      event.target === event.currentTarget &&
+      !hasCompletedRef.current &&
+      !hasCancelledRef.current &&
+      !cancelRequestedRef.current
+    ) {
+      hasCompletedRef.current = true;
+      if (complete) {
+        setAnimate((animate) => ({ ...animate, style: complete }));
       }
-    };
-  }, [complete, delay, duration, isPlaying, onComplete]);
+      onComplete?.();
+    }
+  };
+  const onTransitionCancel: React.TransitionEventHandler<HTMLElement> = (
+    event,
+  ) => {
+    if (
+      event.target === event.currentTarget &&
+      !hasCompletedRef.current &&
+      !hasCancelledRef.current
+    ) {
+      hasCancelledRef.current = true;
+      onCancel?.();
+    }
+  };
 
   return {
     isPlaying,
     style,
     play: React.useCallback(
       (isPlaying) => {
+        hasStartedRef.current = false;
+        hasCompletedRef.current = false;
         hasCancelledRef.current = false;
+        cancelRequestedRef.current = false;
         setAnimate((animate) => ({
           ...animate,
           style: {
@@ -91,18 +114,17 @@ export default function useAnimate(props: UseAnimateProps): {
       [end, start, transition],
     ),
     cancel: React.useCallback(() => {
-      if (!hasCancelledRef.current) {
-        hasCancelledRef.current = true;
-        onCancel?.();
-      }
+      cancelRequestedRef.current = true;
       setAnimate((animate) => ({
         ...animate,
-        isPlaying: false,
         style: {
           ...animate.style,
           transition: 'none',
         },
       }));
-    }, [onCancel]),
+    }, []),
+    onTransitionStart,
+    onTransitionEnd,
+    onTransitionCancel,
   };
 }

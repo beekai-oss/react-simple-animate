@@ -101,6 +101,67 @@ return (
 );
 ```
 
+### Exit animation before unmounting
+
+Keep the component mounted while it animates to its `start` style. Remove it in
+`onComplete` after closing. The render prop lets you attach the transition
+handlers to the element that should animate:
+
+```jsx
+function Panel() {
+  const [mounted, setMounted] = React.useState(true);
+  const [open, setOpen] = React.useState(true);
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          if (open) {
+            setOpen(false);
+          } else {
+            setMounted(true);
+            setOpen(true);
+          }
+        }}
+      >
+        Toggle panel
+      </button>
+      {mounted && (
+        <Animate
+          play={open}
+          start={{ opacity: 0, transform: 'translateY(8px)' }}
+          end={{ opacity: 1, transform: 'translateY(0)' }}
+          onComplete={() => {
+            if (!open) setMounted(false);
+          }}
+          render={(
+            {
+              style,
+              onTransitionStart,
+              onTransitionEnd,
+              onTransitionCancel,
+            },
+          ) => (
+            <section
+              style={style}
+              onTransitionStart={onTransitionStart}
+              onTransitionEnd={onTransitionEnd}
+              onTransitionCancel={onTransitionCancel}
+            >
+              Panel content
+            </section>
+          )}
+        />
+      )}
+    </>
+  );
+}
+```
+
+The parent controls when the exit starts and removes the component after its
+transition ends. If the parent unmounts `Animate` immediately, there is no
+element left to animate.
+
 ## Quickstart
 
 #### Components
